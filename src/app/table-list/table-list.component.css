@@ -1,0 +1,16 @@
+table {
+    border-collapse: collapse;
+    border: none;
+}
+table td, table th {
+    padding: .25rem;
+    border: none;
+}
+table thead tr {
+    background-color: lightgrey;
+    font-weight: bold;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #eee;
+}

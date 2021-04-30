@@ -1,6 +1,18 @@
 {
   "name": "hadleyville-online",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/derikb/hadleyville-online.git"
+  },
+  "keywords": [
+    "rpg",
+    "role-playing games",
+    "randomizer",
+    "osr",
+    "fkr"
+  ],
+  "author": "Derik A Badman",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +21,10 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "private": true,
+  "bugs": {
+    "url": "https://github.com/derikb/hadleyville-online/issues"
+  },
+  "homepage": "https://github.com/derikb/hadleyville-online#readme",
   "dependencies": {
     "@angular/animations": "~11.2.9",
     "@angular/common": "~11.2.9",
@@ -19,6 +34,7 @@
     "@angular/platform-browser": "~11.2.9",
     "@angular/platform-browser-dynamic": "~11.2.9",
     "@angular/router": "~11.2.9",
+    "rpg-table-randomizer": "^0.8.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"

@@ -1,0 +1,14 @@
+<table *ngIf="table">
+    <caption>{{ table.title }} <button *ngIf="subtableNames.length > 1" type="button" (click)="rollTable($event)">Roll</button></caption>
+    <thead>
+        <tr>
+            <th *ngIf="includeNumbers">Roll</th>
+            <th *ngFor="let h of subtableNames">{{ h }} <button type="button" (click)="rollTable($event, h)">Roll</button></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of tableRows">
+            <td *ngFor="let cell of row">{{ cell }}</td>
+        </tr>
+    </tbody>
+</table>

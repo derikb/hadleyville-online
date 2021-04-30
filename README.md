@@ -1,27 +1,9 @@
-# HadleyvilleOnline
+# Hadleyville Online
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.8.
+**IN PROCESS**
 
-## Development server
+An web version of my rules light Old West RPG, [Hadleyville](https://madinkbeard.itch.io/hadleyville) (free at itch.io).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+This is coded in Angular because I need to learn it for work.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+This is also me working out the issues with my [RPG Table Randomizer library](https://github.com/derikb/rpg-table-randomizer).

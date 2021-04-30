@@ -1,0 +1,12 @@
+<p *ngIf="table">Table: {{ table.title }}</p>
+
+<!--
+    Probably an switch or if for the result being a single object first
+    something to ignore "default" as a table name.
+    ?
+-->
+
+<p *ngFor="let result of results">
+    <span *ngIf="result.table != 'default'">{{ result.table }}:</span> {{ result.result }}
+    <span *ngIf="result.desc">{{ result.desc }}</span>
+</p>
