@@ -2,7 +2,7 @@
  * Show the results from a RandomTable in the page.
  */
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import RandomTable from 'rpg-table-randomizer/src/random_table.js';
+import { RandomTable, RandomTableResultSet } from 'rpg-table-randomizer/src/random_table.js';
 
 @Component({
   selector: 'app-table-result',
@@ -11,8 +11,8 @@ import RandomTable from 'rpg-table-randomizer/src/random_table.js';
   encapsulation: ViewEncapsulation.ShadowDom
 })
 export class TableResultComponent implements OnInit {
-  @Input() table?: RandomTable = null;
-  @Input() results: Array<any> = [];
+  table?: RandomTable = null;
+  resultSet: RandomTableResultSet;
   @Input() data: any = {};
 
   constructor() { }
@@ -20,7 +20,7 @@ export class TableResultComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.data);
     this.table = this.data.table;
-    this.results = this.data.result;
+    this.resultSet = this.data.result;
   }
 
 }

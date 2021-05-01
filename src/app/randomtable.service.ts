@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import Randomizer from 'rpg-table-randomizer/src/randomizer.js';
-import RandomTable from 'rpg-table-randomizer/src/random_table.js';
+import { RandomTable, RandomTableResultSet } from 'rpg-table-randomizer/src/random_table.js';
 import tables from '../data/tables.js';
 
 @Injectable({
@@ -50,25 +50,25 @@ export class RandomtableService {
   /**
    * Get result for a table by its key.
    * @param key {String} table key.
-   * @returns {Object}
+   * @returns {RandomTableResultSet|null}
    */
-  getResultByTableKey(key: string) {
-    return this.randomizer.getTableResultByKey(key);
+  getResultByTableKey(key: string) : RandomTableResultSet|null {
+    return this.randomizer.getTableResultSetByKey(key);
   }
   /**
    * Get results from a table using the whole table.
    * @param table {RandomTable}
-   * @returns {Object}
+   * @returns {RandomTableResultSet|null}
    */
-  getResultFromTable(table: RandomTable) {
-    return this.randomizer.getTableResult(table);
+  getResultFromTable(table: RandomTable) : RandomTableResultSet|null {
+    return this.randomizer.getResultSetForTable(table);
   }
     /**
    * Get results from a table using the whole table.
    * @param table {RandomTable}
-   * @returns {Object}
+   * @returns {RandomTableResultSet|null}
    */
-  getResultFromSubTable(table: RandomTable, subtable: string) {
-    return this.randomizer.getTableResult(table, subtable);
+  getResultFromSubTable(table: RandomTable, subtable: string) : RandomTableResultSet|null {
+    return this.randomizer.getResultSetForTable(table, subtable);
   }
 }

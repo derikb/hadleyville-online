@@ -19,7 +19,7 @@ export class TableMultiComponent implements OnInit {
 
   ngOnInit(): void {
     //this.includeNumbers = true;
-    this.subtableNames = Object.keys(this.table.tables);
+    this.subtableNames = this.table.subtableNames;
     this.tableRows = this.getTableRows();
   }
 
@@ -44,7 +44,7 @@ export class TableMultiComponent implements OnInit {
     // make that many row arrays.
     // fill them with the empty value `---`
     // iterate and add in the table entries.
-    const tableKeys = Object.keys(this.table.tables);
+    const tableKeys = this.table.subtableNames;
     const entryCounts = tableKeys.map((t) => { return this.table.tables[t].length; });
     const columnCount = entryCounts.length + (this.includeNumbers ? 1 : 0);
     const rowCount = Math.max(...entryCounts);
@@ -61,7 +61,7 @@ export class TableMultiComponent implements OnInit {
       const entries = this.table.tables[key];
       const column = col + (this.includeNumbers ? 1 : 0);
       entries.forEach((entry, row) => {
-        rows[row][column] = (typeof entry === 'string') ? entry : entry.result;
+        rows[row][column] = entry.label;
       });
     });
     return rows;

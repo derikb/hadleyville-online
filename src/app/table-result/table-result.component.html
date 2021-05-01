@@ -6,7 +6,7 @@
     ?
 -->
 
-<p *ngFor="let result of results">
+<p *ngFor="let result of resultSet.results">
     <span *ngIf="result.table != 'default'">{{ result.table }}:</span> {{ result.result }}
     <span *ngIf="result.desc">{{ result.desc }}</span>
 </p>
