@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import RandomTable from 'rpg-table-randomizer/src/random_table.js';
+import { RandomTable, RandomTableResultSet } from 'rpg-table-randomizer/src/random_table.js';
 import { RandomtableService } from '../randomtable.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { RandomtableService } from '../randomtable.service';
   encapsulation: ViewEncapsulation.ShadowDom
 })
 export class TableMultiComponent implements OnInit {
-  @Output() resultRoll = new EventEmitter<any>();
+  @Output() resultRoll = new EventEmitter<{ table: RandomTable, resultSet: RandomTableResultSet }>();
   @Input() table: RandomTable;
   subtableNames: Array<string>;
   tableRows: Array<Array<string>>;
@@ -22,24 +22,28 @@ export class TableMultiComponent implements OnInit {
     this.subtableNames = this.table.subtableNames;
     this.tableRows = this.getTableRows();
   }
-
+  /**
+   * Emit a roll table event.
+   * @param {Event} event Click event.
+   * @param {String} [tableName] Optional subtable to roll on.
+   */
   rollTable(event: Event, tableName: string | null = null) {
-    let result = null;
+    let resultSet = null;
     if (tableName) {
-      result = this.tableService.getResultFromSubTable(this.table, tableName);
+      resultSet = this.tableService.getResultFromSubTable(this.table, tableName);
     } else {
-      result = this.tableService.getResultFromTable(this.table);
+      resultSet = this.tableService.getResultFromTable(this.table);
     }
     this.resultRoll.emit({
       table: this.table,
-      result: result
+      resultSet: resultSet
     });
   }
   /**
    * Get the data as rows of cells.
    * @returns
    */
-  getTableRows() : Array<any> {
+  getTableRows() : Array<Array<string>> {
     // Count the largest result set.
     // make that many row arrays.
     // fill them with the empty value `---`

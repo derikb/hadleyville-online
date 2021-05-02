@@ -11,16 +11,13 @@ import { RandomTable, RandomTableResultSet } from 'rpg-table-randomizer/src/rand
   encapsulation: ViewEncapsulation.ShadowDom
 })
 export class TableResultComponent implements OnInit {
-  table?: RandomTable = null;
-  resultSet: RandomTableResultSet;
-  @Input() data: any = {};
+  @Input() table?: RandomTable = null;
+  @Input() resultSet: RandomTableResultSet;
 
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.data);
-    this.table = this.data.table;
-    this.resultSet = this.data.result;
+
   }
 
 }

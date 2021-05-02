@@ -3,4 +3,7 @@
 
 <app-table-multi *ngFor="let table of tables" [table]="table" (resultRoll)="showResult($event)"></app-table-multi>
 
-<app-table-result *ngFor="let a of results" [data]="a"></app-table-result>
+<app-table-result *ngFor="let a of results" [table]="a.table" [resultSet]="a.resultSet"></app-table-result>
+
+
+<app-modalcontainer></app-modalcontainer>
