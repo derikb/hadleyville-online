@@ -1,0 +1,32 @@
+:host {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-areas: "header header"
+        "npcs tables"
+        "notes tables"
+        "footer footer";
+}
+
+header#header {
+    grid-area: header;
+}
+
+header#header h1  {
+    border-bottom: 1px solid lightgrey;
+}
+
+section#npcs {
+    grid-area: npcs;
+}
+
+section#notes {
+    grid-area: notes;
+}
+
+section#tables {
+    grid-area: tables;
+}
+
+footer {
+    grid-area: footer;
+}

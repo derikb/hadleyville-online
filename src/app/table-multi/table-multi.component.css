@@ -1,6 +1,21 @@
+:host {
+    padding: 1rem;
+}
+header, summary {
+    display: flex;
+    justify-content: space-between;
+    background-color: #eee;
+    padding: .5rem;
+    margin-bottom: 1rem;
+}
+header #table-title, summary #table-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
 table {
     border-collapse: collapse;
     border: none;
+    width: 100%;
 }
 table td, table th {
     padding: .25rem;

@@ -9,6 +9,8 @@ import { TableMultiComponent } from './table-multi/table-multi.component';
 import { ModalComponent } from './modal/modal.component';
 import { ModalContainerComponent } from './modalcontainer/modalcontainer.component';
 import { ResultsModalComponent } from './results-modal/results-modal.component';
+import { NoteComponent } from './note/note.component';
+import { NpcComponent } from './npc/npc.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { ResultsModalComponent } from './results-modal/results-modal.component';
     TableMultiComponent,
     ModalComponent,
     ModalContainerComponent,
-    ResultsModalComponent
+    ResultsModalComponent,
+    NoteComponent,
+    NpcComponent
   ],
   imports: [
     BrowserModule,

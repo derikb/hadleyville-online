@@ -406,9 +406,9 @@ export default [
     }
   },
   {
-    id: 10,
-    key: 'items',
-    title: 'Items',
+    id: 11,
+    key: 'dressing',
+    title: 'Set Dressing',
     tables: {
       outside: [
         "Balconies",

@@ -1,0 +1,7 @@
+<h3>{{ npc.id }}</h3>
+
+<ul>
+    <li *ngFor="let field of getFieldNames()">
+        {{ field }} {{ npc.fields[field] }}
+    </li>
+</ul>

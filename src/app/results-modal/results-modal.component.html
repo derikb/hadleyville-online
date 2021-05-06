@@ -6,7 +6,7 @@
     <button class="close-button" (click)="closeModal()">Close</button>
     <h1>{{ resultSet.title }}</h1>
 
-    <app-table-result [table]="table" [resultSet]="resultSet"></app-table-result>
+    <app-table-result [table]="table" [resultSet]="resultSet" (resultSaved)="closeModal()"></app-table-result>
 
   </div>
 </div>

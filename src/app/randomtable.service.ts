@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import Randomizer from 'rpg-table-randomizer/src/randomizer.js';
 import { RandomTable, RandomTableResultSet } from 'rpg-table-randomizer/src/random_table.js';
 import tables from '../data/tables.js';
+import RandomName from 'rpg-table-randomizer/src/random_name.js';
+import names from 'rpg-table-randomizer/sample/names.js';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,11 @@ export class RandomtableService {
   randomizer: Randomizer;
 
   constructor() {
+    // Setup randomizer and random name generator.
     this.randomizer = new Randomizer({});
+    RandomName.setRandomizer(this.randomizer);
+    RandomName.setNameData(names);
+    this.randomizer.registerTokenType('name', RandomName.nameTokenCallback);
     this.randomizer.getTableByKey = (key) => {
       return this.getTableByKey(key);
     };
@@ -70,5 +76,9 @@ export class RandomtableService {
    */
   getResultFromSubTable(table: RandomTable, subtable: string) : RandomTableResultSet|null {
     return this.randomizer.getResultSetForTable(table, subtable);
+  }
+
+  getNPCName() {
+    console.log(RandomName.selectName());
   }
 }
