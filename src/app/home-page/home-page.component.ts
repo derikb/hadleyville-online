@@ -27,10 +27,17 @@ export class HomePageComponent implements OnInit {
     this.tables = this.tableService.getAllTables();
     this.npcs = this.npcService.getAllNPCs();
 
+    this.notes = this.noteService.getAllNotes();
+
     this.noteService.notes$.subscribe({
       next: (note) => {
         console.log(note);
-        this.notes.push(note);
+        const index = this.notes.findIndex((el) => el.id === note.id);
+        if (index === -1) {
+          this.notes.push(note);
+        } else {
+          this.notes = this.notes.splice(index, 1, note);
+        }
       }
     });
   }

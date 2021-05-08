@@ -25,4 +25,16 @@ export default class Note {
     get id() {
         return this.uuid;
     }
+
+    toJSON(): object {
+        const obj = {};
+        Object.keys(this).forEach((prop) => {
+            const value = this[prop];
+            if (value.length === 0) {
+                return;
+            }
+            obj[prop] = value;
+        });
+        return obj;
+    }
 }

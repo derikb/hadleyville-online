@@ -1,5 +1,7 @@
+/**
+ * Service to provide random results from tables via the Randomizer.
+ */
 import { Injectable } from '@angular/core';
-
 import Randomizer from 'rpg-table-randomizer/src/randomizer.js';
 import { RandomTable, RandomTableResultSet } from 'rpg-table-randomizer/src/random_table.js';
 import tables from '../data/tables.js';
@@ -69,7 +71,7 @@ export class RandomtableService {
   getResultFromTable(table: RandomTable) : RandomTableResultSet|null {
     return this.randomizer.getResultSetForTable(table);
   }
-    /**
+  /**
    * Get results from a table using the whole table.
    * @param table {RandomTable}
    * @returns {RandomTableResultSet|null}
@@ -78,8 +80,13 @@ export class RandomtableService {
     return this.randomizer.getResultSetForTable(table, subtable);
   }
 
-  getNPCName() {
-    return RandomName.selectName();
+  /**
+   * Return a name
+   * @param, {String} [nameType] Name list to use.
+   * @returns {String}
+   */
+  getNPCName(nameType?: string): string {
+    return RandomName.selectName(nameType);
   }
 
   /**
