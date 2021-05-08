@@ -1,7 +1,7 @@
-<h3>{{ npc.id }}</h3>
+<h3>{{ getNPCName() }}</h3>
 
 <ul>
     <li *ngFor="let field of getFieldNames()">
-        {{ field }} {{ npc.fields[field] }}
+        {{ getFieldLabel(field) }} {{ npc.fields[field] }}
     </li>
 </ul>

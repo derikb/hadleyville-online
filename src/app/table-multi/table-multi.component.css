@@ -1,5 +1,6 @@
 :host {
-    padding: 1rem;
+    display: block;
+    padding: 0;
 }
 header, summary {
     display: flex;
@@ -16,6 +17,7 @@ table {
     border-collapse: collapse;
     border: none;
     width: 100%;
+    margin-bottom: 1rem;
 }
 table td, table th {
     padding: .25rem;

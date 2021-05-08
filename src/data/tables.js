@@ -223,15 +223,15 @@ export default [
   {
     id: 6,
     key: 'relationships',
-    title: 'NPC Relationships (Add bell curve to default)',
+    title: 'NPC Relationships',
     tables: {
       default: [
         { label: "Hate", weight: 1 },
-        { label: "Dislike", weight: 1 },
-        { label: "Suspicious", weight: 1 },
-        { label: "Neutral", weight: 1 },
-        { label: "Like", weight: 1 },
-        { label: "Friend", weight: 1 },
+        { label: "Dislike", weight: 5 },
+        { label: "Suspicious", weight: 7 },
+        { label: "Neutral", weight: 10 },
+        { label: "Like", weight: 7 },
+        { label: "Friend", weight: 5 },
         { label: "Love", weight: 1 }
       ],
       specific: [

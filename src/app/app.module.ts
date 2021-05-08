@@ -11,6 +11,9 @@ import { ModalContainerComponent } from './modalcontainer/modalcontainer.compone
 import { ResultsModalComponent } from './results-modal/results-modal.component';
 import { NoteComponent } from './note/note.component';
 import { NpcComponent } from './npc/npc.component';
+import { RulesPageComponent } from './rules-page/rules-page.component';
+import { HomePageComponent } from './home-page/home-page.component';
+import { IntroPageComponent } from './intro-page/intro-page.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,10 @@ import { NpcComponent } from './npc/npc.component';
     ModalContainerComponent,
     ResultsModalComponent,
     NoteComponent,
-    NpcComponent
+    NpcComponent,
+    RulesPageComponent,
+    HomePageComponent,
+    IntroPageComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,22 @@
+:host {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-areas: "npcs tables"
+        "notes tables";
+    gap: 1rem;
+}
+
+section#npcs {
+    grid-area: npcs;
+    padding: 1rem;
+}
+
+section#notes {
+    grid-area: notes;
+    padding: 1rem;
+}
+
+section#tables {
+    grid-area: tables;
+    padding: 1rem;
+}

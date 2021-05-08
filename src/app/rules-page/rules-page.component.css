@@ -1,0 +1,73 @@
+:host {
+    display: grid;
+    max-width: 80rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "header header"
+    "creation resolution"
+    "social injury";
+    margin: 0 auto;
+    column-gap: 2rem;
+}
+
+h2#header {
+    grid-area: header;
+}
+
+section {
+    max-width: 40rem;
+}
+section#creation {
+    grid-area: creation;
+}
+section#resolution {
+    grid-area: resolution;
+}
+section#social {
+    grid-area: social;
+}
+section#injury {
+    grid-area: injury;
+}
+
+ol {
+    counter-reset: item;
+    list-style-type: none;
+    padding-left: 0;
+}
+ol li:before {
+    content: counters(item, ".") ".";
+    counter-increment: item;
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+ol > li {
+    font-size: 1.1rem;
+    margin-bottom: .5rem;
+}
+
+ol ol {
+    margin-top: .5rem;
+    padding-left: 2rem;
+}
+
+ol ol > li {
+    font-size: 1rem;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid;
+}
+table td, table th {
+    padding: .25rem;
+    border: none;
+}
+table thead tr {
+    background-color: lightgrey;
+    font-weight: bold;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #eee;
+}

@@ -79,6 +79,6 @@ export class RandomtableService {
   }
 
   getNPCName() {
-    console.log(RandomName.selectName());
+    return RandomName.selectName();
   }
 }

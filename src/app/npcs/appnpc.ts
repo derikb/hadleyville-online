@@ -1,6 +1,5 @@
-import { NPC } from 'rpg-table-randomizer/src/npc';
 import { NPCSchema, NPCSchemaField } from 'rpg-table-randomizer/src/npc_schema.js';
-import npc_generator from 'rpg-table-randomizer/src/npc.js';
+import { NPC, registerSchema, initializeNewNPC } from 'rpg-table-randomizer/src/npc.js';
 import { v4 as uuidv4 } from 'uuid';
 import Randomizer from 'rpg-table-randomizer/src/randomizer.js';
 
@@ -8,7 +7,7 @@ import Randomizer from 'rpg-table-randomizer/src/randomizer.js';
 const npcName = new NPCSchemaField({
     key: 'npcName',
     type: 'string',
-    source: 'name:flemish',
+    source: 'name:random',
     count: 1
 });
 npcName.label = 'Name';
@@ -56,18 +55,16 @@ const appNPCSchema = new NPCSchema({
 });
 
 // Set the schema.
-npc_generator.registerSchema(appNPCSchema);
+registerSchema(appNPCSchema);
 const schemaKey = appNPCSchema.key;
 
 const createNewNPC = function(randomizer: Randomizer) : NPC {
-    const npc = npc_generator.initializeNewNPC(schemaKey, randomizer);
+    const npc = initializeNewNPC(schemaKey, randomizer);
     npc.id = uuidv4();
     return npc;
 }
-
 
 export {
     appNPCSchema,
     createNewNPC
 };
-

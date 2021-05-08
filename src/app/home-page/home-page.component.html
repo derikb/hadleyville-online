@@ -1,0 +1,16 @@
+<section id="npcs">
+    <h2>NPCs</h2>
+    <button (click)="getNPC()">NPC?</button>
+    <button (click)="getNPCName()">Name</button>
+    <app-npc *ngFor="let npc of npcs" [npc]="npc"></app-npc>
+</section>
+
+<section id="notes">
+    <h2>Notes</h2>
+    <app-note *ngFor="let note of notes" [note]="note"></app-note>
+</section>
+
+<section id="tables">
+    <h2>Tables</h2>
+    <app-table-multi *ngFor="let table of tables" [table]="table" (resultRoll)="showResult($event)"></app-table-multi>
+</section>

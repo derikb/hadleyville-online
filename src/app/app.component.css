@@ -2,31 +2,46 @@
     display: grid;
     grid-template-columns: 40% 60%;
     grid-template-areas: "header header"
-        "npcs tables"
-        "notes tables"
+        "main main"
         "footer footer";
+    grid-template-rows: min-content auto min-content;
+    height: 100vh;
 }
 
 header#header {
+    padding: 1rem;
     grid-area: header;
-}
-
-header#header h1  {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
     border-bottom: 1px solid lightgrey;
 }
 
-section#npcs {
-    grid-area: npcs;
+header nav ul {
+    font-size: 1.2rem;
+    margin-right: 2rem;
+}
+header nav ul li {
+    display: inline-block;
+    margin-right: 2rem;
 }
 
-section#notes {
-    grid-area: notes;
+header#header h1  {
+    font-size: 2rem;
+    margin: .5rem;
 }
 
-section#tables {
-    grid-area: tables;
+main {
+    grid-area: main;
+    padding: 1rem;
 }
 
 footer {
     grid-area: footer;
+    padding: 1rem;
+    border-top: 1px solid lightgrey;
+}
+footer p {
+    margin: 0;
 }
