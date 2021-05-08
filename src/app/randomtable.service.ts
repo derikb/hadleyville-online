@@ -81,4 +81,13 @@ export class RandomtableService {
   getNPCName() {
     return RandomName.selectName();
   }
+
+  /**
+   * Roll a die.
+   * @param {String} die Die roll syntax (2d6, 4d4+2, etc.)
+   * @returns {Number}
+   */
+  roll(die: string) : number {
+    return this.randomizer.roll(die);
+  }
 }

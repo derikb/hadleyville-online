@@ -18,6 +18,12 @@ header#header {
     border-bottom: 1px solid lightgrey;
 }
 
+header#header h1  {
+    font-size: 2rem;
+    margin: .5rem;
+    flex: 2 1 auto;
+}
+
 header nav ul {
     font-size: 1.2rem;
     margin-right: 2rem;
@@ -27,10 +33,7 @@ header nav ul li {
     margin-right: 2rem;
 }
 
-header#header h1  {
-    font-size: 2rem;
-    margin: .5rem;
-}
+
 
 main {
     grid-area: main;

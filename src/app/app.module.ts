@@ -14,6 +14,7 @@ import { NpcComponent } from './npc/npc.component';
 import { RulesPageComponent } from './rules-page/rules-page.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { IntroPageComponent } from './intro-page/intro-page.component';
+import { RollerComponent } from './roller/roller.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { IntroPageComponent } from './intro-page/intro-page.component';
     NpcComponent,
     RulesPageComponent,
     HomePageComponent,
-    IntroPageComponent
+    IntroPageComponent,
+    RollerComponent
   ],
   imports: [
     BrowserModule,
