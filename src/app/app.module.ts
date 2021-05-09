@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +16,7 @@ import { RulesPageComponent } from './rules-page/rules-page.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { IntroPageComponent } from './intro-page/intro-page.component';
 import { RollerComponent } from './roller/roller.component';
+import { NoteEditModalComponent } from './note-edit-modal/note-edit-modal.component';
 
 @NgModule({
   declarations: [
@@ -30,11 +32,13 @@ import { RollerComponent } from './roller/roller.component';
     RulesPageComponent,
     HomePageComponent,
     IntroPageComponent,
-    RollerComponent
+    RollerComponent,
+    NoteEditModalComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

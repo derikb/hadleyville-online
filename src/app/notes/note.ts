@@ -2,17 +2,18 @@
  * Notes for the game.
  */
  import { v4 as uuidv4 } from 'uuid';
+ import MarkdownIt from 'markdown-it';
 
 
 export default class Note {
     uuid: string;
     title: string = '';
-    content: Array<string> = [];
+    content: string = '';
 
     constructor({
         uuid = null,
         title = '',
-        content = []
+        content = ''
     }) {
         this.title = title;
         this.content = content;
@@ -24,6 +25,11 @@ export default class Note {
     }
     get id() {
         return this.uuid;
+    }
+
+    get contentHtml() {
+        const md = new MarkdownIt();
+        return md.render(this.content);
     }
 
     toJSON(): object {

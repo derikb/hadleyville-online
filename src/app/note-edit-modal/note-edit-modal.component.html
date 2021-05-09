@@ -1,0 +1,30 @@
+<div class="modal-overlay" id="modal-overlay" (click)="closeModal()"></div>
+
+<div class="modal" id="modal">
+
+  <div class="modal-guts">
+    <button class="close-button" (click)="closeModal()">Close</button>
+    <h1>Edit Note</h1>
+
+    <form (ngSubmit)="onSubmit($event)">
+        <div>
+            <label for="title">
+              Title
+            </label>
+            <input id="title" type="text" name="title" value="{{ note.title }}">
+        </div>
+
+        <div>
+            <label for="content">
+                Content
+              </label>
+              <textarea id="content" type="text" name="content">{{ note.content }}</textarea>
+          </div>
+
+
+        <button type="submit">Save</button>
+    </form>
+
+
+  </div>
+</div>

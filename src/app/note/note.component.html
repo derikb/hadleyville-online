@@ -1,3 +1,6 @@
 <h4>{{ note.title }}</h4>
 
-<div class="content" *ngFor="let text of note.content">{{ text }}</div>
+<button type="button" (click)="editModal()">Edit</button>
+<button type="button" (click)="deleteNote()">Delete</button>
+
+<div class="content" [innerHTML]="note.contentHtml"></div>

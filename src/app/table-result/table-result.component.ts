@@ -25,7 +25,7 @@ export class TableResultComponent implements OnInit {
   saveAsNote() {
     const note = new Note({
       title: this.table.title,
-      content: this.resultSet.results.map((result) => { return result.result; })
+      content: this.resultSet.niceString()
     });
     this.noteService.addNote(note);
     this.resultSaved.emit();

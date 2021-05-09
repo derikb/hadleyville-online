@@ -26,6 +26,9 @@
     "url": "https://github.com/derikb/hadleyville-online/issues"
   },
   "homepage": "https://github.com/derikb/hadleyville-online#readme",
+  "browserslist": [
+    "supports es6-module"
+  ],
   "dependencies": {
     "@angular/animations": "~11.2.9",
     "@angular/common": "~11.2.9",
@@ -37,6 +40,7 @@
     "@angular/router": "~11.2.9",
     "@reduxjs/toolkit": "^1.5.1",
     "@types/uuid": "^8.3.0",
+    "markdown-it": "^12.0.6",
     "rpg-table-randomizer": "^0.10.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

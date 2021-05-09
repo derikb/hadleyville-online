@@ -40,6 +40,15 @@ export class HomePageComponent implements OnInit {
         }
       }
     });
+
+    this.noteService.deletedNotes$.subscribe({
+      next: (uuid) => {
+        const index = this.notes.findIndex((el) => el.id === uuid);
+        if (index > -1) {
+          this.notes.splice(index, 1);
+        }
+      }
+    })
   }
 
   showResult({ table, resultSet }: { table: RandomTable, resultSet: RandomTableResultSet }) {

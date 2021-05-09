@@ -5,13 +5,14 @@ import store from './store/store';
 import { createNote, updateNote, deleteNote } from './store/notes-reducer';
 
 
-store.dispatch(createNote({ note: {title: "NPC Goals", content: ['hello'], uuid: "759c32e7-9796-423c-8f7b-c1f2a049087c"}}));
+store.dispatch(createNote({ note: {title: "NPC Goals", content: 'hello\n\nthere', uuid: "759c32e7-9796-423c-8f7b-c1f2a049087c"}}));
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotesService {
   notes$: Subject<Note> = new Subject<Note>();
+  deletedNotes$: Subject<string> = new Subject<string>();
   notes: Array<Note> = [];
 
   constructor() { }
@@ -38,11 +39,12 @@ export class NotesService {
   }
 
   updateNote(note: Note) : void {
-    store.dispatch(updateNote({ note }));
+    store.dispatch(updateNote({ note: note.toJSON() }));
     this.notes$.next(note);
   }
 
   deleteNote(uuid: string) : void {
     store.dispatch(deleteNote({ uuid }));
+    this.deletedNotes$.next(uuid);
   }
 }
