@@ -17,6 +17,14 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { IntroPageComponent } from './intro-page/intro-page.component';
 import { RollerComponent } from './roller/roller.component';
 import { NoteEditModalComponent } from './note-edit-modal/note-edit-modal.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
+import { NpcEditModalComponent } from './npc-edit-modal/npc-edit-modal.component';
 
 @NgModule({
   declarations: [
@@ -33,12 +41,20 @@ import { NoteEditModalComponent } from './note-edit-modal/note-edit-modal.compon
     HomePageComponent,
     IntroPageComponent,
     RollerComponent,
-    NoteEditModalComponent
+    NoteEditModalComponent,
+    NpcEditModalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

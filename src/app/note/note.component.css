@@ -1,20 +1,28 @@
 :host {
-    border: 1px solid grey;
-    padding: 1rem;
     display: block;
-    margin-botton: 1rem;
+    margin-bottom: 1rem;
+}
+
+mat-card {
+    padding: .5rem;
+}
+
+mat-card-title {
+    border-bottom: 1px solid gray;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 h4 {
     font-weight: bold;
-    margin-bottom: 1rem;
-    margin-top: 0;
-}
-
-div.content {
-    margin-bottom: 1rem;
-}
-
-div.content:last-of-type {
+    font-size: 1.1rem;
+    /** margin-bottom: .8rem; */
     margin-bottom: 0;
+}
+
+mat-card-actions {
+    text-align: right;
+    margin: 0;
+    padding: 0;
 }

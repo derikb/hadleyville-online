@@ -1,7 +1,21 @@
-<h3>{{ getNPCName() }}</h3>
+<mat-card role="article">
+    <mat-card-title>
+        <h4>{{ getNPCName() }}</h4>
+    </mat-card-title>
 
-<ul>
-    <li *ngFor="let field of getFieldNames()">
-        {{ getFieldLabel(field) }} {{ npc.fields[field] }}
-    </li>
-</ul>
+    <mat-card-content>
+        <ul>
+            <li *ngFor="let field of getFieldNames()">
+                {{ getFieldLabel(field) }} {{ npc.fields[field] }}
+            </li>
+        </ul>
+    </mat-card-content>
+    <mat-card-actions>
+        <button type="button" mat-icon-button aria-label="Edit NPC" color="primary" (click)="editModal()">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button type="button" mat-icon-button aria-label="Delete NPC" color="warn" (click)="deleteNPC()">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </mat-card-actions>
+</mat-card>

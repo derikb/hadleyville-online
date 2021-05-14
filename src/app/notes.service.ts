@@ -32,10 +32,8 @@ export class NotesService {
   }
 
   addNote(note: Note) : void {
-    console.log(store.getState());
     store.dispatch(createNote({ note: note.toJSON() }));
     this.notes$.next(note);
-    console.log(store.getState());
   }
 
   updateNote(note: Note) : void {

@@ -1,0 +1,22 @@
+
+    <h1 mat-dialog-title id="modal-title">Edit NPC</h1>
+
+    <form (ngSubmit)="onSubmit($event)">
+      <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput id="npcName" type="text" name="npcName" value="{{ npc.fields.npcName }}" required>
+        </mat-form-field>
+      </div>
+      <!-- <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Content</mat-label>
+          <textarea matInput id="content" type="text" name="content" rows="12">{{ note.content }}</textarea>
+        </mat-form-field>
+      </div> -->
+
+      <mat-dialog-actions>
+        <button mat-flat-button color="primary" type="submit">Save</button>
+        <button mat-flat-button type="button" mat-dialog-close>Cancel</button>
+      </mat-dialog-actions>
+    </form>

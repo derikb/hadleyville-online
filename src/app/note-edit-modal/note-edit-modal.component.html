@@ -1,30 +1,21 @@
-<div class="modal-overlay" id="modal-overlay" (click)="closeModal()"></div>
 
-<div class="modal" id="modal">
-
-  <div class="modal-guts">
-    <button class="close-button" (click)="closeModal()">Close</button>
-    <h1>Edit Note</h1>
+    <h1 mat-dialog-title id="modal-title">Edit Note</h1>
+    <button mat-flat-button color="primary" type="submit">Save</button>
+        <button mat-flat-button type="button" mat-dialog-close>Cancel</button>
 
     <form (ngSubmit)="onSubmit($event)">
-        <div>
-            <label for="title">
-              Title
-            </label>
-            <input id="title" type="text" name="title" value="{{ note.title }}">
-        </div>
+      <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Title</mat-label>
+            <input matInput id="title" type="text" name="title" value="{{ note.title }}" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Content</mat-label>
+          <textarea matInput id="content" type="text" name="content" rows="12">{{ note.content }}</textarea>
+        </mat-form-field>
+      </div>
 
-        <div>
-            <label for="content">
-                Content
-              </label>
-              <textarea id="content" type="text" name="content">{{ note.content }}</textarea>
-          </div>
 
-
-        <button type="submit">Save</button>
     </form>
-
-
-  </div>
-</div>

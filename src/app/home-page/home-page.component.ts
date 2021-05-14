@@ -12,8 +12,7 @@ import { NPC } from 'rpg-table-randomizer/src/npc';
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.css'],
-  encapsulation: ViewEncapsulation.ShadowDom
+  styleUrls: ['./home-page.component.css']
 })
 export class HomePageComponent implements OnInit {
   tables: Array<RandomTable> = [];
@@ -48,7 +47,28 @@ export class HomePageComponent implements OnInit {
           this.notes.splice(index, 1);
         }
       }
-    })
+    });
+
+    this.npcService.npcs$.subscribe({
+      next: (npc) => {
+        console.log(npc);
+        const index = this.npcs.findIndex((el) => el.id === npc.id);
+        if (index === -1) {
+          this.npcs.push(npc);
+        } else {
+          this.npcs.splice(index, 1, npc);
+        }
+      }
+    });
+
+    this.npcService.deletedNPCs$.subscribe({
+      next: (id) => {
+        const index = this.npcs.findIndex((el) => el.id === id);
+        if (index > -1) {
+          this.npcs.splice(index, 1);
+        }
+      }
+    });
   }
 
   showResult({ table, resultSet }: { table: RandomTable, resultSet: RandomTableResultSet }) {

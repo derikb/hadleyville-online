@@ -1,0 +1,18 @@
+:host {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+mat-card-title {
+    border-bottom: 1px solid gray;
+}
+
+h4 {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: .8rem;
+}
+
+mat-card-actions {
+    text-align: right;
+}

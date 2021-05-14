@@ -2,6 +2,7 @@ import { NPCSchema, NPCSchemaField } from 'rpg-table-randomizer/src/npc_schema.j
 import { NPC, registerSchema, initializeNewNPC } from 'rpg-table-randomizer/src/npc.js';
 import { v4 as uuidv4 } from 'uuid';
 import Randomizer from 'rpg-table-randomizer/src/randomizer.js';
+import { isEmpty, isObject } from 'rpg-table-randomizer/src/r_helpers.js';
 
 
 const npcName = new NPCSchemaField({
@@ -41,7 +42,6 @@ const field4 = new NPCSchemaField({
 field4.label = 'Secret';
 
 
-
 const appNPCSchema = new NPCSchema({
     key: 'hadleyville',
     name: 'Hadleyville NPC',
@@ -61,6 +61,27 @@ const schemaKey = appNPCSchema.key;
 const createNewNPC = function(randomizer: Randomizer) : NPC {
     const npc = initializeNewNPC(schemaKey, randomizer);
     npc.id = uuidv4();
+    npc.toJSON = function() {
+        let returnObj = {};
+        for (const property in this) {
+            let value = this[property];
+            if (isEmpty(value)) {
+                continue;
+            }
+            if (isObject(value)) {
+                returnObj[property] = Object.assign({}, value);
+            }
+            returnObj[property] = value;
+        }
+        return returnObj;
+    };
+    npc.setFieldValue = function(field, value) {
+        if (!this.fields[field]) {
+            return;
+        }
+        this.fields[field] = value;
+    };
+
     return npc;
 }
 

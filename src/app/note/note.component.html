@@ -1,6 +1,19 @@
-<h4>{{ note.title }}</h4>
+<mat-card role="article">
+    <mat-card-title>
+        <h4>{{ note.title }}</h4>
+        <mat-card-actions>
+            <button type="button" mat-icon-button aria-label="Edit Note" color="primary" (click)="editModal()">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button type="button" mat-icon-button aria-label="Delete Note" color="warn" (click)="deleteNote()">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </mat-card-actions>
+    </mat-card-title>
 
-<button type="button" (click)="editModal()">Edit</button>
-<button type="button" (click)="deleteNote()">Delete</button>
+    <mat-card-content>
+        <div class="content" [innerHTML]="note.contentHtml"></div>
+    </mat-card-content>
 
-<div class="content" [innerHTML]="note.contentHtml"></div>
+
+</mat-card>

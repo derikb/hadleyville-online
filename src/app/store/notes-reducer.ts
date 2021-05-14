@@ -8,6 +8,12 @@ const notesSlice = createSlice({
     reducers: {
         createNote(state, action) {
             console.log(action);
+            const uuid = action.payload.note.uuid;
+            const index = state.findIndex((el) => el.uuid === uuid);
+            // It's a dupe uuid... probably should throw an error or something...
+            if (index > -1) {
+                return;
+            }
             state.push(action.payload.note);
         },
         updateNote(state, action) {
