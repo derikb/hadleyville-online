@@ -1,7 +1,5 @@
 
     <h1 mat-dialog-title id="modal-title">Edit Note</h1>
-    <button mat-flat-button color="primary" type="submit">Save</button>
-        <button mat-flat-button type="button" mat-dialog-close>Cancel</button>
 
     <form (ngSubmit)="onSubmit($event)">
       <div>
@@ -17,5 +15,8 @@
         </mat-form-field>
       </div>
 
-
+      <mat-dialog-actions>
+        <button mat-flat-button color="primary" type="submit">Save</button>
+        <button mat-flat-button type="button" mat-dialog-close>Cancel</button>
+      </mat-dialog-actions>
     </form>
