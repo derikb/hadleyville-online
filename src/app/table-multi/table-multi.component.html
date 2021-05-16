@@ -1,7 +1,7 @@
 <details>
     <summary>
-        <div id="table-title">{{ table.title }}</div>
-        <div id="table-actions"><button type="button" (click)="rollTable($event)">Roll</button></div>
+        <div id="summary-title">{{ table.title }}</div>
+        <div class="actions"><button type="button" mat-raised-button (click)="rollTable($event)">Roll</button></div>
     </summary>
     <table *ngIf="table" aria-labelledby="table-title" aria-labelledby="table-title">
         <thead *ngIf="subtableNames.length > 1">

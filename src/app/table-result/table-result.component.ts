@@ -8,27 +8,15 @@ import Note from '../notes/note';
 @Component({
   selector: 'app-table-result',
   templateUrl: './table-result.component.html',
-  styleUrls: ['./table-result.component.css'],
-  encapsulation: ViewEncapsulation.ShadowDom
+  styleUrls: ['./table-result.component.css']
 })
 export class TableResultComponent implements OnInit {
   @Input() table?: RandomTable = null;
   @Input() resultSet: RandomTableResultSet;
-  @Output() resultSaved: EventEmitter<any> = new EventEmitter();
 
   constructor(private noteService: NotesService) { }
 
   ngOnInit(): void {
 
   }
-
-  saveAsNote() {
-    const note = new Note({
-      title: this.table.title,
-      content: this.resultSet.niceString()
-    });
-    this.noteService.addNote(note);
-    this.resultSaved.emit();
-  }
-
 }

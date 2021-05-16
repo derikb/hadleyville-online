@@ -43,7 +43,6 @@ export class NpcComponent implements OnInit {
       minHeight: '400px',
       maxHeight: '90vh'
     });
-    console.log('click');
   }
 
   deleteNPC() {

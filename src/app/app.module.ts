@@ -25,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { NpcEditModalComponent } from './npc-edit-modal/npc-edit-modal.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { NpcEditModalComponent } from './npc-edit-modal/npc-edit-modal.component
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
-    MatCardModule
+    MatCardModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

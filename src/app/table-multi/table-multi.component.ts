@@ -1,12 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { RandomTable, RandomTableResultSet } from 'rpg-table-randomizer/src/random_table.js';
 import { RandomtableService } from '../randomtable.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ResultsModalComponent } from '../results-modal/results-modal.component';
 
 @Component({
   selector: 'app-table-multi',
   templateUrl: './table-multi.component.html',
   styleUrls: ['./table-multi.component.css'],
-  encapsulation: ViewEncapsulation.ShadowDom
+//  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class TableMultiComponent implements OnInit {
   @Output() resultRoll = new EventEmitter<{ table: RandomTable, resultSet: RandomTableResultSet }>();
@@ -15,7 +17,7 @@ export class TableMultiComponent implements OnInit {
   tableRows: Array<Array<string>>;
   includeNumbers: Boolean = false;
 
-  constructor(private tableService: RandomtableService) { }
+  constructor(private tableService: RandomtableService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     //this.includeNumbers = true;
@@ -34,9 +36,16 @@ export class TableMultiComponent implements OnInit {
     } else {
       resultSet = this.tableService.getResultFromTable(this.table);
     }
-    this.resultRoll.emit({
-      table: this.table,
-      resultSet: resultSet
+
+    const dialogRef = this.dialog.open(ResultsModalComponent, {
+      data: {
+        table: this.table,
+        resultSet: resultSet
+      },
+      ariaLabelledBy: 'modal-title',
+      minWidth: '50vw',
+      maxWidth: '90vw',
+      maxHeight: '90vh'
     });
   }
   /**

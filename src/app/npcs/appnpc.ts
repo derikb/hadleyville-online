@@ -40,7 +40,11 @@ const field4 = new NPCSchemaField({
     count: 1
 });
 field4.label = 'Secret';
-
+const field5 = new NPCSchemaField({
+    key: 'notes',
+    type: 'string'
+});
+field5.label = 'Notes';
 
 const appNPCSchema = new NPCSchema({
     key: 'hadleyville',
@@ -50,7 +54,8 @@ const appNPCSchema = new NPCSchema({
         field1,
         field2,
         field3,
-        field4
+        field4,
+        field5
     ]
 });
 
