@@ -21,14 +21,6 @@ const npcsSlice = createSlice({
             if (!id) {
                 return;
             }
-            // const index = state.findIndex((el) => el.id === id);
-            // if (index === -1) {
-            //     return null;
-            // }
-            // const npc = state[index];
-            // const newNpc = Object.assign({}, npc, action.payload.fields);
-            // state.splice(index, 1, newNpc);
-            // return newNpc;
             const npc = state.find((el) => el.id === id);
             if (!npc) {
                 return;

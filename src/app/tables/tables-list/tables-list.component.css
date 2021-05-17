@@ -1,0 +1,9 @@
+section > header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+section > header > h2 {
+    flex: 2 1 auto;
+    margin: 0;
+}

@@ -17,7 +17,7 @@ const notesSlice = createSlice({
             state.push(action.payload.note);
         },
         updateNote(state, action) {
-            const uuid = action.payload.uuid;
+            const uuid = action.payload.note.uuid;
             if (!uuid) {
                 return;
             }

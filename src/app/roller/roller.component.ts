@@ -2,7 +2,7 @@
  * A box that shows a roll button and a result.
  */
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { RandomtableService } from '../randomtable.service';
+import { RandomtableService } from '../tables/randomtable.service';
 
 @Component({
   selector: 'app-roller',

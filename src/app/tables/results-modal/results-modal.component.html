@@ -1,0 +1,22 @@
+<h1 mat-dialog-title id="modal-title">{{ resultSet.title }}</h1>
+
+<mat-dialog-content>
+  <app-table-result [table]="table" [resultSet]="resultSet"></app-table-result>
+  <hr/>
+  <form id="addNoteForm" (ngSubmit)="onSubmit($event)">
+    <div>
+      <input type=hidden name=orc value=bar />
+      <label for="note_uuid">Add To Note:</label>
+      <select id="note_uuid" matInput name="note_uuid">
+          <option value="">Create New Note</option>
+          <option *ngFor="let note of notes" value="{{ note.id }}">{{ note.title }}</option>
+      </select>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button type="submit" mat-flat-button color="primary" form="addNoteForm">Save as Note</button>
+  <button mat-flat-button type="button" mat-dialog-close>Close</button>
+</mat-dialog-actions>
+
+

@@ -1,0 +1,56 @@
+<!-- <mat-card role="article">
+    <mat-card-title>
+        <h4>{{ getNPCName() }}</h4>
+        <mat-card-actions>
+            <button type="button" mat-icon-button aria-label="Edit NPC" color="primary" (click)="editModal()">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button type="button" mat-icon-button aria-label="Delete NPC" color="warn" (click)="deleteNPC()">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </mat-card-actions>
+    </mat-card-title>
+
+    <mat-card-content>
+
+    </mat-card-content>
+</mat-card> -->
+<!-- <mat-expansion-panel role="article">
+    <mat-expansion-panel-header>
+        <mat-panel-title>{{ getNPCName() }}</mat-panel-title>
+        <mat-panel-description>
+            <button type="button" mat-icon-button aria-label="Edit NPC" color="primary" (click)="editModal()">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button type="button" mat-icon-button aria-label="Delete NPC" color="warn" (click)="deleteNPC()">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <ul>
+        <li *ngFor="let field of getFieldNames()">
+            {{ getFieldLabel(field) }} {{ npc.fields[field] }}
+        </li>
+    </ul>
+</mat-expansion-panel> -->
+
+<details>
+    <summary>
+        <div id="summary-title">{{ getNPCName() }}</div>
+        <div class="actions">
+            <button type="button" mat-icon-button aria-label="Edit NPC" color="primary" (click)="editModal()">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button type="button" mat-icon-button aria-label="Delete NPC" color="warn" (click)="deleteNPC()">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </summary>
+    <div>
+    <ul>
+        <li *ngFor="let field of getFieldNames()">
+            {{ getFieldLabel(field) }} {{ npc.fields[field] }}
+        </li>
+    </ul>
+    </div>
+</details>
