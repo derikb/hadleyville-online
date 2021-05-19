@@ -1,15 +1,16 @@
 <h1 mat-dialog-title id="modal-title">Edit NPC</h1>
 
 <mat-dialog-content>
+  <p>Click the <span style="font-size: 2rem;">&#9861;</span> to reroll the field. Click "Save" to save any changes.</p>
   <form id="npcEditForm" (ngSubmit)="onSubmit($event)">
     <div *ngFor="let field of schema.fields">
       <mat-form-field appearance="outline">
         <mat-label>{{ field.label }}</mat-label>
         <ng-container [ngSwitch]="field.key">
           <textarea *ngSwitchCase="'notes'" rows=5 matInput id="{{ field.key }}" name="{{ field.key }}">{{ npc.fields[field.key] }}</textarea>
-          <input *ngSwitchDefault matInput id="{{ field.key }}" type="text" name="{{ field.key }}" value="{{ npc.fields[field.key] }}" required>
+          <input *ngSwitchDefault matInput id="{{ field.key }}" type="text" name="{{ field.key }}" value="{{ npc.fields[field.key] }}" />
         </ng-container>
-
+        <button matSuffix type="button" class="btn-reroll" *ngIf="field.key !== 'notes'" (click)="reroll(field.key)" aria-label="Reroll">&#9861;</button>
       </mat-form-field>
     </div>
   </form>

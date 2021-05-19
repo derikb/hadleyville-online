@@ -28,6 +28,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NotesListComponent } from './notes/notes-list/notes-list.component';
 import { NpcsListComponent } from './npcs/npcs-list/npcs-list.component';
 import { TablesListComponent } from './tables/tables-list/tables-list.component';
+import { TownComponent } from './towns/town/town.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { TablesListComponent } from './tables/tables-list/tables-list.component'
     NpcEditModalComponent,
     NotesListComponent,
     NpcsListComponent,
-    TablesListComponent
+    TablesListComponent,
+    TownComponent
   ],
   imports: [
     BrowserModule,

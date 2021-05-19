@@ -442,5 +442,50 @@ export default [
           "Wash tubs"
       ]
     }
+  },
+  {
+    id: 12,
+    key: "town_name",
+    tables: {
+      default: [
+        { label: "{{table:this:main}}{{table:this:ending}}", weight: 10 },
+        { label: "Fort {{table:this:main}}", weight: 1 }
+      ],
+      main: [
+        "Hadley",
+        "Smith",
+        "Adams",
+        "Snake",
+        "Elk",
+        "Fire",
+        "Coal",
+        "Oak",
+        "Maple",
+        "Elm",
+        "Wilder",
+        "Jackson",
+        "Washington",
+        "Revere",
+        "Franklin",
+        "Shallow",
+        "Rapid",
+        "Gold",
+        "Summer",
+        "Spring",
+        "Nugget",
+        "Mary"
+      ],
+      ending: [
+        "ville",
+        "town",
+        "berg",
+        " Hollow",
+        " Hills",
+        " City",
+        "woods",
+        " Falls",
+        " Rapids"
+      ]
+    }
   }
 ];

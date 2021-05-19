@@ -97,4 +97,12 @@ export class RandomtableService {
   roll(die: string) : number {
     return this.randomizer.roll(die);
   }
+  /**
+   * Convert a token to a result string.
+   * @param token RandomTable token string
+   * @returns {String}
+   */
+  convertToken(token: string) : string {
+    return this.randomizer.convertToken(token);
+  }
 }

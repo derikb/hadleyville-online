@@ -3,3 +3,12 @@
 mat-form-field {
     width: 100%;
 }
+
+.btn-reroll {
+    background-color: transparent;
+    font-size: 2rem;
+    border: none;
+    padding: 0 1rem;
+    margin: 0;
+    cursor: pointer;
+}

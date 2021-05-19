@@ -40,7 +40,6 @@ export class NpcComponent implements OnInit {
       ariaLabelledBy: 'modal-title',
       minWidth: '50vw',
       maxWidth: '90vw',
-      minHeight: '400px',
       maxHeight: '90vh'
     });
   }
