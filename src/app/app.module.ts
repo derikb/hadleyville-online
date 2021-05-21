@@ -29,6 +29,7 @@ import { NotesListComponent } from './notes/notes-list/notes-list.component';
 import { NpcsListComponent } from './npcs/npcs-list/npcs-list.component';
 import { TablesListComponent } from './tables/tables-list/tables-list.component';
 import { TownComponent } from './towns/town/town.component';
+import { TownEditModalComponent } from './towns/town-edit-modal/town-edit-modal.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { TownComponent } from './towns/town/town.component';
     NotesListComponent,
     NpcsListComponent,
     TablesListComponent,
-    TownComponent
+    TownComponent,
+    TownEditModalComponent
   ],
   imports: [
     BrowserModule,

@@ -6,10 +6,14 @@
 - [ ] More UI/design improvements
 - [x] Town name generator
 - [ ] "Start a town" button to roll up a bunch of results at once to get started.
+- [ ] Make note editing inline
 - [ ] Better NPC name lists
 - [x] Reroll buttons on NPC edit modal
 - [ ] Relationship map?
+- [ ] Export
 - [ ] External saving (???)
+  - [ ] Auth
+  - [ ] Merge conflicts resolution
 
 
 ## Start a town ideas:

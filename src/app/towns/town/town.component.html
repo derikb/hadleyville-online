@@ -1,1 +1,20 @@
-<p>town works!</p>
+<details open>
+    <summary>
+        <div id="summary-title">Town: {{ town.name }}</div>
+        <div class="actions">
+            <button type="button" mat-raised-button color="primary" (click)="editModal()">
+                Edit Town
+            </button>
+        </div>
+    </summary>
+    <div>
+        <dl>
+            <ng-container *ngFor="let field of town.schema.fields">
+                <ng-container *ngIf="field.key !== 'townName'">
+                <dt>{{ field.label }}</dt>
+                <dd>{{ town.fields[field.key] }}</dd>
+                </ng-container>
+            </ng-container>
+        </dl>
+    </div>
+</details>

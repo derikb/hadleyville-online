@@ -1,7 +1,7 @@
 <h1 mat-dialog-title id="modal-title">Edit NPC</h1>
 
 <mat-dialog-content>
-  <p>Click the <span style="font-size: 2rem;">&#9861;</span> to reroll the field. Click "Save" to save any changes.</p>
+  <p>Click the <span style="font-size: 2rem;">&#9861;</span> to reroll a field. Click "Save" to save any changes.</p>
   <form id="npcEditForm" (ngSubmit)="onSubmit($event)">
     <div *ngFor="let field of schema.fields">
       <mat-form-field appearance="outline">
