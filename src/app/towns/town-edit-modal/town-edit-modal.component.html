@@ -4,11 +4,18 @@
   <p>Click the <span style="font-size: 2rem;">&#9861;</span> to reroll a field. Click "Save" to save any changes.</p>
   <form id="townEditForm" (ngSubmit)="onSubmit($event)">
     <div *ngFor="let field of town.schema.fields">
-      <mat-form-field appearance="outline">
-        <mat-label>{{ field.label }}</mat-label>
-        <input matInput id="{{ field.key }}" type="text" name="{{ field.key }}" value="{{ town.fields[field.key] }}" />
-        <button matSuffix type="button" class="btn-reroll" *ngIf="field.key !== 'notes'" (click)="reroll(field.key)" aria-label="Reroll">&#9861;</button>
-      </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="field.type !== 'long'; else elseBlock">
+          <mat-label>{{ field.label }}</mat-label>
+          <input matInput id="{{ field.key }}" type="text" name="{{ field.key }}" value="{{ town.fields[field.key] }}" />
+          <button matSuffix type="button" class="btn-reroll" *ngIf="field.key !== 'notes'" (click)="reroll(field.key)" aria-label="Reroll">&#9861;</button>
+        </mat-form-field>
+      <ng-template #elseBlock>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ field.label }}</mat-label>
+          <textarea matInput id="{{ field.key }}" type="text" rows=3 name="{{ field.key }}">{{ town.fields[field.key] }}</textarea>
+          <button matSuffix type="button" class="btn-reroll" *ngIf="field.key !== 'notes'" (click)="reroll(field.key, true)" aria-label="Reroll">&#9861;</button>
+        </mat-form-field>
+      </ng-template>
     </div>
   </form>
 </mat-dialog-content>

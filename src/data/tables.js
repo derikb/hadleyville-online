@@ -448,7 +448,8 @@ export default [
     key: "town_name",
     tables: {
       default: [
-        { label: "{{table:this:main}}{{table:this:ending}}", weight: 10 },
+        { label: "{{table:this:main}}{{table:this:ending1}}", weight: 4 },
+        { label: "{{table:this:main}} {{table:this:ending2}}", weight: 4 },
         { label: "Fort {{table:this:main}}", weight: 1 }
       ],
       main: [
@@ -475,16 +476,18 @@ export default [
         "Nugget",
         "Mary"
       ],
-      ending: [
+      ending1: [
         "ville",
         "town",
         "berg",
-        " Hollow",
-        " Hills",
-        " City",
-        "woods",
-        " Falls",
-        " Rapids"
+        "woods"
+      ],
+      ending2: [
+        "Hollow",
+        "Hills",
+        "City",
+        "Falls",
+        "Rapids"
       ]
     }
   }

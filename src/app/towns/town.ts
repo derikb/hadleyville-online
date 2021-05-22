@@ -50,7 +50,17 @@ class TownSchema {
                 key: 'dressing',
                 label: 'Set Dressing',
                 source: '{{table:dressing:outside}}',
-                count: 3
+                type: 'long'
+            }),
+            new TownField({
+                key: 'locations',
+                label: 'Location Near Town',
+                source: '{{table:locations}}'
+            }),
+            new TownField({
+                key: 'revent_event',
+                label: 'Recent Event',
+                source: '{{table:events}}'
             })
         ];
     }

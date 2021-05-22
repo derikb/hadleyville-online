@@ -21,7 +21,7 @@ export class TownEditModalComponent implements OnInit {
     console.log(this.town);
   }
 
-  reroll(fieldKey: string) : void {
+  reroll(fieldKey: string, append: Boolean = false) : void {
     // get source from schema
     console.log(`roll ${fieldKey}`);
     const field = this.town.schema.getField(fieldKey);
@@ -30,9 +30,12 @@ export class TownEditModalComponent implements OnInit {
       return;
     }
     const result = this.randomTableService.convertToken(field.source);
-    // console.log(result);
     const input = this.el.nativeElement.querySelector(`#${fieldKey}`);
-    input.value = result;
+    if (append) {
+      input.value += `\n${result}`;
+    } else {
+      input.value = result;
+    }
   }
 
   onSubmit($event): void {
@@ -41,9 +44,8 @@ export class TownEditModalComponent implements OnInit {
 
     const newFields = {};
     formData.forEach((value, key) => {
-       newFields[key] = value.toString();
+      newFields[key] = value.toString();
     });
-
     // Copy all the fields and then assign new values.
     //const fields = Object.assign({}, this.town.fields, newFields);
     this.town.fields = newFields;
