@@ -1,8 +1,8 @@
 :host {
     display: grid;
     grid-template-columns: 40% 60%;
-    grid-template-areas: "npcs town"
-        "notes tables";
+    grid-template-areas: "town notes"
+        "npcs notes";
     gap: 1rem;
 }
 
@@ -18,10 +18,5 @@
 
 #notes {
     grid-area: notes;
-    padding: 1rem;
-}
-
-#tables {
-    grid-area: tables;
     padding: 1rem;
 }

@@ -6,12 +6,13 @@
             <li><a routerLink="/" routerLinkActive="active">Home</a></li>
             <li><a routerLink="/intro" routerLinkActive="active">Intro</a></li>
             <li><a routerLink="/rules" routerLinkActive="active">Rules</a></li>
+            <li><a href="#" (click)="toggleTable($event)">Tables</a></li>
           </ul>
     </nav>
 </header>
 <main>
-<router-outlet></router-outlet>
-
+    <router-outlet></router-outlet>
+    <app-tables-list role="landmark" id="tables" [attr.aria-expanded]="tablesOpen" (toggleTable)="toggleTable($event)"></app-tables-list>
 </main>
 <footer>
     <p>Written in Mar-Apr 2021 by Derik A. Badman <a href="https://derikbadman.com">https://derikbadman.com</a> Game info and updates at <a href="https://madinkbeard.itch.io/hadleyville">https://madinkbeard.itch.io/hadleyville</a></p>

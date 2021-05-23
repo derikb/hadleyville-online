@@ -7,10 +7,18 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class AppComponent {
   title = 'hadleyville-online';
+  tablesOpen: boolean = false;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  toggleTable(ev: Event) : void {
+    if (ev && ev.preventDefault) {
+      ev.preventDefault();
+    }
+    this.tablesOpen = !this.tablesOpen;
   }
 
 }

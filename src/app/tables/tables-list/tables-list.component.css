@@ -1,9 +1,24 @@
-section > header {
+:host {
+    border-radius: 0 0 0 5px;
+    border: 0 solid darkkhaki;
+    border-width: 0 0 1px 1px;
+    background-color: rgb(252, 250, 230);
+    box-shadow: -2px 7px 10px rgba(50, 50, 0, 0.5);
+}
+:host[aria-expanded=false] {
+    box-shadow: none;
+}
+
+button {
+    background-color: white;
+}
+
+header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 1rem;
 }
-section > header > h2 {
+header > h2 {
     flex: 2 1 auto;
     margin: 0;
 }

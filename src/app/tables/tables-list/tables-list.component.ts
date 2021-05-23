@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { RandomTable } from 'rpg-table-randomizer/src/random_table.js';
 import { RandomtableService } from '../randomtable.service';
 
@@ -9,6 +9,7 @@ import { RandomtableService } from '../randomtable.service';
 })
 export class TablesListComponent implements OnInit {
   tables: Array<RandomTable> = [];
+  @Output() toggleTable = new EventEmitter<null>();
 
   constructor(private tableService: RandomtableService) { }
 
@@ -16,4 +17,7 @@ export class TablesListComponent implements OnInit {
     this.tables = this.tableService.getAllTables();
   }
 
+  closeTable() : void {
+    this.toggleTable.emit();
+  }
 }

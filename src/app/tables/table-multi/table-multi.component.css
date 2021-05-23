@@ -1,6 +1,8 @@
 :host {
     display: block;
     padding: 0;
+    background-color: white;
+    margin-bottom: .25rem;
 }
 
 details {
