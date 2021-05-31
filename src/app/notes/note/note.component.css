@@ -1,28 +1,52 @@
 :host {
     display: block;
     margin-bottom: 1rem;
-}
-
-mat-card {
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),0px 1px 1px 0px rgba(0, 0, 0, 0.14),0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
     padding: .5rem;
 }
 
-mat-card-title {
+header {
     border-bottom: 1px solid gray;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 1rem;
+    min-height: 2rem;
 }
 
 h4 {
     font-weight: bold;
     font-size: 1.1rem;
-    /** margin-bottom: .8rem; */
     margin-bottom: 0;
 }
 
-mat-card-actions {
-    text-align: right;
-    margin: 0;
-    padding: 0;
+button {
+    background-color: #eee;
+    border: none;
+    border-radius: 2px;
+    font-size: .9rem;
+    padding: .5rem 1rem;
+    cursor: pointer;
+}
+header button {
+    padding: .25rem .5rem;
+}
+button:hover {
+    background-color: lightblue;
+}
+button + button {
+    margin-left: 1rem;
+}
+button[type=submit] {
+    background-color: slateblue;
+    color: white;
+}
+button.deleteBtn {
+    background-color: red;
+    color: white;
+}
+
+mat-form-field {
+    width: 100%;
 }

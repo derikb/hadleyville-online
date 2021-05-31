@@ -1,6 +1,5 @@
 <header>
     <h2>NPCs</h2>
-    <button mat-stroked-button (click)="getNPC()">Create NPC</button>
-    <button mat-stroked-button (click)="getNPCName()">Get Name</button>
+    <button type="button" (click)="getNPC()">Create NPC</button>
 </header>
 <app-npc *ngFor="let npc of npcs" [npc]="npc"></app-npc>

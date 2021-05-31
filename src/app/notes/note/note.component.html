@@ -1,17 +1,34 @@
-<mat-card role="article">
-    <mat-card-title>
-        <h4>{{ note.title }}</h4>
-        <mat-card-actions>
-            <button type="button" mat-icon-button aria-label="Edit Note" color="primary" (click)="editModal()">
-                <mat-icon>edit</mat-icon>
-            </button>
-            <button type="button" mat-icon-button aria-label="Delete Note" color="warn" (click)="deleteNote()">
-                <mat-icon>delete</mat-icon>
-            </button>
-        </mat-card-actions>
-    </mat-card-title>
+<header>
+    <h4>{{ note.title }}</h4>
+    <div *ngIf="!isEdit">
+        <button type="button" (click)="toggleEdit()">
+            Edit Note
+        </button>
+    </div>
+</header>
 
-    <mat-card-content>
-        <div class="content" [innerHTML]="note.contentHtml"></div>
-    </mat-card-content>
-</mat-card>
+<div class="body">
+    <div *ngIf="!isEdit; else editForm" class="content" [innerHTML]="note.contentHtml"></div>
+    <ng-template #editForm>
+    <form id="noteEditForm" (ngSubmit)="saveEdit($event)">
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Title</mat-label>
+                <input matInput id="title" type="text" name="title" value="{{ note.title }}" required>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+            <mat-label>Content</mat-label>
+            <textarea matInput id="content" type="text" name="content" rows="12">{{ note.content }}</textarea>
+            </mat-form-field>
+        </div>
+        <div>
+            <button type="submit">Save</button>
+            <button type="button" (click)="toggleEdit()">Cancel</button>
+            <button type="button" class="deleteBtn" (click)="deleteNote()">Delete Note</button>
+        </div>
+        </form>
+    </ng-template>
+</div>
+

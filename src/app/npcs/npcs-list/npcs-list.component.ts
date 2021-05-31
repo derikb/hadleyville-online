@@ -41,9 +41,4 @@ export class NpcsListComponent implements OnInit {
     this.npcService.createNewNPC();
   }
 
-  getNPCName() {
-    //const newName = this.tableService.getNPCName();
-    //this.modalService.open(ModalComponent, { title: 'A name', content: newName });
-  }
-
 }

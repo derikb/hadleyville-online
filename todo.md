@@ -6,11 +6,13 @@
 - [ ] More UI/design improvements
 - [x] Town name generator
 - [x] "Start a town" button to roll up a bunch of results at once to get started.
-- [ ] Make note editing inline
+- [x] Make note editing inline
 - [x] Fix missing spaces in town names
 - [ ] Better NPC name lists
 - [x] Reroll buttons on NPC edit modal
 - [x] Make table area slide in/out (or hide/reveal)
+- [ ] Make notes collapsible.
+- [ ] Save state of note/npc collapse
 - [ ] Relationship map?
 - [ ] Export
 - [ ] External saving (???)

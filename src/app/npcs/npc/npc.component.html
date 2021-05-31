@@ -2,19 +2,34 @@
     <summary>
         <div id="summary-title">{{ getNPCName() }}</div>
         <div class="actions">
-            <button type="button" mat-icon-button aria-label="Edit NPC" color="primary" (click)="editModal()">
-                <mat-icon>edit</mat-icon>
-            </button>
-            <button type="button" mat-icon-button aria-label="Delete NPC" color="warn" (click)="deleteNPC()">
-                <mat-icon>delete</mat-icon>
-            </button>
+            <button *ngIf="!isEdit" type="button" (click)="toggleEdit()">Edit NPC</button>
         </div>
     </summary>
-    <div>
+    <div *ngIf="!isEdit">
     <ul>
         <li *ngFor="let field of getFieldNames()">
             {{ getFieldLabel(field) }} {{ npc.fields[field] }}
         </li>
     </ul>
+    </div>
+    <div *ngIf="isEdit">
+        <p>Click the <span style="font-size: 2rem;">&#9861;</span> to reroll a field. Click "Save" to save any changes.</p>
+        <form id="npcEditForm" (ngSubmit)="saveNPC($event)">
+            <div *ngFor="let field of schema.fields">
+            <mat-form-field appearance="outline">
+                <mat-label>{{ field.label }}</mat-label>
+                <ng-container [ngSwitch]="field.key">
+                <textarea *ngSwitchCase="'notes'" rows=5 matInput id="{{ field.key }}" name="{{ field.key }}">{{ npc.fields[field.key] }}</textarea>
+                <input *ngSwitchDefault matInput id="{{ field.key }}" type="text" name="{{ field.key }}" value="{{ npc.fields[field.key] }}" />
+                </ng-container>
+                <button matSuffix type="button" class="btn-reroll" *ngIf="field.key !== 'notes'" (click)="reroll(field.key)" aria-label="Reroll">&#9861;</button>
+            </mat-form-field>
+            </div>
+            <div>
+                <button type="submit">Save</button>
+                <button type="button" (click)="toggleEdit()">Cancel</button>
+                <button type="button" class="deleteBtn" (click)="deleteNPC()">Delete NPC</button>
+            </div>
+        </form>
     </div>
 </details>

@@ -5,7 +5,6 @@
   <hr/>
   <form id="addNoteForm" (ngSubmit)="onSubmit($event)">
     <div>
-      <input type=hidden name=orc value=bar />
       <label for="note_uuid">Add To Note:</label>
       <select id="note_uuid" matInput name="note_uuid">
           <option value="">Create New Note</option>
@@ -15,8 +14,8 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button type="submit" mat-flat-button color="primary" form="addNoteForm">Save as Note</button>
-  <button mat-flat-button type="button" mat-dialog-close>Close</button>
+  <button type="submit" form="addNoteForm">Save as Note</button>
+  <button type="button" mat-dialog-close>Close</button>
 </mat-dialog-actions>
 
 

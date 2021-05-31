@@ -1,6 +1,6 @@
 <header>
     <h2>Tables</h2>
-    <button mat-stroked-button type="button" color="accent" (click)="closeTable()">Close</button>
+    <button type="button" (click)="closeTable()">Close</button>
 </header>
 
 <app-table-multi *ngFor="let table of tables" [table]="table"></app-table-multi>

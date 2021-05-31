@@ -1,8 +1,6 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ElementRef } from '@angular/core';
 import Note from '../note';
-import { NoteEditModalComponent } from '../note-edit-modal/note-edit-modal.component';
 import { NotesService } from '../notes.service';
-import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -12,20 +10,22 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class NoteComponent implements OnInit {
   @Input() note: Note|null;
-  constructor(private notesService: NotesService, public dialog: MatDialog) { }
+  isEdit: Boolean = false;
+  constructor(private notesService: NotesService, private el: ElementRef) { }
 
   ngOnInit(): void {
   }
 
-  editModal() {
-    const dialogRef = this.dialog.open(NoteEditModalComponent, {
-      data: { note: this.note },
-      ariaLabelledBy: 'modal-title',
-      minWidth: '50vw',
-      maxWidth: '90vw',
-      minHeight: '400px',
-      maxHeight: '90vh'
-    });
+  toggleEdit() {
+    this.isEdit = !this.isEdit;
+  }
+
+  saveEdit(ev) {
+    const formData = new FormData(ev.target);
+    this.note.title = formData.get('title').toString();
+    this.note.content = formData.get('content').toString();
+    this.notesService.updateNote(this.note);
+    this.isEdit = false;
   }
 
   deleteNote() {
