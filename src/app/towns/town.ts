@@ -58,8 +58,13 @@ class TownSchema {
                 source: '{{table:locations}}'
             }),
             new TownField({
-                key: 'revent_event',
+                key: 'recent_event',
                 label: 'Recent Event',
+                source: '{{table:events}}'
+            }),
+            new TownField({
+                key: 'current_event',
+                label: 'Current Event',
                 source: '{{table:events}}'
             })
         ];

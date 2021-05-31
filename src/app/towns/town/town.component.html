@@ -10,7 +10,7 @@
     <div>
         <dl>
             <ng-container *ngFor="let field of town.schema.fields">
-                <ng-container *ngIf="field.key !== 'townName'">
+                <ng-container *ngIf="field.key !== 'townName' && town.fields[field.key]">
                 <dt>{{ field.label }}</dt>
                 <dd>{{ town.fields[field.key] }}</dd>
                 </ng-container>

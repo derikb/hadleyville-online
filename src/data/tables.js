@@ -446,6 +446,7 @@ export default [
   {
     id: 12,
     key: "town_name",
+    title: "Town Names",
     tables: {
       default: [
         { label: "{{table:this:main}}{{table:this:ending1}}", weight: 4 },

@@ -12,7 +12,7 @@
       <ng-template #elseBlock>
         <mat-form-field appearance="outline">
           <mat-label>{{ field.label }}</mat-label>
-          <textarea matInput id="{{ field.key }}" type="text" rows=3 name="{{ field.key }}">{{ town.fields[field.key] }}</textarea>
+          <textarea matInput id="{{ field.key }}" type="text" rows=5 name="{{ field.key }}">{{ town.fields[field.key] }}</textarea>
           <button matSuffix type="button" class="btn-reroll" *ngIf="field.key !== 'notes'" (click)="reroll(field.key, true)" aria-label="Reroll">&#9861;</button>
         </mat-form-field>
       </ng-template>
