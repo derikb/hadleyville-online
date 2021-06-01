@@ -1,14 +1,16 @@
 :host {
     display: grid;
     grid-template-columns: 40% 60%;
-    grid-template-areas: "town notes"
-        "npcs notes";
+    grid-template-areas: "leftColumn notes";
     gap: 1rem;
+}
+
+#leftColumn {
+    grid-area: leftColumn;
 }
 
 #town {
     grid-area: town;
-    padding: 1rem;
 }
 
 #npcs {
@@ -18,5 +20,5 @@
 
 #notes {
     grid-area: notes;
-    padding: 1rem;
+    padding: 0 1rem;
 }

@@ -40,29 +40,3 @@ mat-form-field {
     margin: 0;
     cursor: pointer;
 }
-
-button {
-    background-color: #eee;
-    border: none;
-    border-radius: 2px;
-    font-size: .9rem;
-    padding: .5rem 1rem;
-    cursor: pointer;
-}
-summary button {
-    padding: .25rem .5rem;
-}
-button:hover {
-    background-color: lightblue;
-}
-button + button {
-    margin-left: 1rem;
-}
-button[type=submit] {
-    background-color: slateblue;
-    color: white;
-}
-button.deleteBtn {
-    background-color: red;
-    color: white;
-}

@@ -35,4 +35,9 @@ export class NotesListComponent implements OnInit {
       }
     });
   }
+
+  createNote() : void {
+    const note = new Note({});
+    this.noteService.addNote(note);
+  }
 }

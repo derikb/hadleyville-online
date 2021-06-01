@@ -1,4 +1,7 @@
 <header>
     <h2>Notes</h2>
+    <div>
+        <button type="button" (click)="createNote()">Create Note</button>
+    </div>
 </header>
 <app-note *ngFor="let note of notes" [note]="note"></app-note>

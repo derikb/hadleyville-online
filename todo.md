@@ -13,6 +13,7 @@
 - [x] Make table area slide in/out (or hide/reveal)
 - [ ] Make notes collapsible.
 - [ ] Save state of note/npc collapse
+- [ ] Save order of notes/npcs
 - [ ] Relationship map?
 - [ ] Export
 - [ ] External saving (???)

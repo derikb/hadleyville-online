@@ -1,4 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html { height: 100%; }
+body {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+button {
+    background-color: #eee;
+    border: 1px solid #aaa;
+    border-radius: 2px;
+    font-size: .9rem;
+    padding: .5rem 1rem;
+    cursor: pointer;
+}
+header button, summary button, th button {
+    padding: .25rem .5rem;
+}
+button:hover {
+    background-color: lightblue;
+}
+button + button {
+    margin-left: 1rem;
+}
+button[type=submit] {
+    background-color: slateblue;
+    color: white;
+}
+button.deleteBtn {
+    background-color: red;
+    color: white;
+}
