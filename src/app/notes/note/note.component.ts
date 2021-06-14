@@ -2,7 +2,6 @@ import { Component, Input, OnInit, ElementRef } from '@angular/core';
 import Note from '../note';
 import { NotesService } from '../notes.service';
 
-
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
@@ -18,6 +17,19 @@ export class NoteComponent implements OnInit {
 
   toggleEdit() {
     this.isEdit = !this.isEdit;
+  }
+
+  /**
+   * Save collapse state
+   * @param ev Toggle event on details.
+   */
+  setCollapse(ev) {
+    const newState = !ev.target.open;
+    if (this.note.collapse === newState) {
+      return;
+    }
+    this.note.collapse = newState;
+    this.notesService.updateNote(this.note);
   }
 
   saveEdit(ev) {

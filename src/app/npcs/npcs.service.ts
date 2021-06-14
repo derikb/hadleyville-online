@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { RandomtableService } from '../tables/randomtable.service';
-import { NPC } from 'rpg-table-randomizer/src/npc';
-import { appNPCSchema, createNewNPC } from './appnpc';
+import { createNewNPC, NPC } from './appnpc';
 import { Subject } from 'rxjs';
 import store from '../store/store';
-import { createNPC, updateNPCFields, updateNPC, deleteNPC } from '../store/npcs-reducer';
+import { createNPC, updateNPC, deleteNPC } from '../store/npcs-reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +18,6 @@ export class NpcsService {
   getAllNPCs() : Array<NPC> {
     const npcs = store.getState().npcs;
     return npcs.map((obj) => {
-      console.log(obj);
       return new NPC(obj)
     });
   }
@@ -31,10 +29,10 @@ export class NpcsService {
     return npc;
   }
 
-  getNPCById(id: string) : NPC|null {
+  getNPCById(uuid: string) : NPC|null {
     const npcs = store.getState().npcs;
     const data = npcs.find((npc) => {
-      return npc.id === id;
+      return npc.uuid === uuid;
     })
     if (data) {
       return new NPC(data);
@@ -43,21 +41,14 @@ export class NpcsService {
   }
 
   updateNPC(npc: NPC) : void {
-    store.dispatch(updateNPC({ npc: npc }));
-    const upnpc = this.getNPCById(npc.id);
+    store.dispatch(updateNPC({ npc: npc.toJSON() }));
+    const upnpc = this.getNPCById(npc.uuid);
     this.npcs$.next(upnpc);
   }
 
-  updateNPCFields(id: string, fields: Object) : void {
-    store.dispatch(updateNPCFields({ id: id, fields: fields }));
-    const npc = this.getNPCById(id);
-    this.npcs$.next(npc);
-  }
-
-  deleteNPC(id: string) {
-    console.log('delete npc');
-    store.dispatch(deleteNPC({ id }));
-    this.deletedNPCs$.next(id);
+  deleteNPC(uuid: string) {
+    store.dispatch(deleteNPC({ uuid }));
+    this.deletedNPCs$.next(uuid);
   }
 
 }

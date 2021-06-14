@@ -1,8 +1,7 @@
 import { NPCSchema, NPCSchemaField } from 'rpg-table-randomizer/src/npc_schema.js';
-import { NPC, registerSchema, initializeNewNPC } from 'rpg-table-randomizer/src/npc.js';
+import { registerSchema, initializeNewNPC } from 'rpg-table-randomizer/src/npc.js';
 import { v4 as uuidv4 } from 'uuid';
 import Randomizer from 'rpg-table-randomizer/src/randomizer.js';
-import { isEmpty, isObject } from 'rpg-table-randomizer/src/r_helpers.js';
 
 
 const npcName = new NPCSchemaField({
@@ -65,32 +64,78 @@ const schemaKey = appNPCSchema.key;
 
 const createNewNPC = function(randomizer: Randomizer) : NPC {
     const npc = initializeNewNPC(schemaKey, randomizer);
-    npc.id = uuidv4();
-    npc.toJSON = function() {
-        let returnObj = {};
-        for (const property in this) {
-            let value = this[property];
-            if (isEmpty(value)) {
-                continue;
-            }
-            if (isObject(value)) {
-                returnObj[property] = Object.assign({}, value);
-            }
-            returnObj[property] = value;
+    const appNPC = new NPC(npc.fields);
+    return appNPC;
+}
+
+
+class NPC {
+    uuid: string;
+    npcName: string;
+    job: string;
+    long_goal: string;
+    short_goal: string;
+    secret: string;
+    notes: string;
+    collapse: boolean = false;
+
+    constructor({
+        uuid = null,
+        npcName = '',
+        job = '',
+        long_goal = '',
+        short_goal = '',
+        secret = '',
+        notes = '',
+        collapse = false,
+    }) {
+        if (uuid) {
+            this.uuid = uuid;
+        } else {
+            this.uuid = uuidv4();
         }
-        return returnObj;
-    };
-    npc.setFieldValue = function(field, value) {
-        if (!this.fields[field]) {
+        this.npcName = npcName;
+        this.job = job;
+        this.long_goal = long_goal;
+        this.short_goal = short_goal;
+        this.secret = secret;
+        this.notes = notes;
+        this.collapse = collapse;
+    }
+
+    getFieldNames() : Array<string> {
+        return [
+            'npcName',
+            'job',
+            'long_goal',
+            'short_goal',
+            'secret',
+            'notes'
+        ];
+    }
+
+    setFieldValue(field, value) {
+        if (!this[field]) {
             return;
         }
-        this.fields[field] = value;
-    };
+        this[field] = value;
+    }
 
-    return npc;
+    toJSON() {
+        const obj = {};
+        Object.keys(this).forEach((prop) => {
+            const value = this[prop];
+            if (value.length === 0) {
+                return;
+            }
+            obj[prop] = value;
+        });
+        return obj;
+    }
 }
 
 export {
     appNPCSchema,
-    createNewNPC
+    createNewNPC,
+    NPC
 };

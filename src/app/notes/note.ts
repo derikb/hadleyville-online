@@ -9,14 +9,17 @@ export default class Note {
     uuid: string;
     title: string = '';
     content: string = '';
+    collapse: boolean = false;
 
     constructor({
         uuid = null,
         title = '',
-        content = ''
+        content = '',
+        collapse = false
     }) {
         this.title = title;
         this.content = content;
+        this.collapse = collapse;
         if (uuid) {
             this.uuid = uuid;
         } else {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NpcsService} from '../npcs.service';
-import { NPC } from 'rpg-table-randomizer/src/npc';
+import { NPC } from '../appnpc';
 
 @Component({
   selector: 'app-npcs-list',
@@ -17,8 +17,7 @@ export class NpcsListComponent implements OnInit {
 
     this.npcService.npcs$.subscribe({
       next: (npc) => {
-        console.log(npc);
-        const index = this.npcs.findIndex((el) => el.id === npc.id);
+        const index = this.npcs.findIndex((el) => el.uuid === npc.uuid);
         if (index === -1) {
           this.npcs.push(npc);
         } else {
@@ -28,8 +27,8 @@ export class NpcsListComponent implements OnInit {
     });
 
     this.npcService.deletedNPCs$.subscribe({
-      next: (id) => {
-        const index = this.npcs.findIndex((el) => el.id === id);
+      next: (uuid) => {
+        const index = this.npcs.findIndex((el) => el.uuid === uuid);
         if (index > -1) {
           this.npcs.splice(index, 1);
         }

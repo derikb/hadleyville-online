@@ -11,8 +11,8 @@
 - [ ] Better NPC name lists
 - [x] Reroll buttons on NPC edit modal
 - [x] Make table area slide in/out (or hide/reveal)
-- [ ] Make notes collapsible.
-- [ ] Save state of note/npc collapse
+- [x] Make notes collapsible.
+- [x] Save state of note/npc collapse
 - [ ] Save order of notes/npcs
 - [ ] Relationship map?
 - [ ] Export

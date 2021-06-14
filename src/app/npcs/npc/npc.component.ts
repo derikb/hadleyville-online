@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ElementRef } from '@angular/core';
-import { NPC } from 'rpg-table-randomizer/src/npc';
 import { NPCSchema } from 'rpg-table-randomizer/src/npc_schema.js';
-import { appNPCSchema } from '../appnpc';
+import { appNPCSchema, NPC } from '../appnpc';
 import { NpcsService } from '../npcs.service';
 import { RandomtableService } from '../../tables/randomtable.service';
 
@@ -26,12 +25,17 @@ export class NpcComponent implements OnInit {
     this.isEdit = !this.isEdit;
   }
 
-  getNPCName() : string {
-    return this.npc.fields.npcName;
-  }
-
-  getFieldNames() : Array<string> {
-    return Object.keys(this.npc.fields);
+  /**
+   * Save collapse state
+   * @param ev Toggle event on details.
+   */
+   setCollapse(ev) {
+    const newState = !ev.target.open;
+    if (this.npc.collapse === newState) {
+      return;
+    }
+    this.npc.collapse = newState;
+    this.npcsService.updateNPC(this.npc);
   }
 
   getFieldLabel(fieldName: string) : string {
@@ -41,16 +45,10 @@ export class NpcComponent implements OnInit {
 
   saveNPC($event): void {
     const formData = new FormData($event.target);
-    console.log(this.npc);
-
-    const newFields = {};
     formData.forEach((value, key) => {
-      newFields[key] = value.toString();
+      this.npc[key] = value.toString();
     });
-
-    // Copy all the fields and then assign new values.
-    const fields = Object.assign({}, this.npc.fields, newFields);
-    this.npcsService.updateNPCFields(this.npc.id, fields);
+    this.npcsService.updateNPC(this.npc);
     this.isEdit = false;
   }
 
@@ -64,6 +62,6 @@ export class NpcComponent implements OnInit {
   }
 
   deleteNPC() {
-    this.npcsService.deleteNPC(this.npc.id);
+    this.npcsService.deleteNPC(this.npc.uuid);
   }
 }
