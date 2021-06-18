@@ -13,11 +13,10 @@
 - [x] Make table area slide in/out (or hide/reveal)
 - [x] Make notes collapsible.
 - [x] Save state of note/npc collapse
-- [ ] Save order of notes/npcs
+- [x] Save order of notes/npcs
+- [ ] When new note is created start in edit mode.
 - [ ] Relationship map?
 - [ ] Export
 - [ ] External saving (???)
   - [ ] Auth
   - [ ] Merge conflicts resolution
-
-

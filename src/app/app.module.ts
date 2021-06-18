@@ -20,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NotesListComponent } from './notes/notes-list/notes-list.component';
 import { NpcsListComponent } from './npcs/npcs-list/npcs-list.component';
 import { TablesListComponent } from './tables/tables-list/tables-list.component';
@@ -54,7 +55,8 @@ import { TownEditModalComponent } from './towns/town-edit-modal/town-edit-modal.
     MatIconModule,
     MatDialogModule,
     MatSelectModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]

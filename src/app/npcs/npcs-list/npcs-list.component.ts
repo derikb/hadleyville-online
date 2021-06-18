@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NpcsService} from '../npcs.service';
 import { NPC } from '../appnpc';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-npcs-list',
@@ -36,8 +37,15 @@ export class NpcsListComponent implements OnInit {
     });
   }
 
-  getNPC() {
+  createNPC() {
     this.npcService.createNewNPC();
   }
-
+  /**
+   * Reorder on drag/drop.
+   * @param event Drop event.
+   */
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.npcs, event.previousIndex, event.currentIndex);
+    this.npcService.sortNPCs(this.npcs.map((npc) => { return npc.uuid }));
+  }
 }

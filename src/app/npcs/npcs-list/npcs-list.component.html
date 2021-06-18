@@ -1,7 +1,9 @@
 <header>
     <h2>NPCs</h2>
     <div>
-        <button type="button" (click)="getNPC()">Create NPC</button>
+        <button type="button" (click)="createNPC()">Create NPC</button>
     </div>
 </header>
-<app-npc *ngFor="let npc of npcs" [npc]="npc"></app-npc>
+<section cdkDropList id="npc-list" (cdkDropListDropped)="drop($event)">
+    <app-npc *ngFor="let npc of npcs" [npc]="npc" cdkDrag cdkDragLockAxis="y"></app-npc>
+</section>

@@ -40,12 +40,24 @@ const npcsSlice = createSlice({
                 state.splice(index, 1);
             }
         },
+        sortNPCs(state, action) {
+            // Array of UUIDs in new order.
+            const sortUuids = action.payload.sortUuids;
+            if (!Array.isArray(sortUuids) || sortUuids.length === 0) {
+                return;
+            }
+            state.sort((a, b) => {
+                const aIndex = sortUuids.indexOf(a.uuid);
+                const bIndex = sortUuids.indexOf(b.uuid);
+                return aIndex - bIndex;
+            });
+        }
     },
   })
 
   // Extract the action creators object and the reducer
   const { actions, reducer } = npcsSlice;
   // Extract and export each action creator by name
-  export const { createNPC, updateNPC, deleteNPC } = actions;
+  export const { createNPC, updateNPC, deleteNPC, sortNPCs } = actions;
   // Export the reducer, either as a default or named export
   export default reducer;

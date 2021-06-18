@@ -4,4 +4,6 @@
         <button type="button" (click)="createNote()">Create Note</button>
     </div>
 </header>
-<app-note *ngFor="let note of notes" [note]="note"></app-note>
+<section cdkDropList id="note-list" (cdkDropListDropped)="drop($event)">
+    <app-note *ngFor="let note of notes" [note]="note" cdkDrag cdkDragLockAxis="y"></app-note>
+</section>

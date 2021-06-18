@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotesService } from '../notes.service';
 import Note from '../note';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-notes-list',
@@ -39,5 +40,13 @@ export class NotesListComponent implements OnInit {
   createNote() : void {
     const note = new Note({});
     this.noteService.addNote(note);
+  }
+  /**
+   * Reorder on drag/drop.
+   * @param event Drop event.
+   */
+   drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.notes, event.previousIndex, event.currentIndex);
+    this.noteService.sortNotes(this.notes.map((note) => { return note.uuid }));
   }
 }

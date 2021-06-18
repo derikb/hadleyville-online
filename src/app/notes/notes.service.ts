@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import Note from './note';
 import { Subject } from 'rxjs';
 import store from '../store/store';
-import { createNote, updateNote, deleteNote } from '../store/notes-reducer';
+import { createNote, updateNote, deleteNote, sortNotes } from '../store/notes-reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +41,9 @@ export class NotesService {
   deleteNote(uuid: string) : void {
     store.dispatch(deleteNote({ uuid }));
     this.deletedNotes$.next(uuid);
+  }
+
+  sortNotes(sortUuids: Array<string>) {
+    store.dispatch(sortNotes({ sortUuids }));
   }
 }

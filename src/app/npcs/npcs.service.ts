@@ -3,7 +3,7 @@ import { RandomtableService } from '../tables/randomtable.service';
 import { createNewNPC, NPC } from './appnpc';
 import { Subject } from 'rxjs';
 import store from '../store/store';
-import { createNPC, updateNPC, deleteNPC } from '../store/npcs-reducer';
+import { createNPC, updateNPC, deleteNPC, sortNPCs } from '../store/npcs-reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -51,4 +51,7 @@ export class NpcsService {
     this.deletedNPCs$.next(uuid);
   }
 
+  sortNPCs(sortUuids: Array<string>) {
+    store.dispatch(sortNPCs({ sortUuids }));
+  }
 }
