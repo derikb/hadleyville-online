@@ -14,7 +14,7 @@
 - [x] Make notes collapsible.
 - [x] Save state of note/npc collapse
 - [x] Save order of notes/npcs
-- [ ] When new note is created start in edit mode.
+- [x] When new note is created start in edit mode.
 - [ ] Relationship map?
 - [ ] Export
 - [ ] External saving (???)

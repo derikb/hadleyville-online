@@ -13,6 +13,11 @@ export class NoteComponent implements OnInit {
   constructor(private notesService: NotesService, private el: ElementRef) { }
 
   ngOnInit(): void {
+    // This will set new empty notes to open/edit mode on first load.
+    if (this.note.title === '' && this.note.content === '') {
+      this.note.collapse = false;
+      this.isEdit = true;
+    }
   }
 
   toggleEdit() {
