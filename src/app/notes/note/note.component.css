@@ -15,15 +15,15 @@ summary {
     padding: 0rem;
     align-items: center;
 }
-details summary #summary-title::before {
+details summary .summary-title::before {
     content: "▲";
     margin-right: .5rem;
     font-size: .8rem;
 }
-details[open] summary #summary-title::before {
+details[open] summary .summary-title::before {
     content: "▼";
 }
-summary #summary-title {
+summary .summary-title {
     font-weight: bold;
     font-size: 1rem;
 }

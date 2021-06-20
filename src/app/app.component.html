@@ -1,6 +1,6 @@
 <header id="header">
     <h1>Hadleyville: Rules Light RPG</h1>
-    <app-roller></app-roller>
+    <app-roller role="region" aria-label="Dice Roller"></app-roller>
     <nav>
         <ul>
             <li><a routerLink="/" routerLinkActive="active">Home</a></li>
@@ -12,7 +12,7 @@
 </header>
 <main>
     <router-outlet></router-outlet>
-    <app-tables-list role="landmark" id="tables" [attr.aria-expanded]="tablesOpen" (toggleTable)="toggleTable($event)"></app-tables-list>
+    <app-tables-list role="region" id="tables" [attr.aria-expanded]="tablesOpen" (toggleTable)="toggleTable($event)" aria-label="Random Tables"></app-tables-list>
 </main>
 <footer>
     <p>Written in Mar-Apr 2021 by Derik A. Badman <a href="https://derikbadman.com">https://derikbadman.com</a> Game info and updates at <a href="https://madinkbeard.itch.io/hadleyville">https://madinkbeard.itch.io/hadleyville</a></p>

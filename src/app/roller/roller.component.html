@@ -1,2 +1,2 @@
-<span class="result">{{ result }}</span>
-<button type="button" (click)="roll()">{{ die }}</button>
+<span id="dice-result" class="result" aria-live="assertive" aria-label="2d6 Roll Result">{{ result }}</span>
+<button type="button" (click)="roll()" aria-label="Roll 2d6" aria-controls="">{{ die }}</button>

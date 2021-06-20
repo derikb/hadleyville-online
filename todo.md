@@ -1,5 +1,6 @@
 # TODO
 
+### v1
 - [x] Add table results to existing OR new note.
 - [x] Better organization of components and services (ie notes/ npcs/ tables/)
 - [x] Note and NPC list component (instead of directly listing in home component)
@@ -15,8 +16,11 @@
 - [x] When new note is created start in edit mode.
 - [x] Better NPC name lists
 - [ ] More UI/design improvements
-- [ ] Relationship map?
 - [ ] Import/Export
+
+
+### Post v1:
 - [ ] External saving (???)
   - [ ] Auth
   - [ ] Merge conflicts resolution
+- [ ] Relationship map?

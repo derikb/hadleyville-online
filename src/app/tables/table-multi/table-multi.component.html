@@ -1,9 +1,9 @@
 <details>
     <summary>
-        <div id="summary-title">{{ table.title }}</div>
-        <div class="actions"><button type="button" (click)="rollTable($event)">&#9861; Roll</button></div>
+        <div class="summary-title">{{ table.title }}</div>
+        <div class="actions"><button type="button" (click)="rollTable($event)"><span aria-hidden="true">&#9861;</span> Roll</button></div>
     </summary>
-    <table *ngIf="table" aria-labelledby="table-title" aria-labelledby="table-title">
+    <table *ngIf="table" attr.aria-label="{{ table.title }}">
         <thead *ngIf="subtableNames.length > 1">
             <tr>
                 <th *ngIf="includeNumbers">Roll</th>

@@ -1,8 +1,8 @@
 <details [open]="!npc.collapse" (toggle)="setCollapse($event)">
     <summary>
-        <div id="summary-title">{{ npc.npcName }}</div>
+        <div class="summary-title">{{ npc.npcName }}</div>
         <div class="actions">
-            <button *ngIf="!isEdit" type="button" (click)="toggleEdit()">Edit NPC</button>
+            <button *ngIf="!isEdit && !npc.collapse" type="button" (click)="toggleEdit()">Edit NPC</button>
         </div>
     </summary>
     <div *ngIf="!isEdit">
@@ -22,12 +22,12 @@
                 <textarea *ngSwitchCase="'notes'" rows=5 matInput id="{{ field.key }}" name="{{ field.key }}">{{ npc[field.key] }}</textarea>
                 <input *ngSwitchDefault matInput id="{{ field.key }}" type="text" name="{{ field.key }}" value="{{ npc[field.key] }}" />
                 </ng-container>
-                <button matSuffix type="button" class="btn-reroll" *ngIf="field.key !== 'notes'" (click)="reroll(field.key)" aria-label="Reroll">&#9861;</button>
+                <button matSuffix type="button" class="btn-reroll" *ngIf="field.key !== 'notes'" (click)="reroll(field.key)" aria-label="Reroll" attr.aria-controls="{{ field.key }}">&#9861;</button>
             </mat-form-field>
             </div>
             <div>
-                <button type="submit">Save</button>
-                <button type="button" (click)="toggleEdit()">Cancel</button>
+                <button type="submit">Save Changes</button>
+                <button type="button" (click)="toggleEdit()">Cancel Edit</button>
                 <button type="button" class="deleteBtn" (click)="deleteNPC()">Delete NPC</button>
             </div>
         </form>

@@ -1,8 +1,8 @@
 <details [open]="!note.collapse" (toggle)="setCollapse($event)">
     <summary>
-        <div id="summary-title">{{ note.title }}</div>
+        <div class="summary-title">{{ note.title }}</div>
         <div class="actions">
-            <button *ngIf="!isEdit" type="button" (click)="toggleEdit()">Edit Note</button>
+            <button *ngIf="!isEdit && !note.collapse" type="button" (click)="toggleEdit()">Edit Note</button>
         </div>
     </summary>
 
