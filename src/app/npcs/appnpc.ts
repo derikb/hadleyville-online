@@ -7,7 +7,7 @@ import Randomizer from 'rpg-table-randomizer/src/randomizer.js';
 const npcName = new NPCSchemaField({
     key: 'npcName',
     type: 'string',
-    source: 'name:random',
+    source: 'name:western',
     count: 1
 });
 npcName.label = 'Name';

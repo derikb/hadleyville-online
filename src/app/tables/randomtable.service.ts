@@ -6,7 +6,29 @@ import Randomizer from 'rpg-table-randomizer/src/randomizer.js';
 import { RandomTable, RandomTableResultSet } from 'rpg-table-randomizer/src/random_table.js';
 import tables from '../../data/tables.js';
 import RandomName from 'rpg-table-randomizer/src/random_name.js';
-import names from 'rpg-table-randomizer/sample/names.js';
+import names from '../../data/names.js';
+
+/**
+ * Callback to select names only.
+ * @param token_parts
+ * @param full_token
+ * @param curtable
+ * @returns
+ */
+const nameTokenCallback = function(token_parts: Array<string>) {
+	let string = '';
+	if (typeof token_parts[1] === 'undefined' || token_parts[1] === '') {
+		token_parts[1] = 'random';
+	}
+	if (typeof token_parts[3] === 'undefined' || token_parts[3] !== 'first') {
+		token_parts[3] = '';
+	}
+	if (typeof token_parts[2] === 'undefined' || token_parts[2] === '') {
+		token_parts[2] = 'random';
+	}
+	string = RandomName.selectName(token_parts[1], token_parts[2], token_parts[3]);
+	return string;
+};
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +42,7 @@ export class RandomtableService {
     this.randomizer = new Randomizer({});
     RandomName.setRandomizer(this.randomizer);
     RandomName.setNameData(names);
-    this.randomizer.registerTokenType('name', RandomName.nameTokenCallback);
+    this.randomizer.registerTokenType('name', nameTokenCallback);
     this.randomizer.getTableByKey = (key) => {
       return this.getTableByKey(key);
     };

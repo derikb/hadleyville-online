@@ -56,7 +56,6 @@ export class NpcComponent implements OnInit {
     // get source from schema
     const field = this.schema.fields.find((f) => f.key === fieldKey);
     const result = this.randomTableService.convertToken(field.source);
-    console.log(result);
     const input = this.el.nativeElement.querySelector(`#${fieldKey}`);
     input.value = result;
   }
