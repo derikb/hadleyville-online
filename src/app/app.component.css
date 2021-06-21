@@ -24,16 +24,31 @@ header#header h1  {
     flex: 2 1 auto;
 }
 
+header nav {
+    border-radius: 5px;
+    border: 1px dotted goldenrod;
+    background-color: white;
+    margin-left: 1rem;
+}
+
 header nav ul {
     font-size: 1.2rem;
-    margin-right: 2rem;
+    margin: 1rem 2rem;
+    padding: 0;
 }
 header nav ul li {
     display: inline-block;
     margin-right: 2rem;
 }
-
-
+header nav ul li:last-child {
+    margin-right: 0;
+}
+header nav a {
+    text-decoration: none;
+}
+header nav a:hover, header nav a:active {
+    text-decoration: underline;
+}
 
 main {
     grid-area: main;

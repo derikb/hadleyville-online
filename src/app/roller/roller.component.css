@@ -4,6 +4,7 @@
     border: 1px dotted goldenrod;
     border-radius: 5px;
     font-size: 1.125rem;
+    background-color: white;
 }
 
 .result {
@@ -16,8 +17,14 @@
 button {
     font-size: inherit;
     background-color: lightgoldenrodyellow;
+    background-color: rgb(252, 250, 230); /** FCFAE6 */
     color: black;
-    border: 1px solid black;
+    border: 1px solid goldenrod;
     border-radius: 5px;
     padding: .25rem .5rem;
+    cursor: pointer;
+}
+button:hover {
+    background-color: goldenrod;
+    color: white;
 }

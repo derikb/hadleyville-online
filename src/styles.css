@@ -1,35 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
-
+/**
+ *
+ #0F2263 very dk blue
+ */
 html { height: 100%; }
 body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     margin: 0;
     padding: 0;
     height: 100vh;
+    background-color: rgb(252, 250, 230); /* #FCFAE6 */
+}
+a {
+    color: rgb(89, 60, 143); /* 593c8f */
+}
+a:visited {
+    color: rgb(89, 60, 143);
 }
 
 button {
     background-color: #eee;
-    border: 1px solid #aaa;
-    border-radius: 2px;
+    background-color: rgb(252, 250, 230);
+    border: 1px solid goldenrod; /** rgb(218,165,32);  #daa520 */
+    border-radius: 5px;
     font-size: .9rem;
     padding: .5rem 1rem;
     cursor: pointer;
+}
+header button {
+    background-color: white;
 }
 header button, summary button, th button {
     padding: .25rem .5rem;
 }
 button:hover {
-    background-color: lightblue;
+    background-color: goldenrod;
+    color: black;
 }
 button + button {
     margin-left: 1rem;
 }
 button[type=submit] {
-    background-color: slateblue;
+    background-color: rgb(89, 60, 143);
+    border-color: #362456;
     color: white;
 }
 button.deleteBtn {
-    background-color: red;
+    background-color: #B22222;
+    border-color: #782c02;
     color: white;
 }
