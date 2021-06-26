@@ -17,7 +17,7 @@
 - [x] Better NPC name lists
 - [ ] More UI/design improvements
 - [ ] Import/Export
-
+- [ ] Allow for reording the table list?
 
 ### Post v1:
 - [ ] External saving (???)

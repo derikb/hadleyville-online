@@ -4,7 +4,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   selector: 'app-intro-page',
   templateUrl: './intro-page.component.html',
   styleUrls: ['./intro-page.component.css'],
-  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class IntroPageComponent implements OnInit {
 

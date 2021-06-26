@@ -1,34 +1,4 @@
 :host {
     display: block;
     margin-bottom: 1rem;
-    background-color: white;
-}
-
-details {
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),0px 1px 1px 0px rgba(0, 0, 0, 0.14),0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-    border-radius: 4px;
-    padding: .5rem;
-}
-summary {
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    padding: 0rem;
-    align-items: center;
-}
-details summary .summary-title::before {
-    content: "▲";
-    margin-right: .5rem;
-    font-size: .8rem;
-}
-details[open] summary .summary-title::before {
-    content: "▼";
-}
-summary .summary-title {
-    font-weight: bold;
-    font-size: 1rem;
-}
-
-mat-form-field {
-    width: 100%;
 }

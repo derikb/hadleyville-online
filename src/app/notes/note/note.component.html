@@ -10,22 +10,18 @@
         <div *ngIf="!isEdit; else editForm" class="content" [innerHTML]="note.contentHtml"></div>
         <ng-template #editForm>
         <form id="noteEditForm" (ngSubmit)="saveEdit($event)">
-            <div>
-                <mat-form-field appearance="outline">
-                    <mat-label>Title</mat-label>
-                    <input matInput id="title" type="text" name="title" value="{{ note.title }}" required>
-                </mat-form-field>
+            <div class="formField">
+                <label for="title">Title</label>
+                <input id="title" type="text" name="title" value="{{ note.title }}" required>
             </div>
-            <div>
-                <mat-form-field appearance="outline">
-                <mat-label>Content</mat-label>
-                <textarea matInput id="content" type="text" name="content" rows="12">{{ note.content }}</textarea>
-                </mat-form-field>
+            <div class="formField">
+                <label for="content">Content</label>
+                <textarea id="content" type="text" name="content" rows="12">{{ note.content }}</textarea>
             </div>
             <div>
                 <button type="submit">Save</button>
                 <button type="button" (click)="toggleEdit()">Cancel</button>
-                <button type="button" class="deleteBtn" (click)="deleteNote()">Delete Note</button>
+                <button type="button" class="btn-delete" (click)="deleteNote()">Delete Note</button>
             </div>
             </form>
         </ng-template>

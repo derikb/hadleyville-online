@@ -7,8 +7,7 @@ import { RandomtableService } from '../tables/randomtable.service';
 @Component({
   selector: 'app-roller',
   templateUrl: './roller.component.html',
-  styleUrls: ['./roller.component.css'],
-  encapsulation: ViewEncapsulation.ShadowDom
+  styleUrls: ['./roller.component.css']
 })
 export class RollerComponent implements OnInit {
   /** Can be any die syntax like "3d4+1" or "1d10-2" */

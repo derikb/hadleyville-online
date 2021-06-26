@@ -14,12 +14,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { IntroPageComponent } from './pages/intro-page/intro-page.component';
 import { RollerComponent } from './roller/roller.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NotesListComponent } from './notes/notes-list/notes-list.component';
 import { NpcsListComponent } from './npcs/npcs-list/npcs-list.component';
@@ -50,12 +45,7 @@ import { TownEditModalComponent } from './towns/town-edit-modal/town-edit-modal.
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
     MatDialogModule,
-    MatSelectModule,
-    MatAutocompleteModule,
     DragDropModule
   ],
   providers: [],

@@ -15,19 +15,21 @@ header#header {
     justify-content: space-between;
     align-content: center;
     align-items: center;
-    border-bottom: 1px solid lightgrey;
+    border-bottom: 1px solid var(--primary);
+    background-color: var(--surface1);
 }
 
 header#header h1  {
     font-size: 2rem;
     margin: .5rem;
     flex: 2 1 auto;
+    color: var(--text1);
 }
 
 header nav {
     border-radius: 5px;
-    border: 1px dotted goldenrod;
-    background-color: white;
+    border: 1px dotted var(--primary);
+    background-color: var(--surface2);
     margin-left: 1rem;
 }
 
@@ -48,12 +50,17 @@ header nav a {
 }
 header nav a:hover, header nav a:active {
     text-decoration: underline;
+    text-decoration-style: double;
+}
+header nav a.active {
+    color: var(--text1);
 }
 
 main {
     grid-area: main;
     padding: 1rem;
     position: relative;
+    background-color: var(--surface1);
 }
 
 
@@ -74,8 +81,36 @@ main {
 footer {
     grid-area: footer;
     padding: 1rem;
-    border-top: 1px solid lightgrey;
+    border-top: 1px solid var(--primary);
+    background-color: var(--surface2);
+    font-size: 1.1rem;
 }
 footer p {
     margin: 0;
+}
+
+
+.brand .swatch { background: var(--primary-light) }
+.text1 .swatch { background: var(--text1-light) }
+.text2 .swatch { background: var(--text2-light) }
+.surface1 .swatch { background: var(--surface1-light) }
+.surface2 .swatch { background: var(--surface2-light) }
+.surface3 .swatch { background: var(--surface3-light) }
+.surface4 .swatch { background: var(--surface4-light) }
+.shadow .swatch { background: hsl(var(--surface-shadow-light) / var(--shadow-strength-light)) }
+
+figure {
+  display: flex;
+  gap: 1ch;
+  place-items: center;
+  font-size: 2rem;
+  font-weight: 200;
+}
+
+.swatch {
+  flex-shrink: 0;
+  inline-size: 3ch;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px hsl(0 0% 50% / 25%);
 }
