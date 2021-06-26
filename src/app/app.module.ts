@@ -21,6 +21,9 @@ import { NpcsListComponent } from './npcs/npcs-list/npcs-list.component';
 import { TablesListComponent } from './tables/tables-list/tables-list.component';
 import { TownComponent } from './towns/town/town.component';
 import { TownEditModalComponent } from './towns/town-edit-modal/town-edit-modal.component';
+import { SettingsPageComponent } from './pages/settings-page/settings-page.component';
+import { ExporterComponent } from './exporter/exporter.component';
+import { ImporterComponent } from './importer/importer.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import { TownEditModalComponent } from './towns/town-edit-modal/town-edit-modal.
     NpcsListComponent,
     TablesListComponent,
     TownComponent,
-    TownEditModalComponent
+    TownEditModalComponent,
+    SettingsPageComponent,
+    ExporterComponent,
+    ImporterComponent
   ],
   imports: [
     BrowserModule,

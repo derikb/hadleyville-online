@@ -150,6 +150,7 @@ button.btn-reroll {
 
 h1, h2, h3, h4, h5, h6 {
     color: var(--text1);
+    font-weight: bold;
 }
 
 dt {
@@ -188,6 +189,9 @@ details .body {
     margin-top: .5rem;
 }
 
+form {
+    margin-bottom: 1rem;
+}
 .formField {
     margin-bottom: 1rem;
 }

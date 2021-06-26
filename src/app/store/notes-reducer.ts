@@ -49,6 +49,24 @@ const notesSlice = createSlice({
                 const bIndex = sortUuids.indexOf(b.uuid);
                 return aIndex - bIndex;
             });
+        },
+        clearNotes() {
+            return [];
+        },
+        importNotes(state, action) {
+            const notes = action.payload.notes;
+
+            notes.forEach((note) => {
+                if (!note.uuid) {
+                    return;
+                }
+                const index = state.findIndex((el) => el.uuid === note.uuid);
+                if (index !== -1) {
+                    state.splice(index, 1, note);
+                } else {
+                    state.push(note);
+                }
+            });
         }
     },
   })
@@ -56,6 +74,6 @@ const notesSlice = createSlice({
   // Extract the action creators object and the reducer
   const { actions, reducer } = notesSlice;
   // Extract and export each action creator by name
-  export const { createNote, updateNote, deleteNote, sortNotes } = actions;
+  export const { createNote, updateNote, deleteNote, sortNotes, clearNotes, importNotes } = actions;
   // Export the reducer, either as a default or named export
   export default reducer;

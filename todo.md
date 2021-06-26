@@ -17,7 +17,9 @@
 - [x] Better NPC name lists
 - [ ] More UI/design improvements
 - [ ] Import/Export
+- [ ] Some kind of versioning.
 - [ ] Allow for reording the table list?
+- [ ] Some kind of validating for imports?
 
 ### Post v1:
 - [ ] External saving (???)
