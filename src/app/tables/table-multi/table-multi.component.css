@@ -1,7 +1,7 @@
 :host {
     display: block;
     padding: 0;
-    background-color: white;
+    background-color: var(--surface1);
     margin-bottom: .25rem;
 }
 
