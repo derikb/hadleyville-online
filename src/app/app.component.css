@@ -29,16 +29,18 @@ header#header h1  {
 }
 
 header nav {
-    border-radius: 5px;
-    border: 1px dotted var(--primary);
-    background-color: var(--surface2);
     margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
 }
 
 header nav ul {
-    font-size: 1.2rem;
-    margin: 1rem 2rem;
-    padding: 0;
+    border-radius: 5px;
+    border: 1px dotted var(--primary);
+    background-color: var(--surface2);
+    padding: 1rem 2rem;
+    margin: 0 1rem 0 0;
 }
 header nav ul li {
     display: inline-block;
@@ -55,6 +57,19 @@ header nav a:hover, header nav a:active {
     text-decoration-style: double;
 }
 header nav a.active {
+    color: var(--text1);
+}
+header nav button {
+    font-size: inherit;
+}
+header nav button[data-open="false"]::after {
+    content: "ᐊ";
+    margin-left: .5rem;
+    color: var(--text1);
+}
+header nav button[data-open="true"]::after {
+    content: "ᐅ";
+    margin-left: .5rem;
     color: var(--text1);
 }
 

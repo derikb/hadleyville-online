@@ -7,8 +7,10 @@
             <li><a routerLink="/intro" routerLinkActive="active">Intro</a></li>
             <li><a routerLink="/rules" routerLinkActive="active">Rules</a></li>
             <li><a routerLink="/settings" routerLinkActive="active">Settings</a></li>
-            <li><a href="#" (click)="toggleTable(!tablesOpen)">Tables</a></li>
-          </ul>
+        </ul>
+        <div>
+          <button type="button" [attr.data-open]="tablesOpen" (click)="toggleTable(!tablesOpen)">Tables</button>
+        </div>
     </nav>
 </header>
 <main>
