@@ -9,7 +9,7 @@ import { RandomtableService } from '../randomtable.service';
 })
 export class TablesListComponent implements OnInit {
   tables: Array<RandomTable> = [];
-  @Output() toggleTable = new EventEmitter<null>();
+  @Output() toggleTable = new EventEmitter<Boolean>();
 
   constructor(private tableService: RandomtableService) { }
 
@@ -18,6 +18,10 @@ export class TablesListComponent implements OnInit {
   }
 
   closeTable() : void {
-    this.toggleTable.emit();
+    this.toggleTable.emit(false);
+  }
+
+  openTable() : void {
+    this.toggleTable.emit(true);
   }
 }

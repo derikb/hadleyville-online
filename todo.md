@@ -18,7 +18,7 @@
 - [x] More UI/design improvements
 - [x] Import/Export
 - [x] Some kind of validating for imports?
-- [ ] Fix focus on table area when it is closed.
+- [x] Fix focus on table area when it is closed.
 - [ ] Set browser support for build.
 - [ ] Fill in a default town and npc?
 

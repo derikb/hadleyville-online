@@ -31,10 +31,9 @@ export class ResultsModalComponent implements OnInit {
 
   onSubmit($event) : void {
     $event.preventDefault();
-    //console.log($event.target.querySelector('select option[selected]').value);
+
     const formData = new FormData($event.target);
     const noteId = formData.get('note_uuid').toString();
-    console.log(noteId);
     if (noteId === '') {
       const note = new Note({
         title: this.table.title,
@@ -48,5 +47,4 @@ export class ResultsModalComponent implements OnInit {
     }
     this.dialogRef.close();
   }
-
 }

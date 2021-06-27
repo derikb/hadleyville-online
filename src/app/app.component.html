@@ -7,13 +7,13 @@
             <li><a routerLink="/intro" routerLinkActive="active">Intro</a></li>
             <li><a routerLink="/rules" routerLinkActive="active">Rules</a></li>
             <li><a routerLink="/settings" routerLinkActive="active">Settings</a></li>
-            <li><a href="#" (click)="toggleTable($event)">Tables</a></li>
+            <li><a href="#" (click)="toggleTable(!tablesOpen)">Tables</a></li>
           </ul>
     </nav>
 </header>
 <main>
-    <router-outlet></router-outlet>
-    <app-tables-list role="region" id="tables" [attr.aria-expanded]="tablesOpen" (toggleTable)="toggleTable($event)" aria-label="Random Tables"></app-tables-list>
+  <app-tables-list role="region" id="tables" [attr.aria-expanded]="tablesOpen" (toggleTable)="toggleTable($event)" tabindex="-1" aria-label="Random Tables"></app-tables-list>
+  <router-outlet></router-outlet>
 </main>
 <footer>
     <p>Written in Mar-Apr 2021 by Derik A. Badman <a href="https://derikbadman.com">https://derikbadman.com</a> Game info and updates at <a href="https://madinkbeard.itch.io/hadleyville">https://madinkbeard.itch.io/hadleyville</a></p>
