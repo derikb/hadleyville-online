@@ -22,8 +22,10 @@
 - [x] Fill in a default town
 
 ### Post v1:
+- [ ] Replace the material design modal with one that isn't wrapped up in some many other dependencies.
 - [ ] Better focus management (when I can figure out how it works with angular)
 - [ ] Responsive design improvements
+- [ ] Keyboard commands for some things?
 - [ ] PC section?
 - [ ] Way to collapse/hide sections on home page?
 - [ ] External saving (???)
