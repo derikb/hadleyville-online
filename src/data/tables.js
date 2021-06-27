@@ -1,39 +1,4 @@
 export default [
-    {
-        id: 1,
-        key: 'locations',
-        title: 'Locations Outside of Town',
-        tables: {
-          default: [
-            "Train [in motion/broken down/stopped by blocked tracks]",
-            "Family Farm [abandoned/prospering/failing]",
-            "Cattle Ranch",
-            "Mine [abandoned/active]",
-            "Grazing land [disputed]",
-            "River [rapids]",
-            "Rocky hills",
-            "Deep woods",
-            "Religious camp",
-            "Bandit camp",
-            "Log cabin [abandoned/hideout/hermit]"
-          ]
-        }
-    },
-    {
-        id: 2,
-        key: 'resources',
-        title: 'Settlement Resources',
-        tables: {
-          default: [
-            'Gold',
-            'Lumber',
-            'Farmland',
-            'Water',
-            'Railway',
-            'Furs/Game'
-          ]
-        }
-    },
   {
     id: 3,
     key: 'npcs',
@@ -328,21 +293,6 @@ export default [
     }
   },
   {
-    id: 9,
-    key: 'town_landscape',
-    title: 'Landscape Prominent Feature',
-    tables: {
-      default: [
-        "Town build on the banks of a winding stream crossed by makeshift bridges.",
-        "Town build upon rocky outcrops, street(s) wind back and forth, buildings are all at different levels.",
-        "Town grew around a single giant tree, the rest of the land is flat and barren.",
-        "Town sits in a narrow valley, overlooked by ridges, main road snakes down to town and then back up and out.",
-        "Town built at foot of cliff where the first mine was found.",
-        "Town expanded from a small waterfall and pool amongst tall evergreens."
-      ]
-    }
-  },
-  {
     id: 10,
     key: 'items',
     title: 'Items',
@@ -406,6 +356,21 @@ export default [
     }
   },
   {
+    id: 9,
+    key: 'town_landscape',
+    title: 'Landscape Prominent Feature',
+    tables: {
+      default: [
+        "Town build on the banks of a winding stream crossed by makeshift bridges.",
+        "Town build upon rocky outcrops, street(s) wind back and forth, buildings are all at different levels.",
+        "Town grew around a single giant tree, the rest of the land is flat and barren.",
+        "Town sits in a narrow valley, overlooked by ridges, main road snakes down to town and then back up and out.",
+        "Town built at foot of cliff where the first mine was found.",
+        "Town expanded from a small waterfall and pool amongst tall evergreens."
+      ]
+    }
+  },
+  {
     id: 11,
     key: 'dressing',
     title: 'Set Dressing',
@@ -443,6 +408,41 @@ export default [
       ]
     }
   },
+  {
+    id: 1,
+    key: 'locations',
+    title: 'Locations Outside of Town',
+    tables: {
+      default: [
+        "Train [in motion/broken down/stopped by blocked tracks]",
+        "Family Farm [abandoned/prospering/failing]",
+        "Cattle Ranch",
+        "Mine [abandoned/active]",
+        "Grazing land [disputed]",
+        "River [rapids]",
+        "Rocky hills",
+        "Deep woods",
+        "Religious camp",
+        "Bandit camp",
+        "Log cabin [abandoned/hideout/hermit]"
+      ]
+    }
+},
+{
+    id: 2,
+    key: 'resources',
+    title: 'Settlement Resources',
+    tables: {
+      default: [
+        'Gold',
+        'Lumber',
+        'Farmland',
+        'Water',
+        'Railway',
+        'Furs/Game'
+      ]
+    }
+},
   {
     id: 12,
     key: "town_name",
