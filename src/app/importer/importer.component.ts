@@ -51,7 +51,7 @@ export class ImporterComponent implements OnInit {
               const towns = data.town || [];
               if (Array.isArray(towns) ) {
                 const town = towns.find(Boolean);
-                if (town) {
+                if (town && town.uuid) {
                   store.dispatch(updateTown({ town }));
                 }
               }

@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,9 +16,6 @@ import { RulesPageComponent } from './pages/rules-page/rules-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { IntroPageComponent } from './pages/intro-page/intro-page.component';
 import { RollerComponent } from './roller/roller.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialogModule } from '@angular/material/dialog';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NotesListComponent } from './notes/notes-list/notes-list.component';
 import { NpcsListComponent } from './npcs/npcs-list/npcs-list.component';
 import { TablesListComponent } from './tables/tables-list/tables-list.component';

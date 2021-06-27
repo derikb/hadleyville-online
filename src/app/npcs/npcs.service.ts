@@ -63,6 +63,9 @@ export class NpcsService {
   importNPCs(npcs) : void {
     store.dispatch(importNPCs({ npcs }));
     npcs.forEach((npcData) => {
+      if (!npcData.uuid) {
+        return;
+      }
       const npc = new NPC(npcData);
       this.npcs.push(npc);
       this.npcs$.next(npc);

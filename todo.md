@@ -15,14 +15,21 @@
 - [x] Save order of notes/npcs
 - [x] When new note is created start in edit mode.
 - [x] Better NPC name lists
-- [ ] More UI/design improvements
-- [ ] Import/Export
-- [ ] Some kind of versioning.
-- [ ] Allow for reording the table list?
-- [ ] Some kind of validating for imports?
+- [x] More UI/design improvements
+- [x] Import/Export
+- [x] Some kind of validating for imports?
+- [ ] Fix focus on table area when it is closed.
+- [ ] Set browser support for build.
+- [ ] Fill in a default town and npc?
 
 ### Post v1:
+- [ ] Responsive design improvements
+- [ ] PC section?
+- [ ] Way to collapse/hide sections on home page?
 - [ ] External saving (???)
   - [ ] Auth
   - [ ] Merge conflicts resolution
 - [ ] Relationship map?
+- [ ] Allow for reording the table list?
+- [ ] Some kind of versioning.
+

@@ -55,6 +55,9 @@ export class NotesService {
   importNotes(notes) : void {
     store.dispatch(importNotes({ notes }));
     notes.forEach((noteData) => {
+      if (!noteData.uuid) {
+        return;
+      }
       const note = new Note(noteData);
       this.notes.push(note);
       this.notes$.next(note);
