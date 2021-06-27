@@ -49,7 +49,10 @@ export class TownEditModalComponent implements OnInit {
     // Copy all the fields and then assign new values.
     //const fields = Object.assign({}, this.town.fields, newFields);
     this.town.fields = newFields;
-    console.log(this.town.fields);
+    // if (!this.town.name) {
+    //   // 'ERROR!';
+    //   return;
+    // }
     store.dispatch(updateTown({ town: this.town.toJSON() }));
     this.dialogRef.close();
   }

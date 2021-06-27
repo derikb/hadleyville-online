@@ -19,10 +19,10 @@
 - [x] Import/Export
 - [x] Some kind of validating for imports?
 - [x] Fix focus on table area when it is closed.
-- [ ] Set browser support for build.
-- [ ] Fill in a default town and npc?
+- [x] Fill in a default town
 
 ### Post v1:
+- [ ] Better focus management (when I can figure out how it works with angular)
 - [ ] Responsive design improvements
 - [ ] PC section?
 - [ ] Way to collapse/hide sections on home page?
