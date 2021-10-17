@@ -259,7 +259,8 @@ export default [
           "Election",
           "Workers strike",
           "Lynch mob",
-          "New business opens"
+          "New business opens",
+          "Square dance"
       ]
     }
   },
@@ -311,7 +312,8 @@ export default [
         "Gun [shotgun/pistol/rifle]",
         "Bandolier of bullets",
         "Cavalry Sword",
-        "Ax"
+        "Ax",
+        "Whip"
       ],
       valuables: [
           "Wedding band of [live/dead] spouse",
@@ -319,7 +321,8 @@ export default [
           "Unopened bottle of imported liquor",
           "Wallet of bills",
           "Pouch of gold",
-          "Combination to safe on a photo"
+          "Combination to safe on a photo",
+          "Crucifix"
       ],
       clothes: [
           "Hat [lady’s/man’s] [fine/plain]",
@@ -404,7 +407,11 @@ export default [
           "Makeshift tables",
           "Ladders",
           "Heavy curtains",
-          "Wash tubs"
+          "Wash tubs",
+          "Valise filled with dresses",
+          "Old Clock",
+          "Brightly upholstered chair/couch",
+          "Crystal decanter filled with whiskey"
       ]
     }
   },
