@@ -2,7 +2,7 @@ import { NPCSchema, NPCSchemaField } from 'rpg-table-randomizer/src/npc_schema.j
 import { registerSchema, initializeNewNPC } from 'rpg-table-randomizer/src/npc.js';
 import { v4 as uuidv4 } from 'uuid';
 import Randomizer from 'rpg-table-randomizer/src/randomizer.js';
-
+import MarkdownIt from 'markdown-it';
 
 const npcName = new NPCSchemaField({
     key: 'npcName',
@@ -39,11 +39,6 @@ const field4 = new NPCSchemaField({
     count: 1
 });
 field4.label = 'Secret';
-const field5 = new NPCSchemaField({
-    key: 'notes',
-    type: 'string'
-});
-field5.label = 'Notes';
 
 const appNPCSchema = new NPCSchema({
     key: 'hadleyville',
@@ -53,8 +48,7 @@ const appNPCSchema = new NPCSchema({
         field1,
         field2,
         field3,
-        field4,
-        field5
+        field4
     ]
 });
 
@@ -109,8 +103,7 @@ class NPC {
             'job',
             'long_goal',
             'short_goal',
-            'secret',
-            'notes'
+            'secret'
         ];
     }
 
@@ -119,6 +112,18 @@ class NPC {
             return;
         }
         this[field] = value;
+    }
+
+    getFieldDisplay(field) {
+        if (field === 'notes') {
+            return this.noteHtml;
+        }
+        return this[field];
+    }
+
+    get noteHtml() : String {
+        const md = new MarkdownIt();
+        return md.render(this.notes);
     }
 
     toJSON() {
