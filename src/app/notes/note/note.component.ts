@@ -37,6 +37,18 @@ export class NoteComponent implements OnInit {
     this.notesService.updateNote(this.note);
   }
 
+  /**
+   * If not already, collapse view.
+   */
+  collapse() {
+    if (this.note.collapse) {
+      return;
+    }
+    this.el.nativeElement.removeAttribute('open');
+    this.note.collapse = true;
+    this.notesService.updateNote(this.note);
+  }
+
   saveEdit(ev) {
     const formData = new FormData(ev.target);
     this.note.title = formData.get('title').toString();

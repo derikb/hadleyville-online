@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { NpcsService} from '../npcs.service';
 import { NPC } from '../appnpc';
+import { NpcComponent } from '../npc/npc.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
@@ -10,6 +11,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 })
 export class NpcsListComponent implements OnInit {
   npcs: Array<NPC> = [];
+  @ViewChildren(NpcComponent) npcElements!: QueryList<NpcComponent>;
 
   constructor(private npcService: NpcsService) { }
 
@@ -35,6 +37,15 @@ export class NpcsListComponent implements OnInit {
         }
       }
     });
+  }
+
+  /**
+   * Collapse all NPCs components.
+   */
+  collapseAll() {
+    this.npcElements.forEach((npc) => {
+      npc.collapse();
+    })
   }
 
   createNPC() {

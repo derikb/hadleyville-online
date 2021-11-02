@@ -38,6 +38,18 @@ export class NpcComponent implements OnInit {
     this.npcsService.updateNPC(this.npc);
   }
 
+  /**
+   * If not already, collapse view.
+   */
+  collapse() {
+    if (this.npc.collapse) {
+      return;
+    }
+    this.el.nativeElement.removeAttribute('open');
+    this.npc.collapse = true;
+    this.npcsService.updateNPC(this.npc);
+  }
+
   getFieldLabel(fieldName: string) : string {
     const field = this.schema.fields.find((f) => f.key === fieldName);
     return `${field.label}:`;

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { NotesService } from '../notes.service';
 import Note from '../note';
+import { NoteComponent } from '../note/note.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
@@ -10,6 +11,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 })
 export class NotesListComponent implements OnInit {
   notes: Array<Note> = [];
+  @ViewChildren(NoteComponent) noteElements!: QueryList<NoteComponent>;
 
   constructor(private noteService: NotesService) { }
 
@@ -35,6 +37,15 @@ export class NotesListComponent implements OnInit {
         }
       }
     });
+  }
+
+  /**
+   * Collapse all note components.
+   */
+  collapseAll() {
+    this.noteElements.forEach((note) => {
+      note.collapse();
+    })
   }
 
   createNote() : void {
