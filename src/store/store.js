@@ -1,9 +1,9 @@
 
-import { configureStore } from '../../node_modules/@reduxjs/toolkit/dist/index.js';
+import { configureStore } from '@reduxjs/toolkit';
 import notesReducer from './notes-reducer.js';
 import npcsReducer from './npcs-reducer.js';
 import townReducer from './town-reducer.js';
-import { save, load } from "../../node_modules/redux-localstorage-simple/dist/index.js";
+import { save, load } from 'redux-localstorage-simple';
 
 const store = configureStore({
   reducer: {

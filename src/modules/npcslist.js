@@ -1,4 +1,4 @@
-import { getAllNPCs } from '../services/npcService.js';
+import { createNewNPC, getAllNPCs, npcEmitter } from '../services/npcService.js';
 import NPCDisplay from './npcdisplay.js';
 
 const template = document.createElement('template');
@@ -45,6 +45,8 @@ class NPCsList extends HTMLElement {
             this.npcList.appendChild(display);
         });
 
+
+        npcEmitter.on('npc:delete', this._removeNPC.bind(this));
         // @todo Add drag/drop/reorder... on drop trigger sort save.
         // @todo add handler for add/remove/etc events from npc service.
     }
@@ -66,7 +68,7 @@ class NPCsList extends HTMLElement {
     }
 
     _createNPC () {
-        const npc = addNPC();
+        const npc = createNewNPC();
         const display = new NPCDisplay();
         display.setNPC(npc);
         display._enableEdit();
@@ -80,8 +82,8 @@ class NPCsList extends HTMLElement {
         this.npcList.appendChild(display);
     }
 
-    _removeNPC (npcId) {
-        const npcDisplay = this.shadowRoot.querySelector(`#${npcId}`);
+    _removeNPC ({ id }) {
+        const npcDisplay = this.shadowRoot.querySelector(`#npc_${id}`);
         if (npcDisplay) {
             npcDisplay.parentElement.removeChild(npcDisplay);
         }

@@ -103,7 +103,7 @@ class NoteDisplay extends HTMLElement {
      */
     setNote (note) {
         this.note = note;
-        this.id = this.note.id;
+        this.id = `note_${this.note.id}`;
         this.shadowRoot.querySelector('#summary-title').innerText = note.title;
         if (note.collapse) {
             this.shadowRoot.querySelector('details').open = false;

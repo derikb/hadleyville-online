@@ -1,7 +1,7 @@
 // import store from '../store/store';
-import { importNotes, deleteAllNotes } from '../services/notesService.js';
+import { importNotes, deleteAllNotes } from './notesService.js';
 import { saveTown, clearTown } from '../models/town.js';
-import { importNPCs, deleteAllNPCs } from '../services/npcService.js';
+import { importNPCs, deleteAllNPCs } from './npcService.js';
 
 const resetExport = function (ev) {
     // Give it a second so the link default action happens.

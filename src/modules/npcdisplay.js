@@ -102,7 +102,7 @@ class NPCDisplay extends HTMLElement {
      */
     setNPC (npc) {
         this.npc = npc;
-        this.id = this.npc.id;
+        this.id = `npc_${this.npc.id}`;
         if (npc.collapse) {
             this.shadowRoot.querySelector('details').open = false;
         } else {

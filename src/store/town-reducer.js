@@ -1,4 +1,4 @@
-import { createSlice } from '../../node_modules/@reduxjs/toolkit/dist/index.js';
+import { createSlice } from '@reduxjs/toolkit';
 
 const townSlice = createSlice({
     name: 'town',

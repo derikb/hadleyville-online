@@ -423,12 +423,21 @@ main > .text-page {
 .dialog-content header {
     display: flex;
     justify-content: space-between;
-    align-items: center;;
+    align-items: center;
+    margin-bottom: 2rem;
 }
 
+.dialog-content header h1 {
+    margin: 0;
+}
 
- .dialog-body p.rtable-result {
+.dialog-body p.rtable-result {
     display: block;
     margin-bottom: 1rem;
+    padding-bottom: 1rem;
     border-bottom: 1px solid var(--primary);
- }
+}
+
+.dialog-body form {
+    margin-top: 2rem;
+}

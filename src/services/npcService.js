@@ -1,10 +1,13 @@
-// import store from '../store/store.js';
-// import { createNPC, updateNPC, deleteNPC, sortNPCs, clearNPCs, importNPCs } from '../store/npcs-reducer.js';
+import store from '../store/store.js';
+import { createNPC, updateNPC, deleteNPC, sortNPCs, clearNPCs, importNPCs } from '../store/npcs-reducer.js';
 
 import npcSchema from '../models/npcSchema.js';
 import NPC from '../models/npc.js';
 import { convertToken } from '../services/randomTableService.js';
 import { isEmpty } from '../../node_modules/rpg-table-randomizer/src/r_helpers.js';
+import EventEmitter from '../models/EventEmitter.js';
+
+const npcEmitter = new EventEmitter();
 
 const newNPC = function () {
     const fields = new Map();
@@ -30,7 +33,7 @@ const newNPC = function () {
         fields.set(key, field.defaultEmpty);
     });
     return new NPC({
-        fields: fields,
+        fields: fields
     });
 };
 
@@ -72,6 +75,9 @@ const updateNPC = function (npc) {
 const deleteNPC = function (id) {
     // store.dispatch(deleteNPC({ id }));
     // this.deletedNPCs$.next(uuid);
+    npcEmitter.trigger('npc:delete', {
+        id
+    });
 };
 
 const sortNPCs = function (sortUuids) {
@@ -95,6 +101,7 @@ const importNPCs = function (npcs) {
 };
 
 export {
+    npcEmitter,
     getAllNPCs,
     createNewNPC,
     updateNPC,

@@ -1,5 +1,5 @@
 
-import NPC from '../../node_modules/rpg-table-randomizer/src/NPC.js';
+import NPC from 'rpg-table-randomizer/src/NPC.js';
 
 export default class AppNPC extends NPC {
     constructor ({

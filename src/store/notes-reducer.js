@@ -1,36 +1,34 @@
-import { createSlice } from '../../node_modules/@reduxjs/toolkit/dist/index.js';
+import { createSlice } from '@reduxjs/toolkit';
 
 
-const npcsSlice = createSlice({
-    name: 'npcs',
+const notesSlice = createSlice({
+    name: 'notes',
     initialState: [
     ],
     reducers: {
-        createNPC(state, action) {
-            const uuid = action.payload.npc.uuid;
-            if (!uuid) {
-                return;
-            }
+        createNote(state, action) {
+            console.log(action);
+            const uuid = action.payload.note.uuid;
             const index = state.findIndex((el) => el.uuid === uuid);
             // It's a dupe uuid... probably should throw an error or something...
             if (index > -1) {
                 return;
             }
-            state.push(action.payload.npc);
+            state.push(action.payload.note);
         },
-        updateNPC(state, action) {
-            const uuid = action.payload.npc.uuid;
+        updateNote(state, action) {
+            const uuid = action.payload.note.uuid;
             if (!uuid) {
                 return;
             }
             const index = state.findIndex((el) => el.uuid === uuid);
             if (index !== -1) {
-                state.splice(index, 1, action.payload.npc);
+                state.splice(index, 1, action.payload.note);
             } else {
-                state.push(action.payload.npc);
+                state.push(action.payload.note);
             }
         },
-        deleteNPC(state, action) {
+        deleteNote(state, action) {
             const uuid = action.payload.uuid;
             if (!uuid) {
                 return;
@@ -40,7 +38,7 @@ const npcsSlice = createSlice({
                 state.splice(index, 1);
             }
         },
-        sortNPCs(state, action) {
+        sortNotes(state, action) {
             // Array of UUIDs in new order.
             const sortUuids = action.payload.sortUuids;
             if (!Array.isArray(sortUuids) || sortUuids.length === 0) {
@@ -52,21 +50,21 @@ const npcsSlice = createSlice({
                 return aIndex - bIndex;
             });
         },
-        clearNPCs(state) {
+        clearNotes() {
             return [];
         },
-        importNPCs(state, action) {
-            const npcs = action.payload.npcs;
+        importNotes(state, action) {
+            const notes = action.payload.notes;
 
-            npcs.forEach((npc) => {
-                if (!npc.uuid) {
+            notes.forEach((note) => {
+                if (!note.uuid) {
                     return;
                 }
-                const index = state.findIndex((el) => el.uuid === npc.uuid);
+                const index = state.findIndex((el) => el.uuid === note.uuid);
                 if (index !== -1) {
-                    state.splice(index, 1, npc);
+                    state.splice(index, 1, note);
                 } else {
-                    state.push(npc);
+                    state.push(note);
                 }
             });
         }
@@ -74,8 +72,8 @@ const npcsSlice = createSlice({
   })
 
   // Extract the action creators object and the reducer
-  const { actions, reducer } = npcsSlice;
+  const { actions, reducer } = notesSlice;
   // Extract and export each action creator by name
-  export const { createNPC, updateNPC, deleteNPC, sortNPCs, clearNPCs, importNPCs } = actions;
+  export const { createNote, updateNote, deleteNote, sortNotes, clearNotes, importNotes } = actions;
   // Export the reducer, either as a default or named export
   export default reducer;

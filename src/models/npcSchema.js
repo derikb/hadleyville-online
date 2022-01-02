@@ -1,5 +1,5 @@
-import NPCSchema from '../../node_modules/rpg-table-randomizer/src/NPCSchema.js';
-import NPCSchemaField from '../../node_modules/rpg-table-randomizer/src/NPCSchemaField.js';
+import NPCSchema from 'rpg-table-randomizer/src/NPCSchema.js';
+import NPCSchemaField from 'rpg-table-randomizer/src/NPCSchemaField.js';
 
 const npcName = new NPCSchemaField({
     key: 'npcName',

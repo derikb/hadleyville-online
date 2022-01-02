@@ -1,7 +1,7 @@
-import NPC from '../../node_modules/rpg-table-randomizer/src/NPC.js';
-import NPCSchema from '../../node_modules/rpg-table-randomizer/src/NPCSchema.js';
-import NPCSchemaField from '../../node_modules/rpg-table-randomizer/src/NPCSchemaField.js';
-import { isEmpty } from '../../node_modules/rpg-table-randomizer/src/r_helpers.js';
+import NPC from 'rpg-table-randomizer/src/NPC.js';
+import NPCSchema from 'rpg-table-randomizer/src/NPCSchema.js';
+import NPCSchemaField from 'rpg-table-randomizer/src/NPCSchemaField.js';
+import { isEmpty } from 'rpg-table-randomizer/src/r_helpers.js';
 import { convertToken } from '../services/randomTableService.js';
 // import store from '../store/store.js';
 // import { updateTown, clearTown } from '../store/town-reducer.js';

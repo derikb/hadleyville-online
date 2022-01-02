@@ -1,5 +1,6 @@
-import { getAllNotes, addNote } from '../services/notesService.js';
+import { getAllNotes, addNote, noteEmitter } from '../services/notesService.js';
 import NoteDisplay from './notedisplay.js';
+import Note from '../models/note.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -45,6 +46,9 @@ class NotesList extends HTMLElement {
             this.noteList.appendChild(display);
         });
 
+        noteEmitter.on('note:add', this._addNote.bind(this));
+        noteEmitter.on('note:delete', this._removeNote.bind(this));
+
         // @todo Add drag/drop/reorder... on drop trigger sort save.
         // @todo add handler for add/remove/etc events from note service.
     }
@@ -66,22 +70,27 @@ class NotesList extends HTMLElement {
     }
 
     _createNote () {
-        const note = addNote();
-        const display = new NoteDisplay();
-        display.setNote(note);
-        display._enableEdit();
-        this.noteList.appendChild(display);
-        display.shadowRoot.querySelector('input[name=title]').focus();
+        addNote(new Note({}), 'edit');
     }
 
-    _addNote (note) {
+    _addNote ({ note, mode }) {
+        const id = note.id;
+        if (this.shadowRoot.querySelector(`#note_${id}`)) {
+            return;
+        }
         const display = new NoteDisplay();
         display.setNote(note);
+        if (mode === 'edit') {
+            display._enableEdit();
+        }
         this.noteList.appendChild(display);
+        if (mode === 'edit') {
+            display.shadowRoot.querySelector('input[name=title]').focus();
+        }
     }
 
-    _removeNote (noteId) {
-        const noteDisplay = this.shadowRoot.querySelector(`#${noteId}`);
+    _removeNote ({ id }) {
+        const noteDisplay = this.shadowRoot.querySelector(`#note_${id}`);
         if (noteDisplay) {
             noteDisplay.parentElement.removeChild(noteDisplay);
         }

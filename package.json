@@ -14,12 +14,8 @@
   ],
   "author": "Derik A Badman",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
+    "start": "esbuild --serve=8080 --servedir=./dist ./src/styles.css ./src/index.js --outdir=./dist --loader:.svg=dataurl --loader:.html=file --bundle",
+    "build": "esbuild ./src/styles.css ./src/index.js --outdir=./dist --loader:.svg=dataurl --loader:.html=file --minify --sourcemap --bundle",
     "release": "standard-version -a"
   },
   "bugs": {
@@ -37,7 +33,7 @@
   },
   "devDependencies": {
     "cz-conventional-changelog": "^3.3.0",
-    "esbuild": "^0.14.2",
+    "esbuild": "^0.14.10",
     "eslint": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.3",
