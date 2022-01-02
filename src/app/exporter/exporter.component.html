@@ -1,6 +1,0 @@
-<p>
-    <button *ngIf="!isExporting" type="button" (click)="doExport($event)">Create Export</button>
-    <ng-container *ngIf="isExporting">
-        <a [href]="exportFileUrl" [attr.download]="exportFileName" (click)="resetExport($event)">Download Export</a>
-    </ng-container>
-</p>

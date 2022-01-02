@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Hadleyville: Rules Light RPG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="icon" type="image/x-icon" href="favicon.ico"> -->
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./newstyle.css"></head>
+</head>
+<body id="page-settings">
+    <had-header></had-header>
+
+    <main>
+        <had-tabledrawer role="region" id="tables" aria-expanded="false" tabindex="-1" aria-label="Random Tables"></had-tabledrawer>
+
+        <div class="text-page">
+            <h2 class="header">Settings</h2>
+
+            <p>For more code, bugs, plans, and other details see <a href="https://github.com/derikb/hadleyville-online">the github page</a>.</p>
+
+            <section id="import">
+                <p>Data is currently stored in your browser's local storage. To use on other browsers or devices you must export then import.</p>
+                <section>
+                    <h3>Export Data</h3>
+
+                    <p>Export your data to a file for importing into another browser.</p>
+
+                    <p id="export-button">
+                        <button type="button" id="btn-export">Create Export</button>
+                    </p>
+                    <p id="export-output"></p>
+                </section>
+
+                <section>
+                    <h3>Import Data</h3>
+                    <p>Import your data from an exported file. If Town data is included it will update current Town. Included NPCs and Notes will either be added or overwrite existing (based on unique id).</p>
+                    <form id="importForm">
+                        <div class="formField">
+                            <label for="importFile">Data File</label>
+                            <input id="importFile" type="file" name="importFile" value="" required>
+                        </div>
+                        <button type="submit">Import</button>
+                    </form>
+                </section>
+
+                <section>
+                    <h3>Clear Data</h3>
+                    <p>Clear all saved data from local storage. <strong>THIS IS NOT REVERSIBLE.</strong><p>
+                    <p><button type="button" id="btn-delete">Delete ALL Data</button>
+                </section>
+            </section>
+        </div>
+    </main>
+    <had-footer></had-footer>
+    <script type="module" src="./newindex.js"></script>
+</body>
+</html>

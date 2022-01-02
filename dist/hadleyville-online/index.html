@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Hadleyville: Rules Light RPG</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="icon" type="image/x-icon" href="favicon.ico"> -->
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./newstyle.css"></head>
+</head>
+<body>
+    <had-header></had-header>
+
+    <main>
+        <had-tabledrawer role="region" id="tables" aria-expanded="false" tabindex="-1" aria-label="Random Tables"></had-tabledrawer>
+
+        <div class="home-page">
+            <div id="leftColumn">
+                <had-town id="town" role="region" aria-label="Town"></had-town>
+                <had-npcslist role="region" id="npcs" aria-label="NPCs"></had-npcslist>
+            </div>
+
+            <had-noteslist role="region" id="notes" aria-label="Notes"></had-noteslist>
+        </div>
+    </main>
+    <had-footer></had-footer>
+    <div
+        id="dialog-rtable"
+        aria-labelledby="dialog-rtable-title"
+        aria-hidden="true"
+        class="dialog-container"
+        >
+    <!-- 2. The dialog overlay -->
+    <div class="dialog-overlay" data-a11y-dialog-hide></div>
+    <!-- 3. The actual dialog -->
+    <div class="dialog-content" role="document">
+        <!-- 4. The close button -->
+        <header>
+            <h1 id="dialog-rtable-title"></h1>
+            <button type="button" data-a11y-dialog-hide aria-label="Close dialog">
+                &times;
+            </button>
+        </header>
+        <!-- 6. Dialog content -->
+        <div class="dialog-body">
+
+        </div>
+    </div>
+</div>
+<script type="module" src="./newindex.js"></script>
+</body>
+</html>
