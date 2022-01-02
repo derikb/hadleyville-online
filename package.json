@@ -14,8 +14,8 @@
   ],
   "author": "Derik A Badman",
   "scripts": {
-    "start": "esbuild --serve=8080 --servedir=./dist ./src/styles.css ./src/index.js --outdir=./dist --loader:.svg=dataurl --loader:.html=file --bundle",
-    "build": "esbuild ./src/styles.css ./src/index.js --outdir=./dist --loader:.svg=dataurl --loader:.html=file --minify --sourcemap --bundle",
+    "start": "esbuild --serve=8080 --servedir=./dist ./src/style.css ./src/index.js --outdir=./dist --loader:.svg=dataurl --loader:.html=file --bundle",
+    "build": "esbuild ./src/style.css ./src/index.js --outdir=./dist --loader:.svg=dataurl --loader:.html=file --minify --sourcemap --bundle",
     "release": "standard-version -a"
   },
   "bugs": {
@@ -29,6 +29,7 @@
     "markdown-it": "^12.0.6",
     "redux-localstorage-simple": "^2.4.0",
     "rpg-table-randomizer": "^1.0.1",
+    "sortablejs": "^1.14.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

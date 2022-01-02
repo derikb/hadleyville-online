@@ -1,11 +1,11 @@
 /**
  * Notes for the game.
  */
-import uuidv4 from 'uuid/dist/esm-browser/v4.js';
-//import { MarkdownIt } from '../../node_modules/markdown-it/dist/markdown-it.js';
+import { v4 as uuidv4 } from 'uuid';
+import MarkdownIt from 'markdown-it';
 
 export default class Note {
-    constructor({
+    constructor ({
         uuid = null,
         title = '',
         content = '',
@@ -20,17 +20,16 @@ export default class Note {
             this.uuid = uuidv4();
         }
     }
-    get id() {
+    get id () {
         return this.uuid;
     }
 
-    get contentHtml() {
-        return this.content;
-//        const md = new MarkdownIt();
-//        return md.render(this.content);
+    get contentHtml () {
+        const md = new MarkdownIt();
+        return md.render(this.content);
     }
 
-    toJSON() {
+    toJSON () {
         const obj = {};
         Object.keys(this).forEach((prop) => {
             const value = this[prop];

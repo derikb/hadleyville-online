@@ -1,5 +1,6 @@
 
 import NPC from 'rpg-table-randomizer/src/NPC.js';
+import MarkdownIt from 'markdown-it/lib';
 
 export default class AppNPC extends NPC {
     constructor ({
@@ -53,8 +54,7 @@ export default class AppNPC extends NPC {
     }
 
     get noteHtml () {
-        return this.notes;
-        // const md = new MarkdownIt();
-        // return md.render(this.notes);
+        const md = new MarkdownIt();
+        return md.render(this.notes);
     }
 }

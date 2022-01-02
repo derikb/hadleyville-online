@@ -1,68 +1,67 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-
 const npcsSlice = createSlice({
     name: 'npcs',
     initialState: [
     ],
     reducers: {
-        createNPC(state, action) {
-            const uuid = action.payload.npc.uuid;
-            if (!uuid) {
+        createNPC (state, action) {
+            const id = action.payload.npc.id;
+            if (!id) {
                 return;
             }
-            const index = state.findIndex((el) => el.uuid === uuid);
+            const index = state.findIndex((el) => el.id === id);
             // It's a dupe uuid... probably should throw an error or something...
             if (index > -1) {
                 return;
             }
             state.push(action.payload.npc);
         },
-        updateNPC(state, action) {
-            const uuid = action.payload.npc.uuid;
-            if (!uuid) {
+        updateNPC (state, action) {
+            const id = action.payload.npc.id;
+            if (!id) {
                 return;
             }
-            const index = state.findIndex((el) => el.uuid === uuid);
+            const index = state.findIndex((el) => el.id === id);
             if (index !== -1) {
                 state.splice(index, 1, action.payload.npc);
             } else {
                 state.push(action.payload.npc);
             }
         },
-        deleteNPC(state, action) {
-            const uuid = action.payload.uuid;
-            if (!uuid) {
+        deleteNPC (state, action) {
+            const id = action.payload.id;
+            if (!id) {
                 return;
             }
-            const index = state.findIndex((el) => el.uuid === uuid);
+            const index = state.findIndex((el) => el.id === id);
             if (index !== -1) {
                 state.splice(index, 1);
             }
         },
-        sortNPCs(state, action) {
+        sortNPCs (state, action) {
             // Array of UUIDs in new order.
             const sortUuids = action.payload.sortUuids;
             if (!Array.isArray(sortUuids) || sortUuids.length === 0) {
                 return;
             }
             state.sort((a, b) => {
-                const aIndex = sortUuids.indexOf(a.uuid);
-                const bIndex = sortUuids.indexOf(b.uuid);
+                const aIndex = sortUuids.indexOf(a.id);
+                const bIndex = sortUuids.indexOf(b.id);
                 return aIndex - bIndex;
             });
         },
-        clearNPCs(state) {
+        clearNPCs (state) {
             return [];
         },
-        importNPCs(state, action) {
+        importNPCs (state, action) {
             const npcs = action.payload.npcs;
 
             npcs.forEach((npc) => {
-                if (!npc.uuid) {
+                if (!npc.id) {
                     return;
                 }
-                const index = state.findIndex((el) => el.uuid === npc.uuid);
+                const index = state.findIndex((el) => el.id === npc.id);
                 if (index !== -1) {
                     state.splice(index, 1, npc);
                 } else {
@@ -70,12 +69,12 @@ const npcsSlice = createSlice({
                 }
             });
         }
-    },
-  })
+    }
+});
 
-  // Extract the action creators object and the reducer
-  const { actions, reducer } = npcsSlice;
-  // Extract and export each action creator by name
-  export const { createNPC, updateNPC, deleteNPC, sortNPCs, clearNPCs, importNPCs } = actions;
-  // Export the reducer, either as a default or named export
-  export default reducer;
+// Extract the action creators object and the reducer
+const { actions, reducer } = npcsSlice;
+// Extract and export each action creator by name
+export const { createNPC, updateNPC, deleteNPC, sortNPCs, clearNPCs, importNPCs } = actions;
+// Export the reducer, either as a default or named export
+export default reducer;

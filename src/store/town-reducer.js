@@ -5,18 +5,18 @@ const townSlice = createSlice({
     initialState: [
     ],
     reducers: {
-        updateTown(state, action) {
+        updateTown (state, action) {
             state.splice(0, 1, action.payload.town);
         },
-        clearTown() {
+        clearTown () {
             return [];
         }
-    },
-  })
+    }
+});
 
-  // Extract the action creators object and the reducer
-  const { actions, reducer } = townSlice;
-  // Extract and export each action creator by name
-  export const { updateTown, clearTown } = actions;
-  // Export the reducer, either as a default or named export
-  export default reducer;
+// Extract the action creators object and the reducer
+const { actions, reducer } = townSlice;
+// Extract and export each action creator by name
+export const { updateTown, clearTown } = actions;
+// Export the reducer, either as a default or named export
+export default reducer;

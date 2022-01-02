@@ -1,4 +1,4 @@
-import { updateNPC, deleteNPC } from '../services/npcService.js';
+import { saveNPC, removeNPC } from '../services/npcService.js';
 import NPCSchema from '../models/npcSchema.js';
 import { convertToken } from '../services/randomTableService.js';
 
@@ -103,6 +103,7 @@ class NPCDisplay extends HTMLElement {
     setNPC (npc) {
         this.npc = npc;
         this.id = `npc_${this.npc.id}`;
+        this.dataset.id = this.npc.id;
         if (npc.collapse) {
             this.shadowRoot.querySelector('details').open = false;
         } else {
@@ -139,7 +140,7 @@ class NPCDisplay extends HTMLElement {
             return;
         }
         this.npc.collapse = newState;
-        updateNPC(this.npc);
+        saveNPC(this.npc);
     }
 
     collapse () {
@@ -248,12 +249,12 @@ class NPCDisplay extends HTMLElement {
 
         this.npc.notes = formData.get('notes').toString();
 
-        updateNPC(this.npc);
+        saveNPC(this.npc);
         this._disableEdit();
     }
 
     _deleteNPC () {
-        deleteNPC(this.npc.id);
+        removeNPC(this.npc.id);
     }
 
     _reroll (ev) {

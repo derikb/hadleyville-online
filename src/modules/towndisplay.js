@@ -1,4 +1,5 @@
-import { getTown, townSchema, saveTown } from '../models/town.js';
+import { townSchema } from '../models/town.js';
+import { getTown, saveTown } from '../services/townService.js';
 import { convertToken } from '../services/randomTableService.js';
 
 const template = document.createElement('template');

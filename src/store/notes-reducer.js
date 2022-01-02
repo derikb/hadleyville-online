@@ -1,12 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-
 const notesSlice = createSlice({
     name: 'notes',
     initialState: [
     ],
     reducers: {
-        createNote(state, action) {
+        createNote (state, action) {
             console.log(action);
             const uuid = action.payload.note.uuid;
             const index = state.findIndex((el) => el.uuid === uuid);
@@ -16,7 +15,7 @@ const notesSlice = createSlice({
             }
             state.push(action.payload.note);
         },
-        updateNote(state, action) {
+        updateNote (state, action) {
             const uuid = action.payload.note.uuid;
             if (!uuid) {
                 return;
@@ -28,7 +27,7 @@ const notesSlice = createSlice({
                 state.push(action.payload.note);
             }
         },
-        deleteNote(state, action) {
+        deleteNote (state, action) {
             const uuid = action.payload.uuid;
             if (!uuid) {
                 return;
@@ -38,7 +37,7 @@ const notesSlice = createSlice({
                 state.splice(index, 1);
             }
         },
-        sortNotes(state, action) {
+        sortNotes (state, action) {
             // Array of UUIDs in new order.
             const sortUuids = action.payload.sortUuids;
             if (!Array.isArray(sortUuids) || sortUuids.length === 0) {
@@ -50,10 +49,10 @@ const notesSlice = createSlice({
                 return aIndex - bIndex;
             });
         },
-        clearNotes() {
+        clearNotes () {
             return [];
         },
-        importNotes(state, action) {
+        importNotes (state, action) {
             const notes = action.payload.notes;
 
             notes.forEach((note) => {
@@ -68,12 +67,12 @@ const notesSlice = createSlice({
                 }
             });
         }
-    },
-  })
+    }
+});
 
-  // Extract the action creators object and the reducer
-  const { actions, reducer } = notesSlice;
-  // Extract and export each action creator by name
-  export const { createNote, updateNote, deleteNote, sortNotes, clearNotes, importNotes } = actions;
-  // Export the reducer, either as a default or named export
-  export default reducer;
+// Extract the action creators object and the reducer
+const { actions, reducer } = notesSlice;
+// Extract and export each action creator by name
+export const { createNote, updateNote, deleteNote, sortNotes, clearNotes, importNotes } = actions;
+// Export the reducer, either as a default or named export
+export default reducer;

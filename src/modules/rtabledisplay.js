@@ -1,6 +1,6 @@
-import RandomTable from '../../node_modules/rpg-table-randomizer/src/RandomTable.js';
+import RandomTable from 'rpg-table-randomizer/src/RandomTable';
 import { getResultFromTable } from '../services/randomTableService.js';
-import A11yDialog from '../../node_modules/a11y-dialog/dist/a11y-dialog.esm.js';
+import A11yDialog from 'a11y-dialog/dist/a11y-dialog.esm';
 import { getAllNotes, addNote, getNoteById, updateNote } from '../services/notesService.js';
 import Note from '../models/note.js';
 

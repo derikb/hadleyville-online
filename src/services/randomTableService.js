@@ -22,7 +22,7 @@ tableRoller.registerTokenType('name', nameGenerator.nameTokenCallback.bind(nameG
 tables.forEach((data) => {
     const key = data.key;
     if (!key) {
-      return;
+        return;
     }
     randomTables[key] = new RandomTable(data);
 });
@@ -39,13 +39,16 @@ const getTableByKey = function (key) {
 };
 tableRoller.setTableKeyLookup(getTableByKey);
 
-
+/**
+ * Get all tables.
+ * @returns {RandomTable[]}
+ */
 const getAllTables = function () {
     const arr = [];
     Object.keys(randomTables).forEach((key) => {
-      let table = randomTables[key];
-      arr.push(table);
-    })
+        const table = randomTables[key];
+        arr.push(table);
+    });
     return arr;
 };
 
@@ -57,7 +60,7 @@ const getAllTables = function () {
  */
 const getResultByTableKey = function (key, subtable = '') {
     return tableRoller.getTableResultSetByKey(key, subtable);
-}
+};
 /**
  * Get results from a table using the whole table.
  * @param table {RandomTable}
@@ -66,7 +69,7 @@ const getResultByTableKey = function (key, subtable = '') {
  */
 const getResultFromTable = function (table, subtable = '') {
     return tableRoller.getResultSetForTable(table, subtable);
-}
+};
 
 /**
  * Return a name
@@ -75,7 +78,7 @@ const getResultFromTable = function (table, subtable = '') {
  */
 const getNPCName = function (nameType) {
     return nameGenerator.selectName(nameType);
-}
+};
 
 /**
  * Convert a token to a result string.

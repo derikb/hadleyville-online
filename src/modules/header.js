@@ -73,7 +73,7 @@ template.innerHTML = `
             <li><a href="./rules.html">Rules</a></li>
             <li><a href="./settings.html">Settings</a></li>
         </ul>
-        <div>
+        <div class="table-toggle">
             <button type="button" data-open="false">Tables</button>
         </div>
     </nav>
@@ -86,6 +86,10 @@ class Header extends HTMLElement {
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         this.setAttribute('role', 'header');
+        this.showTables = this.dataset.showtables === 'true';
+        if (!this.showTables) {
+            this.shadowRoot.querySelector('.table-toggle').hidden = true;
+        }
 
         this.toggleButton = this.shadowRoot.querySelector('button');
     }
@@ -103,6 +107,5 @@ class Header extends HTMLElement {
 };
 
 window.customElements.define('had-header', Header);
-
 
 export default Header;

@@ -1,8 +1,13 @@
-// import store from '../store/store';
+import store from '../store/store';
 import { importNotes, deleteAllNotes } from './notesService.js';
-import { saveTown, clearTown } from '../models/town.js';
+import { saveTown, clearTown } from './townService.js';
 import { importNPCs, deleteAllNPCs } from './npcService.js';
+import { Town } from '../models/town.js';
 
+/**
+ * Reset UI after downloading export.
+ * @param {Event} ev
+ */
 const resetExport = function (ev) {
     // Give it a second so the link default action happens.
     // Then we revoke the object url to clear memory.
@@ -13,11 +18,14 @@ const resetExport = function (ev) {
     }, 1000);
 };
 
+/**
+ * Export date.
+ * @param {Event} event
+ */
 const doExport = function (event) {
     console.log(event);
 
-    // const data = store.getState();
-    const data = {};
+    const data = store.getState();
     const date = new Date();
     const file = new Blob([JSON.stringify(data)], { type: 'application/json' });
     // Object url must be unsanitized else it doesn't work.
@@ -28,13 +36,15 @@ const doExport = function (event) {
     link.href = exportFileUrl;
     link.setAttribute('download', exportFileName);
     link.innerText = 'Download Export';
-    link.addEventListener('click', (ev) => {
-        resetExport();
-    });
+    link.addEventListener('click', resetExport);
     document.getElementById('export-output').appendChild(link);
     document.getElementById('export-button').hidden = true;
 };
 
+/**
+ * Import from an export.
+ * @param {Event} ev
+ */
 const doImport = function (ev) {
     ev.preventDefault();
     const form = ev.target;
@@ -64,8 +74,8 @@ const doImport = function (ev) {
                 const towns = data.town || [];
                 if (Array.isArray(towns)) {
                     const town = towns.find(Boolean);
-                    if (town && town.uuid) {
-                        saveTown(town);
+                    if (town && town.id) {
+                        saveTown(new Town(town));
                     }
                 }
             };
@@ -77,16 +87,22 @@ const doImport = function (ev) {
     input_file.value = '';
 };
 
+/**
+ * Remove all npcs, notes, and clear the town.
+ * @param {Event} ev
+ */
 const deleteAll = function (ev) {
     if (!confirm('Are you really sure?')) {
         return;
     }
-
     deleteAllNotes();
     deleteAllNPCs();
     clearTown();
 };
 
+/**
+ * Setup actions on the settings page.
+ */
 const setupPage = function () {
     const exportButton = document.getElementById('btn-export');
     exportButton.addEventListener('click', doExport);

@@ -1,12 +1,14 @@
-import { getAllNotes, addNote, noteEmitter } from '../services/notesService.js';
+import { getAllNotes, addNote, noteEmitter, sortNotes } from '../services/notesService.js';
 import NoteDisplay from './notedisplay.js';
 import Note from '../models/note.js';
+import Sortable from 'sortablejs/modular/sortable.core.esm.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
 <style>
     :host {
-
+        display: block;
+        margin-bottom: 1rem;
     }
 
     header {
@@ -39,7 +41,6 @@ class NotesList extends HTMLElement {
         this.noteList = this.shadowRoot.querySelector('#note-list');
         this.setAttribute('role', 'region');
 
-
         getAllNotes().forEach((note) => {
             const display = new NoteDisplay();
             display.setNote(note);
@@ -48,19 +49,32 @@ class NotesList extends HTMLElement {
 
         noteEmitter.on('note:add', this._addNote.bind(this));
         noteEmitter.on('note:delete', this._removeNote.bind(this));
-
-        // @todo Add drag/drop/reorder... on drop trigger sort save.
-        // @todo add handler for add/remove/etc events from note service.
     }
 
     connectedCallback () {
         this.shadowRoot.querySelector('.btn-collapse').addEventListener('click', this._collapseAll.bind(this));
         this.shadowRoot.querySelector('.btn-create').addEventListener('click', this._createNote.bind(this));
+
+        this.sortable = new Sortable(this.noteList, {
+            draggable: 'had-note',
+            dataIdAttr: 'data-id',
+            store: {
+                /**
+                 * Save the order of elements. Called onEnd (when the item is dropped).
+                 * @param {Sortable}  sortable
+                 */
+                set: function (sortable) {
+                    const order = sortable.toArray();
+                    sortNotes(order);
+                }
+            }
+        });
     }
 
     disconnectedCallback () {
         this.shadowRoot.querySelector('.btn-collapse').removeEventListener('click', this._collapseAll.bind(this));
         this.shadowRoot.querySelector('.btn-create').removeEventListener('click', this._createNote.bind(this));
+        this.sortable.destroy();
     }
 
     _collapseAll () {
@@ -98,6 +112,5 @@ class NotesList extends HTMLElement {
 };
 
 window.customElements.define('had-noteslist', NotesList);
-
 
 export default NotesList;

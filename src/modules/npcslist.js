@@ -1,11 +1,13 @@
-import { createNewNPC, getAllNPCs, npcEmitter } from '../services/npcService.js';
+import { createNewNPC, getAllNPCs, npcEmitter, sortNPCs } from '../services/npcService.js';
 import NPCDisplay from './npcdisplay.js';
+import Sortable from 'sortablejs/modular/sortable.core.esm.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
 <style>
     :host {
-
+        display: block;
+        margin-bottom: 1rem;
     }
 
     header {
@@ -38,27 +40,39 @@ class NPCsList extends HTMLElement {
         this.npcList = this.shadowRoot.querySelector('#npc-list');
         this.setAttribute('role', 'region');
 
-
         getAllNPCs().forEach((npc) => {
             const display = new NPCDisplay();
             display.setNPC(npc);
             this.npcList.appendChild(display);
         });
 
-
         npcEmitter.on('npc:delete', this._removeNPC.bind(this));
-        // @todo Add drag/drop/reorder... on drop trigger sort save.
-        // @todo add handler for add/remove/etc events from npc service.
     }
 
     connectedCallback () {
         this.shadowRoot.querySelector('.btn-collapse').addEventListener('click', this._collapseAll.bind(this));
         this.shadowRoot.querySelector('.btn-create').addEventListener('click', this._createNPC.bind(this));
+
+        this.sortable = new Sortable(this.npcList, {
+            draggable: 'had-npc',
+            dataIdAttr: 'data-id',
+            store: {
+                /**
+                 * Save the order of elements. Called onEnd (when the item is dropped).
+                 * @param {Sortable}  sortable
+                 */
+                set: function (sortable) {
+                    const order = sortable.toArray();
+                    sortNPCs(order);
+                }
+            }
+        });
     }
 
     disconnectedCallback () {
         this.shadowRoot.querySelector('.btn-collapse').removeEventListener('click', this._collapseAll.bind(this));
         this.shadowRoot.querySelector('.btn-create').removeEventListener('click', this._createNPC.bind(this));
+        this.sortable.destroy();
     }
 
     _collapseAll () {
@@ -73,10 +87,10 @@ class NPCsList extends HTMLElement {
         display.setNPC(npc);
         display._enableEdit();
         this.npcList.appendChild(display);
-        // display.shadowRoot.querySelector('input[name=title]').focus();
+        display.shadowRoot.querySelector('input[name=npcName]').focus();
     }
 
-    _addNPC (npc) {
+    _addNPC ({ npc }) {
         const display = new NPCDisplay();
         display.setNPC(npc);
         this.npcList.appendChild(display);
@@ -91,6 +105,5 @@ class NPCsList extends HTMLElement {
 };
 
 window.customElements.define('had-npcslist', NPCsList);
-
 
 export default NPCsList;

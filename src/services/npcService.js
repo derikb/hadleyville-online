@@ -1,5 +1,5 @@
 import store from '../store/store.js';
-import { createNPC, updateNPC, deleteNPC, sortNPCs, clearNPCs, importNPCs } from '../store/npcs-reducer.js';
+import { createNPC, updateNPC, deleteNPC, sortNPCs as sortNPCsStore, clearNPCs, importNPCs as importNPCsStore } from '../store/npcs-reducer.js';
 
 import npcSchema from '../models/npcSchema.js';
 import NPC from '../models/npc.js';
@@ -38,74 +38,72 @@ const newNPC = function () {
 };
 
 const getAllNPCs = function () {
-    //const npcs = store.getState().npcs;
-    // return npcs.map((obj) => {
-    //     return new NPC(obj)
-    // });
-    return [
-        newNPC(),
-        newNPC()
-    ];
+    const npcs = store.getState().npcs;
+    return npcs.map((obj) => {
+        return new NPC(obj);
+    });
 };
 
 const createNewNPC = function () {
     const npc = newNPC();
-    // store.dispatch(createNPC({ npc: npc.toJSON() }));
-    // this.npcs$.next(npc);
+    console.log(JSON.stringify(npc));
+    store.dispatch(createNPC({ npc: npc.toJSON() }));
     return npc;
 };
 
 const getNPCById = function (id) {
-    // const npcs = store.getState().npcs;
+    const npcs = store.getState().npcs;
     const data = npcs.find((npc) => {
         return npc.id === id;
-    })
+    });
     if (data) {
         return new NPC(data);
     }
     return null;
 };
 
-const updateNPC = function (npc) {
-    // store.dispatch(updateNPC({ npc: npc.toJSON() }));
-    // const upnpc = this.getNPCById(npc.id);
-    // this.npcs$.next(upnpc);
+const saveNPC = function (npc) {
+    store.dispatch(updateNPC({ npc: npc.toJSON() }));
+    const upnpc = this.getNPCById(npc.id);
+    this.npcs$.next(upnpc);
 };
 
-const deleteNPC = function (id) {
-    // store.dispatch(deleteNPC({ id }));
-    // this.deletedNPCs$.next(uuid);
+const removeNPC = function (id) {
+    store.dispatch(deleteNPC({ id }));
     npcEmitter.trigger('npc:delete', {
         id
     });
 };
 
 const sortNPCs = function (sortUuids) {
-    // store.dispatch(sortNPCs({ sortUuids }));
+    store.dispatch(sortNPCsStore({ sortUuids }));
 };
 
 const deleteAllNPCs = function () {
-    // store.dispatch(clearNPCs());
+    store.dispatch(clearNPCs());
 };
 
 const importNPCs = function (npcs) {
-    // store.dispatch(importNPCs({ npcs }));
+    store.dispatch(importNPCsStore({ npcs }));
     npcs.forEach((npcData) => {
         if (!npcData.id) {
             return;
         }
         const npc = new NPC(npcData);
-        this.npcs.push(npc);
-        //this.npcs$.next(npc);
+        npcEmitter.trigger('npc:add', {
+            npc
+        });
     });
 };
 
 export {
     npcEmitter,
     getAllNPCs,
+    getNPCById,
     createNewNPC,
-    updateNPC,
-    deleteNPC,
+    saveNPC,
+    sortNPCs,
+    removeNPC,
     deleteAllNPCs,
     importNPCs
 };

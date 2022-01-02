@@ -5,15 +5,12 @@ const template = document.createElement('template');
 template.innerHTML = `
 <style>
     :host {
-        visibility: hidden; /* Keeps from focusing inside. */
         position: absolute;
         top: 0;
         right: 0;
         z-index: 10;
         padding: 1rem;
         width: 60vw;
-        transform: translate(100%, 0);
-        transition: all 0.4s ease-in-out;
         border-radius: 0 0 0 5px;
         border: 0 solid var(--secondary);
         border-width: 0 0 1px 1px;
@@ -22,10 +19,6 @@ template.innerHTML = `
     }
     :host([aria-expanded=false]) {
         box-shadow: none;
-    }
-    :host([aria-expanded=true]) {
-        transform: none;
-        visibility: visible; /* Allows focus when open */
     }
 
     header {
