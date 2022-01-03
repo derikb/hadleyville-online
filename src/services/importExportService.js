@@ -23,8 +23,6 @@ const resetExport = function (ev) {
  * @param {Event} event
  */
 const doExport = function (event) {
-    console.log(event);
-
     const data = store.getState();
     const date = new Date();
     const file = new Blob([JSON.stringify(data)], { type: 'application/json' });

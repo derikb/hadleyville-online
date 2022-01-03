@@ -50,7 +50,7 @@ const addNote = function (note, mode = 'view') {
  */
 const updateNote = function (note) {
     store.dispatch(updateNoteStore({ note: note.toJSON() }));
-    noteEmitter.trigger('note:update', {
+    noteEmitter.trigger('note:edit', {
         note
     });
 };

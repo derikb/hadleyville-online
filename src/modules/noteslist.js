@@ -49,6 +49,7 @@ class NotesList extends HTMLElement {
 
         noteEmitter.on('note:add', this._addNote.bind(this));
         noteEmitter.on('note:delete', this._removeNote.bind(this));
+        noteEmitter.on('note:edit', this._updateNote.bind(this));
     }
 
     connectedCallback () {
@@ -101,6 +102,15 @@ class NotesList extends HTMLElement {
         if (mode === 'edit') {
             display.shadowRoot.querySelector('input[name=title]').focus();
         }
+    }
+
+    _updateNote ({ note }) {
+        const id = note.id;
+        const noteDisplay = this.shadowRoot.querySelector(`#note_${id}`);
+        if (!noteDisplay) {
+            return;
+        }
+        noteDisplay.setNote(note);
     }
 
     _removeNote ({ id }) {

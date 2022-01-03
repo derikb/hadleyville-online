@@ -10,6 +10,10 @@ template.innerHTML = `
         margin-bottom: 1rem;
     }
 
+    :host * {
+        box-sizing: border-box;
+    }
+
     details {
         border-radius: 4px;
         padding: .5rem;
@@ -39,7 +43,45 @@ template.innerHTML = `
         color: var(--text1);
     }
 
+    form {
+        margin-bottom: 1rem;
+    }
+    .formField {
+        margin-bottom: 1rem;
+    }
 
+    label {
+        display: block;
+        font-weight: bold;
+        font-size: 1rem;
+        margin-bottom: .25rem;
+    }
+    input, textarea, select {
+        display: block;
+        font-family: inherit;
+        width: 100%;
+        font-size: 1rem;
+        padding: .5rem;
+        border-radius: 5px;
+        border: 1px solid var(--secondary);
+    }
+    div.fieldReroll {
+        display: flex;
+    }
+    div.fieldReroll input, div.fieldReroll textarea {
+        border-radius: 5px 0px 0px 5px;
+    }
+    div.fieldReroll button.btn-reroll {
+        font-size: 2rem;
+        border: none;
+        padding: 0 1rem;
+        margin: 0;
+        cursor: pointer;
+        border-radius: 0px 5px 5px 0px;
+        border: 1px solid var(--secondary);
+        border-left-width: 0;
+        background-color: var(--surface5);
+    }
 </style>
 <details open>
     <summary>

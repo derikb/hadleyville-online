@@ -46,7 +46,6 @@ const getAllNPCs = function () {
 
 const createNewNPC = function () {
     const npc = newNPC();
-    console.log(JSON.stringify(npc));
     store.dispatch(createNPC({ npc: npc.toJSON() }));
     return npc;
 };

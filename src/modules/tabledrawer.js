@@ -80,5 +80,4 @@ class TableDrawer extends HTMLElement {
 
 window.customElements.define('had-tabledrawer', TableDrawer);
 
-
 export default TableDrawer;

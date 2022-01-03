@@ -8,6 +8,10 @@ template.innerHTML = `
         margin-bottom: 1rem;
     }
 
+    :host * {
+        box-sizing: border-box;
+    }
+
     details {
         border-radius: 4px;
         padding: .5rem;
@@ -44,6 +48,28 @@ template.innerHTML = `
         display: inline-block;
     }
 
+    form {
+        margin-bottom: 1rem;
+    }
+    .formField {
+        margin-bottom: 1rem;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        font-size: 1rem;
+        margin-bottom: .25rem;
+    }
+    input, textarea, select {
+        display: block;
+        font-family: inherit;
+        width: 100%;
+        font-size: 1rem;
+        padding: .5rem;
+        border-radius: 5px;
+        border: 1px solid var(--secondary);
+    }
 </style>
 <details>
     <summary>
@@ -119,7 +145,7 @@ class NoteDisplay extends HTMLElement {
      * Save collapse state
      * @param ev Toggle event on details.
      */
-    _setCollapse(ev) {
+    _setCollapse (ev) {
         const newState = !ev.target.open;
         if (this.note.collapse === newState) {
             return;
@@ -140,7 +166,7 @@ class NoteDisplay extends HTMLElement {
         this._enableEdit();
     }
 
-    _enableEdit() {
+    _enableEdit () {
         if (this._isEdit) {
             return;
         }
@@ -148,7 +174,6 @@ class NoteDisplay extends HTMLElement {
 
         this.shadowRoot.querySelector('.body').innerHTML = '';
 
-        console.log('here');
         let form = formTemplate.content.cloneNode(true);
         form.querySelector('input[name=title').value = this.note.title;
         form.querySelector('textarea[name=content').value = this.note.content;
@@ -161,7 +186,7 @@ class NoteDisplay extends HTMLElement {
         form.querySelector('.btn-delete').addEventListener('click', this._deleteNote.bind(this));
     }
 
-    _disableEdit() {
+    _disableEdit () {
         if (!this._isEdit) {
             return;
         }
@@ -177,21 +202,20 @@ class NoteDisplay extends HTMLElement {
         this.shadowRoot.querySelector('.body').innerHTML = `<div class="content">${this.note.contentHtml}</div>`;
     }
 
-    _saveEdit(ev) {
+    _saveEdit (ev) {
         ev.preventDefault();
         const formData = new FormData(ev.target);
         this.note.title = formData.get('title').toString();
         this.note.content = formData.get('content').toString();
-        updateNote(this.note);
         this._disableEdit();
+        updateNote(this.note);
     }
 
-    _deleteNote() {
+    _deleteNote () {
         deleteNote(this.note.id);
     }
 };
 
 window.customElements.define('had-note', NoteDisplay);
-
 
 export default NoteDisplay;
