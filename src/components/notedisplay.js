@@ -2,6 +2,7 @@ import { updateNote, deleteNote } from '../services/notesService.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
+<link rel="stylesheet" href="/style.css">
 <style>
     :host {
         display: block;
@@ -12,70 +13,18 @@ template.innerHTML = `
         box-sizing: border-box;
     }
 
-    details {
-        border-radius: 4px;
-        padding: .5rem;
-        background-color: var(--surface2);
-        border: 1px solid var(--surface4);
-    }
-    summary {
-        list-style: none;
-        display: flex;
-        justify-content: space-between;
-        padding: 0rem;
-        align-items: center;
-    }
-    details summary #summary-title::before {
-        content: "▲";
-        margin-right: .5rem;
-        font-size: .8rem;
-        color: var(--text1);
-    }
-    details[open] summary #summary-title::before {
-        content: "▼";
-        color: var(--text1);
-    }
-    summary #summary-title {
-        font-weight: bold;
-        font-size: 1rem;
-        color: var(--text1);
-    }
-
     details .btn-edit {
         display: none;
     }
     details[open] .btn-edit {
         display: inline-block;
     }
-
-    form {
-        margin-bottom: 1rem;
-    }
-    .formField {
-        margin-bottom: 1rem;
-    }
-
-    label {
-        display: block;
-        font-weight: bold;
-        font-size: 1rem;
-        margin-bottom: .25rem;
-    }
-    input, textarea, select {
-        display: block;
-        font-family: inherit;
-        width: 100%;
-        font-size: 1rem;
-        padding: .5rem;
-        border-radius: 5px;
-        border: 1px solid var(--secondary);
-    }
 </style>
 <details>
     <summary>
         <div id="summary-title">{{ note.title }}</div>
         <div class="actions">
-            <button *ngIf="!isEdit && !note.collapse" type="button" class="btn-edit" (click)="toggleEdit()">Edit Note</button>
+            <button type="button" class="btn-edit">Edit Note</button>
         </div>
     </summary>
 

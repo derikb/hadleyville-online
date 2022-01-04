@@ -5,6 +5,7 @@ import Sortable from 'sortablejs/modular/sortable.core.esm.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
+<link rel="stylesheet" href="/style.css">
 <style>
     :host {
         display: block;

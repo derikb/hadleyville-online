@@ -1,5 +1,6 @@
 const template = document.createElement('template');
 template.innerHTML = `
+<link rel="stylesheet" href="/style.css">
 <style>
     :host {
         grid-area: footer;
@@ -33,6 +34,5 @@ class Footer extends HTMLElement {
 };
 
 window.customElements.define('had-footer', Footer);
-
 
 export default Footer;

@@ -5,7 +5,9 @@ import RandomNameType from '../../node_modules/rpg-table-randomizer/src/RandomNa
 import tables from '../data/tables.js';
 import names from '../data/names.js';
 import { rollDie } from '../../node_modules/rpg-table-randomizer/src/dice_roller.js';
+import EventEmitter from '../models/EventEmitter.js';
 
+const tableEmitter = new EventEmitter();
 const tableRoller = new TableRoller({});
 const randomTables = {};
 
@@ -96,5 +98,6 @@ export {
     getResultFromTable,
     rollDie,
     getNPCName,
-    convertToken
+    convertToken,
+    tableEmitter
 };

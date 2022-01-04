@@ -1,4 +1,3 @@
-import RandomTable from 'rpg-table-randomizer/src/RandomTable';
 import { getResultFromTable } from '../services/randomTableService.js';
 import A11yDialog from 'a11y-dialog/dist/a11y-dialog.esm';
 import { getAllNotes, addNote, getNoteById, updateNote } from '../services/notesService.js';
@@ -6,6 +5,7 @@ import Note from '../models/note.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
+<link rel="stylesheet" href="./style.css">
 <style>
     :host {
         display: block;
@@ -14,67 +14,9 @@ template.innerHTML = `
         margin-bottom: .25rem;
     }
 
-    details {
-        border-radius: 4px;
-        padding: .5rem;
-        background-color: var(--surface2);
-        border: 1px solid var(--surface4);
-    }
-    summary {
-        list-style: none;
-        display: flex;
-        justify-content: space-between;
-        padding: 0rem;
-        align-items: center;
-    }
-    details summary #summary-title::before {
-        content: "▲";
-        margin-right: .5rem;
-        font-size: .8rem;
-        color: var(--text1);
-    }
-    details[open] summary #summary-title::before {
-        content: "▼";
-        color: var(--text1);
-    }
-    summary #summary-title {
-        font-weight: bold;
-        font-size: 1rem;
-        color: var(--text1);
-    }
-
     table {
-        border-collapse: collapse;
-        border: none;
         width: 100%;
         margin-top: 1rem;
-        border-radius: 5px;
-    }
-    table td, table th {
-        padding: .25rem;
-        border: none;
-    }
-    table thead tr {
-        background-color: var(--primary);
-        font-weight: bold;
-    }
-
-    /* border radius only works on cells, so this complication to soften the edges. */
-    table thead tr th:first-child {
-        border-top-left-radius: 5px;
-    }
-    table thead tr th:last-child {
-        border-top-right-radius: 5px;
-    }
-    table tbody tr:last-child td:first-child {
-        border-bottom-left-radius: 5px;
-    }
-    table tbody tr:last-child td:last-child {
-        border-bottom-right-radius: 5px;
-    }
-
-    table tbody tr:nth-child(even) {
-        background-color: var(--surface1);
     }
 </style>
 <details>

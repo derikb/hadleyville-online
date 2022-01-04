@@ -1,5 +1,8 @@
+import { tableEmitter } from '../services/randomTableService.js';
+
 const template = document.createElement('template');
 template.innerHTML = `
+    <link rel="stylesheet" href="/style.css">
     <style>
     :host {
         padding: 1rem;
@@ -53,12 +56,12 @@ template.innerHTML = `
     nav button {
         font-size: inherit;
     }
-    nav button[data-open="false"]::after {
+    nav button::after {
         content: "ᐊ";
         margin-left: .5rem;
         color: var(--text1);
     }
-    nav button[data-open="true"]::after {
+    nav button.open::after {
         content: "ᐅ";
         margin-left: .5rem;
         color: var(--text1);
@@ -74,7 +77,7 @@ template.innerHTML = `
             <li><a href="./settings.html">Settings</a></li>
         </ul>
         <div class="table-toggle">
-            <button type="button" data-open="false">Tables</button>
+            <button type="button" class="" data-open="false">Tables</button>
         </div>
     </nav>
 `;
@@ -95,14 +98,32 @@ class Header extends HTMLElement {
     }
 
     connectedCallback () {
-        this.toggleButton.addEventListener('click', (ev) => {
-            // @todo better as an emitted event maybe?
-            document.getElementById('tables').toggle();
-        });
+        tableEmitter.on('table:drawer', this._toggleOpenButton.bind(this));
+        this.toggleButton.addEventListener('click', this._toggleDrawer.bind(this));
     }
 
     disconnectedCallback () {
-
+        tableEmitter.off('table:drawer', this._toggleOpenButton.bind(this));
+        this.toggleButton.removeEventListener('click', this._toggleDrawer.bind(this));
+    }
+    /**
+     * Click event on the toggle button.
+     * Triggers event on emitter.
+     */
+    _toggleDrawer () {
+        const open = !this.toggleButton.classList.contains('open');
+        tableEmitter.trigger('table:drawer', { open });
+    }
+    /**
+     * Handler for the table:drawer event.
+     * @param {Boolean} open
+     */
+    _toggleOpenButton ({ open }) {
+        if (open) {
+            this.toggleButton.classList.add('open');
+            return;
+        }
+        this.toggleButton.classList.remove('open');
     }
 };
 

@@ -2,6 +2,7 @@ import { rollDie } from '../services/randomTableService.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
+<link rel="stylesheet" href="/style.css">
 <style>
     :host {
         display: block;
@@ -52,6 +53,5 @@ class DiceRoller extends HTMLElement {
 };
 
 window.customElements.define('had-diceroller', DiceRoller);
-
 
 export default DiceRoller;

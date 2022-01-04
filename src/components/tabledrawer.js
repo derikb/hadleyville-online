@@ -1,8 +1,9 @@
-import { getAllTables } from '../services/randomTableService.js';
+import { getAllTables, tableEmitter } from '../services/randomTableService.js';
 import RTableDisplay from './rtabledisplay.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
+<link rel="stylesheet" href="./style.css">
 <style>
     :host {
         position: absolute;
@@ -58,23 +59,36 @@ class TableDrawer extends HTMLElement {
     }
 
     connectedCallback () {
+        tableEmitter.on('table:drawer', this._toggle.bind(this));
         this.closeButton.addEventListener('click', this._toggleClick.bind(this));
     }
 
     disconnectedCallback () {
+        tableEmitter.off('table:drawer', this._toggle.bind(this));
         this.closeButton.removeEventListener('click', this._toggleClick.bind(this));
     }
-
+    /**
+     * Click event on the close button.
+     * Triggers event on emitter.
+     * @param {Event} ev
+     */
     _toggleClick (ev) {
-        this.toggle();
-    }
-
-    toggle () {
+        let open = true;
         if (this.getAttribute('aria-expanded') === 'true') {
-            this.setAttribute('aria-expanded', 'false');
+            open = false;
+        }
+        tableEmitter.trigger('table:drawer', { open });
+    }
+    /**
+     * Handler for the table:drawer event.
+     * @param {Boolean} open
+     */
+    _toggle ({ open }) {
+        if (open) {
+            this.setAttribute('aria-expanded', 'true');
             return;
         }
-        this.setAttribute('aria-expanded', 'true');
+        this.setAttribute('aria-expanded', 'false');
     }
 };
 
