@@ -95,6 +95,11 @@ class NoteDisplay extends HTMLElement {
      * @param ev Toggle event on details.
      */
     _setCollapse (ev) {
+        if (this._isEdit) {
+            // We can't cancel the toggle
+            // So we shouldn't try to save the note's state.
+            return;
+        }
         const newState = !ev.target.open;
         if (this.note.collapse === newState) {
             return;
@@ -131,8 +136,19 @@ class NoteDisplay extends HTMLElement {
         form = this.shadowRoot.querySelector('form');
 
         form.addEventListener('submit', this._saveEdit.bind(this));
-        form.querySelector('.btn-cancel').addEventListener('click', this._toggleEdit.bind(this));
+        form.querySelector('.btn-cancel').addEventListener('click', this._cancelEdit.bind(this));
         form.querySelector('.btn-delete').addEventListener('click', this._deleteNote.bind(this));
+    }
+
+    _cancelEdit () {
+        // Was the note empty _pre_ edit toggle.
+        if (this.note.title === '' && this.note.content === '') {
+            // Probably means it's a new note that wasn't actually edited.
+            // So remove it.
+            this._deleteNote();
+            return;
+        }
+        this._toggleEdit();
     }
 
     _disableEdit () {
@@ -144,7 +160,7 @@ class NoteDisplay extends HTMLElement {
         // remove form events
         const form = this.shadowRoot.querySelector('form');
         form.removeEventListener('submit', this._saveEdit.bind(this));
-        form.querySelector('.btn-cancel').removeEventListener('click', this._toggleEdit.bind(this));
+        form.querySelector('.btn-cancel').removeEventListener('click', this._cancelEdit.bind(this));
         form.querySelector('.btn-delete').removeEventListener('click', this._deleteNote.bind(this));
 
         this.shadowRoot.querySelector('#summary-title').innerText = this.note.title;

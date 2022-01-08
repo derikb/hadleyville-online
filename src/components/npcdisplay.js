@@ -110,6 +110,11 @@ class NPCDisplay extends HTMLElement {
      * @param ev Toggle event on details.
      */
     _setCollapse (ev) {
+        if (this._isEdit) {
+            // We can't cancel the toggle
+            // So we shouldn't try to save the npc's state.
+            return;
+        }
         const newState = !ev.target.open;
         if (this.npc.collapse === newState) {
             return;
