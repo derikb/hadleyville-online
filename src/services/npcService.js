@@ -3,39 +3,11 @@ import { createNPC, updateNPC, deleteNPC, sortNPCs as sortNPCsStore, clearNPCs, 
 
 import npcSchema from '../models/npcSchema.js';
 import NPC from '../models/npc.js';
-import { convertToken } from '../services/randomTableService.js';
-import { isEmpty } from '../../node_modules/rpg-table-randomizer/src/r_helpers.js';
+import { tableRoller } from '../services/randomTableService.js';
+import { applySchemaToNPC } from '../../node_modules/rpg-table-randomizer/src/npc_generator';
 import EventEmitter from '../models/EventEmitter.js';
 
 const npcEmitter = new EventEmitter();
-
-const newNPC = function () {
-    const fields = new Map();
-    npcSchema.fields.forEach((field) => {
-        const key = field.key;
-        if (!isEmpty(field.starting_value)) {
-            fields.set(key, field.starting_value);
-            return;
-        }
-        if (!isEmpty(field.source)) {
-            if (field.type === 'array') {
-                const value = [];
-                const ct = (field.count) ? field.count : 1;
-                for (let i = 0; i < ct; i++) {
-                    value.push(convertToken(field.source));
-                }
-                fields.set(key, value);
-            } else {
-                fields.set(key, convertToken(field.source));
-            }
-            return;
-        }
-        fields.set(key, field.defaultEmpty);
-    });
-    return new NPC({
-        fields: fields
-    });
-};
 
 const getAllNPCs = function () {
     const npcs = store.getState().npcs;
@@ -45,7 +17,8 @@ const getAllNPCs = function () {
 };
 
 const createNewNPC = function () {
-    const npc = newNPC();
+    const npc = new NPC({});
+    applySchemaToNPC(npcSchema, tableRoller, npc);
     store.dispatch(createNPC({ npc: npc.toJSON() }));
     return npc;
 };

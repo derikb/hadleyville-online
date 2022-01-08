@@ -39,13 +39,6 @@ export default class AppNPC extends NPC {
         return this.getFieldValue('secret');
     }
 
-    setFieldValue (field, value) {
-        if (typeof this.fields.get(field) === 'undefined') {
-            return;
-        }
-        this.fields.set(field, value);
-    }
-
     getFieldDisplay (field) {
         if (field === 'notes') {
             return this.noteHtml;

@@ -99,5 +99,6 @@ export {
     rollDie,
     getNPCName,
     convertToken,
-    tableEmitter
+    tableEmitter,
+    tableRoller
 };
