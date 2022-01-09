@@ -34,7 +34,7 @@ template.innerHTML = `
 
 </style>
 <header>
-    <h2>Tables</h2>
+    <h2 tabindex="-1">Tables</h2>
     <div>
         <button type="button" class="btn-close">Close</button>
     </div>
@@ -59,8 +59,18 @@ class TableDrawer extends HTMLElement {
     }
 
     connectedCallback () {
+        this.setAttribute('tabindex', 0);
         tableEmitter.on('table:drawer', this._toggle.bind(this));
         this.closeButton.addEventListener('click', this._toggleClick.bind(this));
+        // Make element not focusable when we are inside it, so tabbing out skips the element as a whole
+        this.addEventListener('focus', (ev) => {
+            this.focus();
+            this.setAttribute('tabindex', -1);
+        });
+        // Re-enable focusability when we leave so we tab back in later.
+        this.addEventListener('blur', (ev) => {
+            this.setAttribute('tabindex', 0);
+        });
     }
 
     disconnectedCallback () {
@@ -118,10 +128,20 @@ class TableDrawer extends HTMLElement {
         if (open) {
             this._addOverlay();
             this.setAttribute('aria-expanded', 'true');
+            // Until the css transition finishes, the element is not focusable.
+            setTimeout(() => {
+                this.focus();
+            }, 500);
             return;
         }
         this.setAttribute('aria-expanded', 'false');
         this._removeOverlay();
+    }
+    /**
+     * Focus method since HTMLElement doesn't have that by default (I think).
+     */
+    focus () {
+        this.shadowRoot.querySelector('h2').focus();
     }
 };
 

@@ -23,7 +23,7 @@ template.innerHTML = `
 
 </style>
 <header>
-    <h2>NPCs</h2>
+    <h2 tabindex=-1>NPCs</h2>
     <div>
         <button type="button" class="btn-collapse" aria-label="Collapse All">▲</button>
         <button type="button" class="btn-create">Create NPC</button>
@@ -100,6 +100,7 @@ class NPCsList extends HTMLElement {
     _removeNPC ({ id }) {
         const npcDisplay = this.shadowRoot.querySelector(`#npc_${id}`);
         if (npcDisplay) {
+            this.shadowRoot.querySelector('h2').focus();
             npcDisplay.parentElement.removeChild(npcDisplay);
         }
     }

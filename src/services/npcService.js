@@ -36,8 +36,9 @@ const getNPCById = function (id) {
 
 const saveNPC = function (npc) {
     store.dispatch(updateNPC({ npc: npc.toJSON() }));
-    const upnpc = this.getNPCById(npc.id);
-    this.npcs$.next(upnpc);
+    npcEmitter.trigger('npc:edit', {
+        npc
+    });
 };
 
 const removeNPC = function (id) {

@@ -177,6 +177,7 @@ class TownDisplay extends HTMLElement {
         });
 
         this.setTownDisplay();
+        this._refocus();
     }
 
     _saveEdit (ev) {
@@ -208,6 +209,12 @@ class TownDisplay extends HTMLElement {
         } else {
             input.value = result.toString();
         }
+    }
+    /**
+     * When we need to reset focus in this element.
+     */
+    _refocus () {
+        this.shadowRoot.querySelector('summary').focus();
     }
 };
 

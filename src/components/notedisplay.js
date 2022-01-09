@@ -165,6 +165,7 @@ class NoteDisplay extends HTMLElement {
 
         this.shadowRoot.querySelector('#summary-title').innerText = this.note.title;
         this.shadowRoot.querySelector('.body').innerHTML = `<div class="content">${this.note.contentHtml}</div>`;
+        this._refocus();
     }
 
     _saveEdit (ev) {
@@ -178,6 +179,12 @@ class NoteDisplay extends HTMLElement {
 
     _deleteNote () {
         deleteNote(this.note.id);
+    }
+    /**
+     * When we need to reset focus in this element.
+     */
+    _refocus () {
+        this.shadowRoot.querySelector('summary').focus();
     }
 };
 

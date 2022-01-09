@@ -217,6 +217,7 @@ class NPCDisplay extends HTMLElement {
         });
 
         this._setNPCOutput();
+        this._refocus();
     }
 
     _saveEdit (ev) {
@@ -247,6 +248,12 @@ class NPCDisplay extends HTMLElement {
         const result = convertToken(field.source);
         const input = this.shadowRoot.querySelector(`#${fieldKey}`);
         input.value = result.toString();
+    }
+    /**
+     * When we need to reset focus in this element.
+     */
+    _refocus () {
+        this.shadowRoot.querySelector('summary').focus();
     }
 };
 

@@ -24,7 +24,7 @@ template.innerHTML = `
 
 </style>
 <header>
-    <h2>Notes</h2>
+    <h2 tabindex=-1>Notes</h2>
     <div>
         <button type="button" class="btn-collapse" aria-label="Collapse All">▲</button>
         <button type="button" class="btn-create">Create Note</button>
@@ -117,6 +117,7 @@ class NotesList extends HTMLElement {
     _removeNote ({ id }) {
         const noteDisplay = this.shadowRoot.querySelector(`#note_${id}`);
         if (noteDisplay) {
+            this.shadowRoot.querySelector('h2').focus();
             noteDisplay.parentElement.removeChild(noteDisplay);
         }
     }
