@@ -2,7 +2,7 @@ import { Town, townSchema } from '../models/town.js';
 import { isEmpty } from 'rpg-table-randomizer/src/r_helpers.js';
 import { convertToken } from '../services/randomTableService.js';
 import store from '../store/store.js';
-import { updateTown, clearTown as clearTownStore } from '../store/town-reducer.js';
+import { updateTown, clearTown } from '../store/town-reducer.js';
 
 /**
  * Create a new Town
@@ -40,7 +40,7 @@ const createTown = function () {
  * Get town or create new town
  * @returns {Town}
  */
-const getTown = function () {
+const getById = function () {
     const data = store.getState().town[0] || {};
     if (!data.id) {
         // Always have a town in the UI.
@@ -55,18 +55,18 @@ const getTown = function () {
  * Save changes to the town.
  * @param {Town} town
  */
-const saveTown = function (town) {
+const save = function (town) {
     store.dispatch(updateTown({ town: town.toJSON() }));
 };
 /**
  * Reset town data.
  */
-const clearTown = function () {
-    store.dispatch(clearTownStore());
+const clear = function () {
+    store.dispatch(clearTown());
 };
 
 export {
-    getTown,
-    saveTown,
-    clearTown
+    getById,
+    save,
+    clear
 };

@@ -1,18 +1,19 @@
 import store from '../store/store.js';
-import { createNote, updateNote as updateNoteStore, deleteNote as deleteNoteStore, sortNotes as sortNotesStore, clearNotes, importNotes as importNotesStore } from '../store/notes-reducer.js';
+import { createNote, updateNote, deleteNote, sortNotes, clearNotes, importNotes } from '../store/notes-reducer.js';
 import Note from '../models/note.js';
 import EventEmitter from '../models/EventEmitter.js';
+import NoteDisplay from '../components/notedisplay.js';
 
 /**
  * @prop {EventEmitter}
  */
-const noteEmitter = new EventEmitter();
+const emitter = new EventEmitter();
 
 /**
  * Get all notes.
  * @returns {Note[]}
  */
-const getAllNotes = function () {
+const getAll = function () {
     const notes = store.getState().notes;
     return notes.map((obj) => new Note(obj));
 };
@@ -21,7 +22,7 @@ const getAllNotes = function () {
  * @param {String} id
  * @returns {Note|null}
  */
-const getNoteById = function (id) {
+const getById = function (id) {
     const notes = store.getState().notes;
     const data = notes.find((el) => el.uuid === id);
     if (data) {
@@ -31,14 +32,17 @@ const getNoteById = function (id) {
 };
 /**
  * Save a new note.
- * @param {Note} note
  * @param {String} mode view|edit
+ * @param {Note} note
  * @returns {Note}
  */
-const addNote = function (note, mode = 'view') {
+const create = function (mode = 'view', note = null) {
+    if (!(note instanceof Note)) {
+        note = new Note({});
+    }
     store.dispatch(createNote({ note: note.toJSON() }));
-    noteEmitter.trigger('note:add', {
-        note,
+    emitter.trigger('note:add', {
+        item: note,
         mode
     });
     return note;
@@ -48,28 +52,28 @@ const addNote = function (note, mode = 'view') {
  * Update a note.
  * @param {Note} note
  */
-const updateNote = function (note) {
-    store.dispatch(updateNoteStore({ note: note.toJSON() }));
-    noteEmitter.trigger('note:edit', {
-        note
+const save = function (note) {
+    store.dispatch(updateNote({ note: note.toJSON() }));
+    emitter.trigger('note:edit', {
+        item: note
     });
 };
 
-const deleteNote = function (uuid) {
-    store.dispatch(deleteNoteStore({ uuid }));
-    noteEmitter.trigger('note:delete', {
+const remove = function (uuid) {
+    store.dispatch(deleteNote({ uuid }));
+    emitter.trigger('note:delete', {
         id: uuid
     });
 };
 
-const sortNotes = function (sortUuids) {
-    store.dispatch(sortNotesStore({ sortUuids }));
+const sort = function (sortUuids) {
+    store.dispatch(sortNotes({ sortUuids }));
 };
 
 /**
  * Delete all the notes at once.
  */
-const deleteAllNotes = function () {
+const deleteAll = function () {
     store.dispatch(clearNotes());
     // probably should trigger an event here?
 };
@@ -77,27 +81,32 @@ const deleteAllNotes = function () {
  * Import notes.
  * @param {Note[]} notes
  */
-const importNotes = function (notes) {
-    store.dispatch(importNotesStore({ notes }));
+const importAll = function (notes) {
+    store.dispatch(importNotes({ notes }));
     notes.forEach((noteData) => {
         if (!noteData.uuid) {
             return;
         }
         const note = new Note(noteData);
-        noteEmitter.trigger('note:add', {
-            note
+        emitter.trigger('note:add', {
+            item: note
         });
     });
 };
 
+const getDisplay = function () {
+    return new NoteDisplay();
+};
+
 export {
-    noteEmitter,
-    getAllNotes,
-    getNoteById,
-    addNote,
-    updateNote,
-    sortNotes,
-    deleteNote,
-    deleteAllNotes,
-    importNotes
+    emitter,
+    getAll,
+    getById,
+    create,
+    save,
+    sort,
+    remove,
+    deleteAll,
+    importAll,
+    getDisplay
 };

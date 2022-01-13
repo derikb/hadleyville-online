@@ -1,4 +1,4 @@
-import { updateNote, deleteNote } from '../services/notesService.js';
+import * as notesService from '../services/notesService.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -76,7 +76,7 @@ class NoteDisplay extends HTMLElement {
      *
      * @param {Note} note
      */
-    setNote (note) {
+    setItem (note) {
         this.note = note;
         this.id = `note_${this.note.id}`;
         this.dataset.id = this.note.id;
@@ -105,7 +105,7 @@ class NoteDisplay extends HTMLElement {
             return;
         }
         this.note.collapse = newState;
-        updateNote(this.note);
+        notesService.save(this.note);
     }
 
     collapse () {
@@ -174,11 +174,11 @@ class NoteDisplay extends HTMLElement {
         this.note.title = formData.get('title').toString();
         this.note.content = formData.get('content').toString();
         this._disableEdit();
-        updateNote(this.note);
+        notesService.save(this.note);
     }
 
     _deleteNote () {
-        deleteNote(this.note.id);
+        notesService.remove(this.note.id);
     }
     /**
      * When we need to reset focus in this element.

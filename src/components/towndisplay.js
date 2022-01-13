@@ -1,5 +1,5 @@
 import { townSchema } from '../models/town.js';
-import { getTown, saveTown } from '../services/townService.js';
+import * as townService from '../services/townService.js';
 import { convertToken } from '../services/randomTableService.js';
 
 const template = document.createElement('template');
@@ -45,7 +45,7 @@ class TownDisplay extends HTMLElement {
         this._isEdit = false;
         this.editButton = this.shadowRoot.querySelector('.btn-edit');
 
-        this.town = getTown();
+        this.town = townService.getById();
         this.setTownDisplay();
     }
 
@@ -190,7 +190,7 @@ class TownDisplay extends HTMLElement {
 
         // this.town.notes = formData.get('notes').toString();
 
-        saveTown(this.town);
+        townService.save(this.town);
         this._disableEdit();
     }
 

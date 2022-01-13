@@ -1,7 +1,7 @@
 import store from '../store/store';
-import { importNotes, deleteAllNotes } from './notesService.js';
-import { saveTown, clearTown } from './townService.js';
-import { importNPCs, deleteAllNPCs } from './npcService.js';
+import { importAll as importNotes, deleteAll as deleteAllNotes } from './notesService.js';
+import { save as saveTown, clear as clearTown } from './townService.js';
+import { importAll as importNPCs, deleteAll as deleteAllNPCs } from './npcService.js';
 import { Town } from '../models/town.js';
 
 /**

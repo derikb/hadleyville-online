@@ -1,6 +1,6 @@
 import { getResultFromTable } from '../services/randomTableService.js';
 import A11yDialog from 'a11y-dialog/dist/a11y-dialog.esm';
-import { getAllNotes, addNote, getNoteById, updateNote } from '../services/notesService.js';
+import * as notesService from '../services/notesService.js';
 import Note from '../models/note.js';
 
 const template = document.createElement('template');
@@ -162,7 +162,7 @@ class RTableDisplay extends HTMLElement {
 
         let form = addnoteForm.content.cloneNode(true);
         const select = form.querySelector('select');
-        getAllNotes().forEach((note) => {
+        notesService.getAll().forEach((note) => {
             const option = document.createElement('option');
             option.value = note.id;
             option.innerHTML = note.title;
@@ -179,11 +179,11 @@ class RTableDisplay extends HTMLElement {
                     title: this.table.title,
                     content: resultSet.toString()
                 });
-                addNote(note);
+                notesService.create('view', note);
             } else {
-                const note = getNoteById(noteId);
+                const note = notesService.getById(noteId);
                 note.content = `${note.content}\n\n${resultSet.niceString()}`;
-                updateNote(note);
+                notesService.save(note);
             }
             dialog.hide();
         });

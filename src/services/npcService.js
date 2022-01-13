@@ -1,29 +1,23 @@
 import store from '../store/store.js';
-import { createNPC, updateNPC, deleteNPC, sortNPCs as sortNPCsStore, clearNPCs, importNPCs as importNPCsStore } from '../store/npcs-reducer.js';
+import { createNPC, updateNPC, deleteNPC, sortNPCs, clearNPCs, importNPCs } from '../store/npcs-reducer.js';
 
 import npcSchema from '../models/npcSchema.js';
 import NPC from '../models/npc.js';
 import { tableRoller } from '../services/randomTableService.js';
 import { applySchemaToNPC } from '../../node_modules/rpg-table-randomizer/src/npc_generator';
 import EventEmitter from '../models/EventEmitter.js';
+import NPCDisplay from '../components/npcdisplay.js';
 
-const npcEmitter = new EventEmitter();
+const emitter = new EventEmitter();
 
-const getAllNPCs = function () {
+const getAll = function () {
     const npcs = store.getState().npcs;
     return npcs.map((obj) => {
         return new NPC(obj);
     });
 };
 
-const createNewNPC = function () {
-    const npc = new NPC({});
-    applySchemaToNPC(npcSchema, tableRoller, npc);
-    store.dispatch(createNPC({ npc: npc.toJSON() }));
-    return npc;
-};
-
-const getNPCById = function (id) {
+const getById = function (id) {
     const npcs = store.getState().npcs;
     const data = npcs.find((npc) => {
         return npc.id === id;
@@ -34,49 +28,67 @@ const getNPCById = function (id) {
     return null;
 };
 
-const saveNPC = function (npc) {
+const create = function (mode = 'view', npc = null) {
+    if (!(npc instanceof NPC)) {
+        npc = new NPC({});
+        applySchemaToNPC(npcSchema, tableRoller, npc);
+    }
+    store.dispatch(createNPC({ npc: npc.toJSON() }));
+    emitter.trigger('npc:add', {
+        item: npc,
+        mode
+    });
+    return npc;
+};
+
+const save = function (npc) {
     store.dispatch(updateNPC({ npc: npc.toJSON() }));
-    npcEmitter.trigger('npc:edit', {
-        npc
+    emitter.trigger('npc:edit', {
+        item: npc
     });
 };
 
-const removeNPC = function (id) {
+const remove = function (id) {
     store.dispatch(deleteNPC({ id }));
-    npcEmitter.trigger('npc:delete', {
+    emitter.trigger('npc:delete', {
         id
     });
 };
 
-const sortNPCs = function (sortUuids) {
-    store.dispatch(sortNPCsStore({ sortUuids }));
+const sort = function (sortUuids) {
+    store.dispatch(sortNPCs({ sortUuids }));
 };
 
-const deleteAllNPCs = function () {
+const deleteAll = function () {
     store.dispatch(clearNPCs());
 };
 
-const importNPCs = function (npcs) {
-    store.dispatch(importNPCsStore({ npcs }));
+const importAll = function (npcs) {
+    store.dispatch(importNPCs({ npcs }));
     npcs.forEach((npcData) => {
         if (!npcData.id) {
             return;
         }
         const npc = new NPC(npcData);
-        npcEmitter.trigger('npc:add', {
-            npc
+        emitter.trigger('npc:add', {
+            item: npc
         });
     });
 };
 
+const getDisplay = function () {
+    return new NPCDisplay();
+};
+
 export {
-    npcEmitter,
-    getAllNPCs,
-    getNPCById,
-    createNewNPC,
-    saveNPC,
-    sortNPCs,
-    removeNPC,
-    deleteAllNPCs,
-    importNPCs
+    emitter,
+    getAll,
+    getById,
+    create,
+    save,
+    sort,
+    remove,
+    deleteAll,
+    importAll,
+    getDisplay
 };
