@@ -1,6 +1,6 @@
 {
   "name": "hadleyville-online",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/derikb/hadleyville-online.git"
@@ -45,7 +45,7 @@
   },
   "standard-version": {
     "scripts": {
-      "postbump": "npm run build && git add ./dist/index.js ./dist/index.js.map ./dist/styles.css ./dist/styles.css.map"
+      "postbump": "npm run build && git add ./dist/index.js ./dist/index.js.map ./dist/style.css ./dist/style.css.map"
     },
     "bumpFiles": [
       "package.json",

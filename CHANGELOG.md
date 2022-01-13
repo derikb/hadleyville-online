@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/derikb/hadleyville-online/compare/v1.0.0...v2.0.0) (2022-01-13)
+
+
+### Features
+
+* Focus management improvements ([8156b0e](https://github.com/derikb/hadleyville-online/commit/8156b0eba1826eb9ead4c3e5d04f7f33dbeb3f36))
+* New table items, new rules ([817dbcd](https://github.com/derikb/hadleyville-online/commit/817dbcdfd0e57b5106f97c0d7dd7008ec1817ad2))
+* **notes:** Delete notes that are new and empty ([4204849](https://github.com/derikb/hadleyville-online/commit/42048499f980d6757fb42a98da5a4d4926789202)), closes [#10](https://github.com/derikb/hadleyville-online/issues/10)
+* **npcs:** Allow markdown in notes property ([902609a](https://github.com/derikb/hadleyville-online/commit/902609a78c0687b3e2e0758802fc4a54b3ed7201))
+* **tabledrawer:** Click outside to close ([1a4b131](https://github.com/derikb/hadleyville-online/commit/1a4b131891f38fe07155f90dd10a56fb33705613)), closes [#11](https://github.com/derikb/hadleyville-online/issues/11)
+* **ui:** Collapse all button for npcs/notes ([3356b12](https://github.com/derikb/hadleyville-online/commit/3356b12d986d7b85bc989c8211251a07bab5fd5e))
+
 ## 1.0.0 (2021-06-27)
 
 
