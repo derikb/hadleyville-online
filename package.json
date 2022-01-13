@@ -14,6 +14,7 @@
   ],
   "author": "Derik A Badman",
   "scripts": {
+    "lint": "eslint ",
     "start": "esbuild --serve=8080 --servedir=./dist ./src/style.css ./src/index.js --outdir=./dist --loader:.svg=dataurl --loader:.html=file --bundle",
     "build": "esbuild ./src/style.css ./src/index.js --outdir=./dist --loader:.svg=dataurl --loader:.html=file --minify --sourcemap --bundle",
     "release": "standard-version -a"
@@ -41,5 +42,14 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.1",
     "standard-version": "^9.2.0"
+  },
+  "standard-version": {
+    "scripts": {
+      "postbump": "npm run build && git add ./dist/index.js ./dist/index.js.map ./dist/styles.css ./dist/styles.css.map"
+    },
+    "bumpFiles": [
+      "package.json",
+      "package-lock.json"
+    ]
   }
 }
