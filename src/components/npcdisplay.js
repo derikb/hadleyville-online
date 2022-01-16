@@ -1,6 +1,9 @@
 import * as npcService from '../services/npcService.js';
 import NPCSchema from '../models/npcSchema.js';
 import { convertToken } from '../services/randomTableService.js';
+import RelationshipDisplay from './relationshipDisplay.js';
+import Relationship from '../models/relationship.js';
+import * as relationshipService from '../services/relationshipService.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -20,6 +23,11 @@ template.innerHTML = `
     }
     details[open] .btn-edit {
         display: inline-block;
+    }
+
+    #rellist ul {
+        margin: .5rem 0;
+        padding: 0;
     }
 </style>
 <details>
@@ -52,6 +60,18 @@ formTemplate.innerHTML = `
 </form>
 `;
 
+const relTemplate = document.createElement('template');
+relTemplate.innerHTML = `
+<section id="rellist" aria-labelledby="relheader">
+    <div>
+        <strong id="relheader">Relationships</strong>
+        <button class="btn-sm btn-add-rel" type="button">Add</button>
+    </div>
+    <ul>
+    </ul>
+</section>
+`;
+
 class NPCDisplay extends HTMLElement {
     constructor () {
         super();
@@ -59,6 +79,9 @@ class NPCDisplay extends HTMLElement {
         this.shadowRoot.appendChild(template.content.cloneNode(true));
         this._isEdit = false;
         this.editButton = this.shadowRoot.querySelector('.btn-edit');
+
+        relationshipService.emitter.on('relationship:add', this._addRelationship.bind(this));
+        relationshipService.emitter.on('relationship:delete', this._removeRelationship.bind(this));
     }
 
     connectedCallback () {
@@ -69,6 +92,7 @@ class NPCDisplay extends HTMLElement {
     disconnectedCallback () {
         this.shadowRoot.querySelector('details').removeEventListener('toggle', this._setCollapse.bind(this));
         this.editButton.removeEventListener('click', this._toggleEdit.bind(this));
+        // @todo this should account for if in edit mode when disconnected.
     }
 
     /**
@@ -103,6 +127,17 @@ class NPCDisplay extends HTMLElement {
         li.innerHTML = `Notes: ${this.npc.getFieldDisplay('notes')}`;
         ul.appendChild(li);
         this.shadowRoot.querySelector('.body').appendChild(ul);
+
+        // Display relationships
+        const relSection = relTemplate.content.cloneNode(true);
+        const relul = relSection.querySelector('ul');
+        this.npc.relationships.forEach((rel) => {
+            const relDisplay = new RelationshipDisplay({ npcId: this.npc.id });
+            relDisplay.setItem(rel);
+            relul.appendChild(relDisplay);
+        });
+        this.shadowRoot.querySelector('.body').appendChild(relSection);
+        this.shadowRoot.querySelector('.btn-add-rel').addEventListener('click', this._createRelationship.bind(this));
     }
 
     /**
@@ -255,8 +290,49 @@ class NPCDisplay extends HTMLElement {
     _refocus () {
         this.shadowRoot.querySelector('summary').focus();
     }
+    /**
+     * Trigger the creation of new relationship
+     * Between this npc and someone else.
+     */
+    _createRelationship () {
+        const rel = new Relationship({
+            source: this.npc.id
+        });
+        relationshipService.create('edit', rel);
+    }
+    /**
+     * Add a relationship to the list.
+     * @param {Relationship} item
+     * @param {String} mode Edit or view.
+     */
+    _addRelationship ({ item, mode }) {
+        if (item.source !== this.npc.id) {
+            return;
+        }
+        const display = new RelationshipDisplay({ npcId: this.npc.id });
+        display.setItem(item);
+        const list = this.shadowRoot.querySelector('#rellist ul');
+        if (list) {
+            list.appendChild(display);
+            if (mode === 'edit' && item.source === this.npc.id) {
+                display._enableEdit();
+            }
+        }
+    }
+    /**
+     * Remove a relationship from the list.
+     * @param {String} id
+     */
+    _removeRelationship ({ id }) {
+        const display = this.shadowRoot.querySelector(`had-relationship[data-id="${id}"]`);
+        if (display) {
+            display.parentNode.removeChild(display);
+        }
+    }
 };
 
-window.customElements.define('had-npc', NPCDisplay);
+if (!window.customElements.get('had-npc')) {
+    window.customElements.define('had-npc', NPCDisplay);
+}
 
 export default NPCDisplay;

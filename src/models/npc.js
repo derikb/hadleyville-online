@@ -1,6 +1,7 @@
 
 import NPC from 'rpg-table-randomizer/src/NPC.js';
 import MarkdownIt from 'markdown-it/lib';
+import Relationship from './relationship.js';
 
 export default class AppNPC extends NPC {
     constructor ({
@@ -8,6 +9,7 @@ export default class AppNPC extends NPC {
         schema = 'hadleyville',
         fields = new Map(),
         notes = '',
+        relationships = [],
         collapse = false
     }) {
         super({
@@ -17,6 +19,17 @@ export default class AppNPC extends NPC {
         });
         this.notes = notes;
         this.collapse = !!collapse;
+        this.relationships = relationships.map((obj) => {
+            if (obj instanceof Relationship) {
+                return obj;
+            }
+            if (!obj && typeof obj !== 'object') {
+                return null;
+            }
+            return new Relationship(obj);
+        }).filter((el) => {
+            return !!el;
+        });
     }
 
     get name () {
@@ -49,5 +62,23 @@ export default class AppNPC extends NPC {
     get noteHtml () {
         const md = new MarkdownIt();
         return md.render(this.notes);
+    }
+    /**
+     * Add a relation for this NPC.
+     * @param {Relationship} relationship
+     */
+    addRelationship (relationship) {
+        if (!(relationship instanceof Relationship) ||
+            relationship.isNPCInvolved(this.id)) {
+            return;
+        }
+        this.relationships.push(relationship);
+    }
+
+    toJSON () {
+        const obj = super.toJSON();
+        // Don't save these with the npc.
+        delete obj.relationships;
+        return obj;
     }
 }

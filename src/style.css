@@ -112,6 +112,10 @@ button {
     padding: .5rem 1rem;
     cursor: pointer;
 }
+button.btn-sm {
+    font-size: .7rem;
+    padding: .125rem .25rem;
+}
 header button, summary button, th button {
     padding: .25rem .5rem;
 }
@@ -251,7 +255,6 @@ main {
 
 #npcs {
     grid-area: npcs;
-    padding: 1rem;
 }
 
 #notes {

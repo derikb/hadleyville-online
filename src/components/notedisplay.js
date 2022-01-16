@@ -188,6 +188,8 @@ class NoteDisplay extends HTMLElement {
     }
 };
 
-window.customElements.define('had-note', NoteDisplay);
+if (!window.customElements.get('had-note')) {
+    window.customElements.define('had-note', NoteDisplay);
+}
 
 export default NoteDisplay;

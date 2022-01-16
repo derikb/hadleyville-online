@@ -7,14 +7,26 @@ import { tableRoller } from '../services/randomTableService.js';
 import { applySchemaToNPC } from '../../node_modules/rpg-table-randomizer/src/npc_generator';
 import EventEmitter from '../models/EventEmitter.js';
 import NPCDisplay from '../components/npcdisplay.js';
+import * as relationshipService from './relationshipService.js';
 
 const emitter = new EventEmitter();
 
-const getAll = function () {
-    const npcs = store.getState().npcs;
-    return npcs.map((obj) => {
+const getAll = function (includeRelations = true) {
+    const data = store.getState().npcs;
+    const npcs = data.map((obj) => {
         return new NPC(obj);
     });
+    if (!includeRelations) {
+        return npcs;
+    }
+    const relations = relationshipService.getAllGroupedByNPCSource();
+    npcs.forEach((npc) => {
+        const rels = relations.get(npc.id);
+        if (rels) {
+            npc.relationships = rels;
+        }
+    });
+    return npcs;
 };
 
 const getById = function (id) {
