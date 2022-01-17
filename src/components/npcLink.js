@@ -30,7 +30,7 @@ export default class NPCLink {
         if (!this._labelElement) {
             this._labelElement = document.createElement('div');
             this._labelElement.classList.add('link-label');
-            this._labelElement.innerHTML = this.rel.type;
+            this._labelElement.innerHTML = `<span>${this.rel.type}</span><span class="direction">&leftarrow;</span>`;
             this._labelElement.style.position = 'absolute';
             this._labelElement.style.zIndex = 50;
         }
@@ -120,6 +120,23 @@ export default class NPCLink {
         ];
     }
     /**
+     * Angle of line.
+     * 0 - 180 is top arc from left.
+     * 0 - -180 is bottom arc from left.
+     * Same values needed for CSS rotate.
+     * @returns {Number}
+     */
+    getLineAngle () {
+        const [x1, y1] = this.sourceCoords;
+        const [x2, y2] = this.targetCoords;
+        const dY = y1 - y2;
+        const dX = x1 - x2;
+        const angleInDegrees = (Math.atan2(dY, dX) / Math.PI * 180.0);
+        // 0 - 180 is top arc from left.
+        // 0 - -180 is bottom arc from left.
+        return angleInDegrees;
+    }
+    /**
      * Update position of the label.
      */
     updateLabel () {
@@ -134,5 +151,9 @@ export default class NPCLink {
         element.style.top = `${y}px`;
         element.style.bottom = 'auto';
         element.style.right = 'auto';
+
+        // Rotate arrows to point right way.
+        const angle = this.getLineAngle();
+        element.querySelector('.direction').style.transform = `rotate(${angle}deg)`;
     }
 }

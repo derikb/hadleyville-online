@@ -39,6 +39,9 @@ template.innerHTML = `
         border-radius: .5rem;
         background-color: var(--surface1, rgba(255,255,255,0.5));
     }
+    .link-label .direction {
+        display: inline-block;
+    }
 
     svg line  {
         stroke: var(--primary, tan);
@@ -89,6 +92,8 @@ class RelationMap extends HTMLElement {
             if (node) {
                 // @todo if coords are OUT OF BOUNDS, move to the nearest edge.
                 // Probably need to do this AFTER placement, else we can't calc height/width.
+                // Or I need to get the large x/y and increase the size of the map to fit
+                // and add scrolling.
                 npcNode.coords = [node.x, node.y];
             } else {
                 // randomize some coords if it wasn't placed already.
