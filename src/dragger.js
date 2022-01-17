@@ -92,6 +92,8 @@ export default class Dragger {
     stopDrag () {
         // make sure it isn't off the map.
         this.dragElement.adjustForParentBounds();
+        // save it's location now that the drag is over.
+        this.dragElement.saveCoords();
 
         document.documentElement.removeEventListener('mousemove', this.doDragCallback, false);
         document.documentElement.removeEventListener('touchmove', this.doDragCallback, false);

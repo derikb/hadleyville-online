@@ -48,6 +48,13 @@ export default class Relationship {
         }
         return '';
     }
+    /**
+     * See NPCLink.linkId
+     * @returns {String}
+     */
+    get mapLinkId () {
+        return [this.source, this.target].sort().join('-');
+    }
 
     toJSON () {
         const obj = {};

@@ -1,14 +1,40 @@
 /**
  * Links between Characters on the relaionship map.
+ * This can accomodate 1 or 2 Relationship models.
  * It has two elements (one is SVG), so it can't be a web component, at least the SVG can't.
  * @todo make the label a component?
- * @prop {Relationship} rel
+ * @prop {String} _start uuid for start of line node
+ * @prop {String} _end uuid for end of line node
+ * @prop {String} _descToEnd Description of relationship from start -> end
+ * @prop {String} _descToStart Description of relationship from end -> start
  */
 export default class NPCLink {
-    constructor ({
-        rel = null
-    }) {
-        this.rel = rel;
+    constructor () {
+        this._start = '';
+        this._end = '';
+        this._descToEnd = '';
+        this._descToStart = '';
+    }
+    /**
+     * Add a first or second relationship to node.
+     * @param {Relationship} rel
+     */
+    addRelationship (rel) {
+        if (this._start === '') {
+            // no relation yet.
+            this._start = rel.source;
+            this._end = rel.target;
+            this._descToEnd = rel.type;
+            return;
+        }
+        this._descToStart = rel.type;
+    }
+    /**
+     * Link id to know which matching relationships can be joined here.
+     * See Relationship.mapLinkId
+     */
+    get linkId () {
+        return [this._start, this._end].sort().join('-');
     }
     /**
      * The link line is drawn in SVG.
@@ -17,10 +43,23 @@ export default class NPCLink {
     get element () {
         if (!this._element) {
             this._element = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            this._element.setAttribute('marker-end', 'url(#arrow)');
-            // @todo maybe each link needs its own marker so marker.refX can be set relative to line length.
         }
         return this._element;
+    }
+
+    _getLabelContent () {
+        let html = '';
+        if (this._descToEnd === this._descToStart) {
+            html = `<div>${this._descToEnd}<span class="direction">&leftrightarrow;</span></div>`;
+        } else {
+            if (this._descToEnd !== '') {
+                html = `<div>${this._descToEnd}<span class="direction">&leftarrow;</span></div>`;
+            }
+            if (this._descToStart !== '') {
+                html = `${html}<div>${this._descToStart}<span class="direction">&rightarrow;</span></div>`;
+            }
+        }
+        return html;
     }
     /**
      * Label is an HTML element on top of the SVG.
@@ -30,79 +69,72 @@ export default class NPCLink {
         if (!this._labelElement) {
             this._labelElement = document.createElement('div');
             this._labelElement.classList.add('link-label');
-            this._labelElement.innerHTML = `<span>${this.rel.type}</span><span class="direction">&leftarrow;</span>`;
-            this._labelElement.style.position = 'absolute';
-            this._labelElement.style.zIndex = 50;
+            this._labelElement.innerHTML = this._getLabelContent();
         }
         return this._labelElement;
     }
     /**
-     * @returns {String} Source npc uuid.
+     * @returns {String} Starting npc uuid.
      */
-    get source () {
-        return this.rel.source;
+    get start () {
+        return this._start;
     }
     /**
-     * @returns {String} Target npc uuid.
+     * @returns {String} End npc uuid.
      */
-    get target () {
-        return this.rel.target;
+    get end () {
+        return this._end;
     }
     /**
      * Start of line.
      * @returns {Number[]}
      */
-    get sourceCoords () {
+    get startCoords () {
         return [
             Number(this._element.getAttribute('x1')),
             Number(this._element.getAttribute('y1'))
         ];
     }
     /**
-     * Set coordinates for source of line.
+     * Set coordinates for start of line.
      * @param {Number} x
      * @param {Number} y
      */
-    set sourceCoords ([x, y]) {
+    set startCoords ([x, y]) {
         this._element.setAttribute('x1', x);
         this._element.setAttribute('y1', y);
-        this.updateLabel();
+        this._updateLabel();
     }
     /**
      * End of line.
      * @returns {Number[]}
      */
-    get targetCoords () {
+    get endCoords () {
         return [
             Number(this._element.getAttribute('x2')),
             Number(this._element.getAttribute('y2'))
         ];
     }
     /**
-     * Set coordinates for target of line.
+     * Set coordinates for end of line.
      * @param {Number} x
      * @param {Number} y
      */
-    // set targetCoords ([x, y]) {
-    //     this._element.setAttribute('x2', x);
-    //     this._element.setAttribute('y2', y);
-    //     this.updateLabel();
-    // }
-    set targetCoords ([[x1, y1], [x3, y3]]) {
+    set endCoords ([[x1, y1], [x3, y3]]) {
         // set to center...
         const x = x1 + ((x3 - x1) / 2);
         const y = y1 + ((y3 - y1) / 2);
         this._element.setAttribute('x2', x);
         this._element.setAttribute('y2', y);
-        this.updateLabel();
+        this._updateLabel();
     }
     /**
      * Get coordinates of the center of the line's bounding box.
      * @returns {Number[]}
      */
-    getLineCenter () {
-        const [x1, y1] = this.sourceCoords;
-        const [x2, y2] = this.targetCoords;
+    _getLineCenter () {
+        const [x1, y1] = this.startCoords;
+        const [x2, y2] = this.endCoords;
 
         const lineWidth = (x2 > x1 ? (x2 - x1) : (x1 - x2));
         const lineHeight = (y2 > y1 ? (y2 - y1) : (y1 - y2));
@@ -126,24 +158,33 @@ export default class NPCLink {
      * Same values needed for CSS rotate.
      * @returns {Number}
      */
-    getLineAngle () {
-        const [x1, y1] = this.sourceCoords;
-        const [x2, y2] = this.targetCoords;
+    _getLineAngle () {
+        const [x1, y1] = this.startCoords;
+        const [x2, y2] = this.endCoords;
         const dY = y1 - y2;
         const dX = x1 - x2;
-        const angleInDegrees = (Math.atan2(dY, dX) / Math.PI * 180.0);
-        // 0 - 180 is top arc from left.
-        // 0 - -180 is bottom arc from left.
-        return angleInDegrees;
+        return (Math.atan2(dY, dX) / Math.PI * 180.0);
+    }
+    /**
+     * Rotate arrows to point right way.
+     * since they start pointing opposite directions
+     * we can use the same rotate value.
+     */
+    _updateArrows () {
+        const angle = this._getLineAngle();
+        const arrows = this.labelElement.querySelectorAll('.direction');
+        arrows.forEach((arrow) => {
+            arrow.style.transform = `rotate(${angle}deg)`;
+        });
     }
     /**
      * Update position of the label.
      */
-    updateLabel () {
+    _updateLabel () {
         const element = this.labelElement;
         const width = element.offsetWidth;
         const height = element.offsetHeight;
-        const [cx, cy] = this.getLineCenter();
+        const [cx, cy] = this._getLineCenter();
         const x = cx - (width / 2);
         const y = cy - (height / 2);
 
@@ -151,9 +192,6 @@ export default class NPCLink {
         element.style.top = `${y}px`;
         element.style.bottom = 'auto';
         element.style.right = 'auto';
-
-        // Rotate arrows to point right way.
-        const angle = this.getLineAngle();
-        element.querySelector('.direction').style.transform = `rotate(${angle}deg)`;
+        this._updateArrows();
     }
 }

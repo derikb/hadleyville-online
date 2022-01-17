@@ -1,6 +1,6 @@
 import Dragger from '../dragger.js';
 import RelMapNode from '../models/relMapNode.js';
-import { updateMapNode } from '../services/relationshipService';
+import { save as saveMapNode } from '../services/relmapService.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -90,24 +90,24 @@ class NPCNode extends HTMLElement {
      */
     addSourceLink (link) {
         this._sourceLinks.push(link);
-        link.sourceCoords = this.centerCoords;
+        link.startCoords = this.centerCoords;
     }
     /**
      * @param {NPCLink} link
      */
     addTargetLink (link) {
         this._targetLinks.push(link);
-        link.targetCoords = this.boundingCoords; // this.centerCoords;
+        link.endCoords = this.boundingCoords;
     }
     /**
      * Update position of connected links.
      */
     updateLinks () {
         this._targetLinks.forEach((link) => {
-            link.targetCoords = this.boundingCoords; // this.centerCoords;
+            link.endCoords = this.boundingCoords;
         });
         this._sourceLinks.forEach((link) => {
-            link.sourceCoords = this.centerCoords;
+            link.startCoords = this.centerCoords;
         });
     }
     /**
@@ -200,7 +200,6 @@ class NPCNode extends HTMLElement {
         if (update) {
             this.coords = [x, y];
         }
-        this.saveCoords();
     }
     /**
      * Save current coords to the store.
@@ -212,7 +211,7 @@ class NPCNode extends HTMLElement {
             x,
             y
         });
-        updateMapNode(n);
+        saveMapNode(n);
     }
 };
 

@@ -8,6 +8,7 @@ import { applySchemaToNPC } from '../../node_modules/rpg-table-randomizer/src/np
 import EventEmitter from '../models/EventEmitter.js';
 import NPCDisplay from '../components/npcdisplay.js';
 import * as relationshipService from './relationshipService.js';
+import * as relmapService from './relmapService.js';
 
 const emitter = new EventEmitter();
 
@@ -65,8 +66,9 @@ const remove = function (id) {
     emitter.trigger('npc:delete', {
         id
     });
-
+    // Clean up associated data.
     relationshipService.deleteByNPC(id);
+    relmapService.deleteByNPC(id);
 };
 
 const sort = function (sortUuids) {

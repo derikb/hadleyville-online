@@ -1,6 +1,7 @@
 import { randomInteger } from 'rpg-table-randomizer/src/randomizer.js';
 import { getAll as getAllNPCs } from '../services/npcService.js';
-import { getAll as getAllRelationships, getAllMapNodes } from '../services/relationshipService.js';
+import { getAll as getAllRelationships } from '../services/relationshipService.js';
+import { getAllNodes } from '../services/relmapService.js';
 import NPCNode from './npcNode.js';
 import NPCLink from './npcLink.js';
 
@@ -38,6 +39,8 @@ template.innerHTML = `
         padding: .125rem .25rem;
         border-radius: .5rem;
         background-color: var(--surface1, rgba(255,255,255,0.5));
+        position: absolute;
+        z-index = 50;
     }
     .link-label .direction {
         display: inline-block;
@@ -47,20 +50,17 @@ template.innerHTML = `
         stroke: var(--primary, tan);
         stroke-width: 2px;
     }
-    svg marker path {
-        fill: var(--primary, tan);
-    }
 </style>
 <div id="npc-map"></div>
 <svg>
-    <defs>
-        <marker id="arrow" markerWidth="10" markerHeight="10" refX="25" refY="3" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L0,6 L9,3 z" />
-        </marker>
-    </defs>
+    <defs></defs>
 </svg>
 `;
 
+/**
+ * @prop {NPCLink[]} links
+ * @prop {NPCNode[]} npcs
+ */
 class RelationMap extends HTMLElement {
     constructor () {
         super();
@@ -74,15 +74,13 @@ class RelationMap extends HTMLElement {
     }
 
     connectedCallback () {
-        console.log(this.clientHeight);
-        console.log(this.clientWidth);
         // Set SVG to same size as the map.
         this.svg.setAttribute('viewBox', `0 0 ${this.clientWidth} ${this.clientHeight}`);
 
         // Pull in all the NPCs and Relationships.
         const npcs = getAllNPCs();
         const relationships = getAllRelationships();
-        const nodes = getAllMapNodes();
+        const nodes = getAllNodes();
 
         npcs.forEach((npc) => {
             const npcNode = new NPCNode({ npc });
@@ -103,7 +101,18 @@ class RelationMap extends HTMLElement {
         });
 
         relationships.forEach((rel) => {
-            const link = new NPCLink({ rel });
+            const linkId = rel.mapLinkId;
+            let link = this.links.find((el) => {
+                return el.linkId === linkId;
+            });
+            if (!link) {
+                link = new NPCLink();
+            }
+            link.addRelationship(rel);
+            this.links.push(link);
+        });
+
+        this.links.forEach((link) => {
             this.addLink(link);
         });
     }
@@ -127,17 +136,16 @@ class RelationMap extends HTMLElement {
      * @param {NPCLink} link
      */
     addLink (link) {
-        this.links.push(link);
         // Add these first, so the placement is right
         // They don't have offset values until inserted.
         this.svg.appendChild(link.element);
         this.npcArea.appendChild(link.labelElement);
 
         const sourceNode = this.npcs.find((el) => {
-            return el.characterId === link.source;
+            return el.characterId === link.start;
         });
         const targetNode = this.npcs.find((el) => {
-            return el.characterId === link.target;
+            return el.characterId === link.end;
         });
 
         sourceNode.addSourceLink(link);
