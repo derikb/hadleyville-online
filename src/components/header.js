@@ -72,6 +72,7 @@ template.innerHTML = `
     <nav>
         <ul>
             <li><a href="./index.html">Home</a></li>
+            <li><a href="./graph.html">Map</a></li>
             <li><a href="./intro.html">Intro</a></li>
             <li><a href="./rules.html">Rules</a></li>
             <li><a href="./settings.html">Settings</a></li>

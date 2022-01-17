@@ -2,6 +2,7 @@ import store from '../store/store';
 import { importAll as importNotes, deleteAll as deleteAllNotes } from './notesService.js';
 import { save as saveTown, clear as clearTown } from './townService.js';
 import { importAll as importNPCs, deleteAll as deleteAllNPCs } from './npcService.js';
+import { importAll as importRelationships, deleteAll as deleteAllRelationships, deleteAllNodes, importMapNodes as importNodes } from './relationshipService';
 import { Town } from '../models/town.js';
 
 /**
@@ -76,6 +77,14 @@ const doImport = function (ev) {
                         saveTown(new Town(town));
                     }
                 }
+                const relationships = data.relationships || [];
+                if (relationships && Array.isArray(relationships) && relationships.length > 0) {
+                    importRelationships(relationships);
+                }
+                const nodes = data.relmap || [];
+                if (nodes && Array.isArray(nodes) && nodes.length > 0) {
+                    importNodes(nodes);
+                }
             };
         })(f);
         reader.readAsText(f);
@@ -94,6 +103,8 @@ const deleteAll = function (ev) {
         return;
     }
     deleteAllNotes();
+    deleteAllRelationships();
+    deleteAllNodes();
     deleteAllNPCs();
     clearTown();
 };

@@ -2,6 +2,8 @@ import store from '../store/store.js';
 import { createRelationship, updateRelationship, deleteRelationship, clearRelationships, importRelationships } from '../store/relationship-reducer.js';
 import Relationship from '../models/relationship.js';
 import EventEmitter from '../models/EventEmitter.js';
+import { updateNode, deleteNode, clearNodes, importNodes } from '../store/relmap-reducer.js';
+import RelMapNode from '../models/relMapNode.js';
 
 const emitter = new EventEmitter();
 
@@ -97,6 +99,35 @@ const importAll = function (relationships) {
     });
 };
 
+const getAllMapNodes = function () {
+    const nodes = store.getState().relmap;
+    return nodes.map((obj) => {
+        return new RelMapNode(obj);
+    });
+};
+
+const updateMapNode = function (node) {
+    store.dispatch(updateNode({
+        node: node.toJSON()
+    }));
+};
+
+const deleteAllNodes = function () {
+    store.dispatch(clearNodes());
+};
+
+const importMapNodes = function (nodes) {
+    store.dispatch(importNodes({ nodes }));
+};
+
+const deleteByNPC = function (uuid) {
+    const relationships = getByNPC(uuid);
+    relationships.forEach((rel) => {
+        remove(rel.uuid);
+    });
+    store.dispatch(deleteNode({ uuid }));
+};
+
 export {
     emitter,
     getAll,
@@ -108,5 +139,10 @@ export {
     sort,
     remove,
     deleteAll,
-    importAll
+    importAll,
+    getAllMapNodes,
+    updateMapNode,
+    deleteAllNodes,
+    importMapNodes,
+    deleteByNPC
 };

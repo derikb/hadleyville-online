@@ -65,6 +65,8 @@ const remove = function (id) {
     emitter.trigger('npc:delete', {
         id
     });
+
+    relationshipService.deleteByNPC(id);
 };
 
 const sort = function (sortUuids) {

@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-
 import Header from './components/header.js';
 import Footer from './components/footer.js';
 import TableDrawer from './components/tabledrawer.js';
@@ -11,6 +10,9 @@ import DiceRoller from './components/diceroller.js';
 import NPCsList from './components/npcslist.js';
 import NPCDisplay from './components/npcdisplay.js';
 import RelationshipDisplay from './components/relationshipDisplay.js';
+import RelationMap from './components/relationMap.js';
+import NPCNode from './components/npcNode.js';
+import NPCLink from './components/npcLink.js';
 
 import { setupPage } from './services/importExportService.js';
 
