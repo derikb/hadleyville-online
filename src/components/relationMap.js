@@ -1,6 +1,6 @@
 import { randomInteger } from 'rpg-table-randomizer/src/randomizer.js';
 import { getAll as getAllNPCs } from '../services/npcService.js';
-import { getAll as getAllRelationships } from '../services/relationshipService.js';
+import * as relatinshipService from '../services/relationshipService.js';
 import { getAllNodes } from '../services/relmapService.js';
 import NPCNode from './npcNode.js';
 import NPCLink from './npcLink.js';
@@ -71,6 +71,9 @@ class RelationMap extends HTMLElement {
 
         this.npcs = [];
         this.links = [];
+
+        relatinshipService.emitter.on('relationship:edit', this._addRelationship.bind(this));
+        relatinshipService.emitter.on('relationship:delete', this._removeRelationship.bind(this));
     }
 
     connectedCallback () {
@@ -79,7 +82,7 @@ class RelationMap extends HTMLElement {
 
         // Pull in all the NPCs and Relationships.
         const npcs = getAllNPCs();
-        const relationships = getAllRelationships();
+        const relationships = relatinshipService.getAll();
         const nodes = getAllNodes();
 
         npcs.forEach((npc) => {
@@ -107,9 +110,13 @@ class RelationMap extends HTMLElement {
             });
             if (!link) {
                 link = new NPCLink();
+                this.links.push(link);
             }
-            link.addRelationship(rel);
-            this.links.push(link);
+            try {
+                link.addRelationship(rel);
+            } catch (e) {
+                console.log(e.message);
+            }
         });
 
         this.links.forEach((link) => {
@@ -150,6 +157,49 @@ class RelationMap extends HTMLElement {
 
         sourceNode.addSourceLink(link);
         targetNode.addTargetLink(link);
+    }
+
+    _addRelationship ({ item }) {
+        const rel = item;
+        const linkId = rel.mapLinkId;
+        let link = this.links.find((el) => {
+            return el.linkId === linkId;
+        });
+        if (link) {
+            try {
+                link.addRelationship(rel);
+            } catch (e) {
+                console.log(e.message);
+            }
+            link.updateLabelText();
+            return;
+        }
+        link = new NPCLink();
+        link.addRelationship(rel);
+        this.links.push(link);
+        this.addLink(link);
+    }
+
+    _removeRelationship ({ id }) {
+        // @todo maybe this should update the node and then the node should update the links?
+        // Or this should update both...
+        const link = this.links.find((el) => {
+            return el.isRelationshipIncluded(id);
+        });
+        if (!link) {
+            return;
+        }
+        link.removeRelationship(id);
+        if (!link.isLinkEmpty) {
+            link.updateLabelText();
+            return;
+        }
+        // remove it.
+        const index = this.links.findIndex((el) => {
+            return el === link;
+        });
+        this.links.splice(index, 1);
+        link.removeLink();
     }
 
     /**

@@ -64,15 +64,34 @@ export default class AppNPC extends NPC {
         return md.render(this.notes);
     }
     /**
-     * Add a relation for this NPC.
+     * Add (or update) a relation for this NPC.
      * @param {Relationship} relationship
      */
     addRelationship (relationship) {
         if (!(relationship instanceof Relationship) ||
-            relationship.isNPCInvolved(this.id)) {
+            !relationship.isNPCInvolved(this.id)) {
+            return;
+        }
+        const index = this.relationships.findIndex((rel) => {
+            return rel.uuid === relationship.uuid;
+        });
+        if (index >= 0) {
+            this.relationships.splice(index, 1, relationship);
             return;
         }
         this.relationships.push(relationship);
+    }
+    /**
+     * Remove relation for this NPC.
+     * @param {String} uuid
+     */
+    removeRelationship (uuid) {
+        const index = this.relationships.findIndex((rel) => {
+            return rel.uuid === uuid;
+        });
+        if (index >= 0) {
+            this.relationships.splice(index, 1);
+        }
     }
 
     toJSON () {

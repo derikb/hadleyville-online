@@ -13,6 +13,28 @@
         <had-maprelation style="width: 100%; height: 100%;"></had-maprelation>
     </main>
     <had-footer></had-footer>
+    <div
+        id="dialog-npc"
+        aria-labelledby="dialog-npc-title"
+        aria-hidden="true"
+        class="dialog-container"
+        >
+    <!-- 2. The dialog overlay -->
+    <div class="dialog-overlay" data-a11y-dialog-hide></div>
+    <!-- 3. The actual dialog -->
+    <div class="dialog-content" role="document">
+        <!-- 4. The close button -->
+        <header>
+            <h1 id="dialog-npc-title"></h1>
+            <button type="button" data-a11y-dialog-hide aria-label="Close dialog">
+                &times;
+            </button>
+        </header>
+        <!-- 6. Dialog content -->
+        <div class="dialog-body">
+
+        </div>
+    </div>
     <script type="module" src="./index.js"></script>
 </body>
 </html>

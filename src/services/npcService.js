@@ -68,7 +68,7 @@ const remove = function (id) {
     });
     // Clean up associated data.
     relationshipService.deleteByNPC(id);
-    relmapService.deleteByNPC(id);
+    relmapService.remove(id);
 };
 
 const sort = function (sortUuids) {

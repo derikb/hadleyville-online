@@ -3,31 +3,62 @@
  * This can accomodate 1 or 2 Relationship models.
  * It has two elements (one is SVG), so it can't be a web component, at least the SVG can't.
  * @todo make the label a component?
- * @prop {String} _start uuid for start of line node
- * @prop {String} _end uuid for end of line node
- * @prop {String} _descToEnd Description of relationship from start -> end
- * @prop {String} _descToStart Description of relationship from end -> start
+ * @prop {Relationship[]} relations 1 or 2 Relatinships.
+ * @prop {String} _start uuid for start of line node (based on first relationship added)
+ * @prop {String} _end uuid for end of line node (based on first relationship added)
  */
 export default class NPCLink {
     constructor () {
         this._start = '';
         this._end = '';
-        this._descToEnd = '';
-        this._descToStart = '';
+        this.relations = [];
     }
     /**
      * Add a first or second relationship to node.
      * @param {Relationship} rel
      */
     addRelationship (rel) {
-        if (this._start === '') {
-            // no relation yet.
-            this._start = rel.source;
-            this._end = rel.target;
-            this._descToEnd = rel.type;
+        const [rel1, rel2] = this.relations;
+        if (rel2 && rel2.id === rel.id) {
+            this.relations[1] = rel;
             return;
         }
-        this._descToStart = rel.type;
+        if (rel1 && rel1.id === rel.id) {
+            this.relations[0] = rel;
+            return;
+        }
+        if (!rel1) {
+            this.relations[0] = rel;
+            // The first relationship setst he start/end.
+            [this._start, this._end] = [rel.source, rel.target].sort();
+            return;
+        }
+        if (!rel2) {
+            this.relations[1] = rel;
+            return;
+        }
+        throw new Error('Link already has two relationships.');
+    }
+    /**
+     * Remove relationship from link.
+     * @param {String} id
+     */
+    removeRelationship (id) {
+        const [rel1, rel2] = this.relations;
+        if (rel2 && rel2.id === id) {
+            this.relations.splice(1, 1);
+            return;
+        }
+        if (rel1 && rel1.id === id) {
+            this.relations.splice(0, 1);
+        }
+    }
+    /**
+     * Have all the relations been remove from this link
+     * @returns {Boolean}
+     */
+    get isLinkEmpty () {
+        return this.relations.length === 0;
     }
     /**
      * Link id to know which matching relationships can be joined here.
@@ -35,6 +66,15 @@ export default class NPCLink {
      */
     get linkId () {
         return [this._start, this._end].sort().join('-');
+    }
+    /**
+     * Is a relationship part of this link.
+     * @param {String} uuid
+     * @returns {Boolean}
+     */
+    isRelationshipIncluded (uuid) {
+        const [rel1, rel2] = this.relations;
+        return (rel1 && rel1.uuid === uuid) || (rel2 && rel2.uuid === uuid);
     }
     /**
      * The link line is drawn in SVG.
@@ -46,20 +86,70 @@ export default class NPCLink {
         }
         return this._element;
     }
-
+    /**
+     * Relationship to the end of line node.
+     * @returns {Relationship|undefined}
+     */
+    _getToEndRel () {
+        return this.relations.find((el) => {
+            return el.target === this._end;
+        });
+    }
+    /**
+     * Relationship to the start of line node.
+     * @returns {Relationship|undefined}
+     */
+    _getToStartRel () {
+        return this.relations.find((el) => {
+            return el.target === this._start;
+        });
+    }
+    /**
+     * Link description towards the end of the line.
+     * @returns {String}
+     */
+    get toEndDesc () {
+        const rel = this._getToEndRel();
+        return rel ? rel.type : '';
+    }
+    /**
+     * Link description towards the start of the line.
+     * @returns {String}
+     */
+    get toStartDesc () {
+        const rel = this._getToStartRel();
+        return rel ? rel.type : '';
+    }
+    /**
+     * HTML content for the label.
+     * @returns {String}
+     */
     _getLabelContent () {
         let html = '';
-        if (this._descToEnd === this._descToStart) {
-            html = `<div>${this._descToEnd}<span class="direction">&leftrightarrow;</span></div>`;
+        const toEndDesc = this.toEndDesc;
+        const toStartDesc = this.toStartDesc;
+        if (toEndDesc === toStartDesc) {
+            html = `<div>${toEndDesc}<span class="direction">&leftrightarrow;</span></div>`;
         } else {
-            if (this._descToEnd !== '') {
-                html = `<div>${this._descToEnd}<span class="direction">&leftarrow;</span></div>`;
+            if (toEndDesc !== '') {
+                html = `<div>${toEndDesc}<span class="direction">&leftarrow;</span></div>`;
             }
-            if (this._descToStart !== '') {
-                html = `${html}<div>${this._descToStart}<span class="direction">&rightarrow;</span></div>`;
+            if (toStartDesc !== '') {
+                html = `${html}<div>${toStartDesc}<span class="direction">&rightarrow;</span></div>`;
             }
         }
         return html;
+    }
+    /**
+     * Update label text
+     * When relationships are edited after it's in the map.
+     */
+    updateLabelText () {
+        if (!this._labelElement) {
+            return;
+        }
+        this.labelElement.innerHTML = this._getLabelContent();
+        this._updateLabelPosition();
     }
     /**
      * Label is an HTML element on top of the SVG.
@@ -103,7 +193,7 @@ export default class NPCLink {
     set startCoords ([x, y]) {
         this._element.setAttribute('x1', x);
         this._element.setAttribute('y1', y);
-        this._updateLabel();
+        this._updateLabelPosition();
     }
     /**
      * End of line.
@@ -126,7 +216,7 @@ export default class NPCLink {
         const y = y1 + ((y3 - y1) / 2);
         this._element.setAttribute('x2', x);
         this._element.setAttribute('y2', y);
-        this._updateLabel();
+        this._updateLabelPosition();
     }
     /**
      * Get coordinates of the center of the line's bounding box.
@@ -178,9 +268,9 @@ export default class NPCLink {
         });
     }
     /**
-     * Update position of the label.
+     * Update position of the label and its arrows
      */
-    _updateLabel () {
+    _updateLabelPosition () {
         const element = this.labelElement;
         const width = element.offsetWidth;
         const height = element.offsetHeight;
@@ -193,5 +283,12 @@ export default class NPCLink {
         element.style.bottom = 'auto';
         element.style.right = 'auto';
         this._updateArrows();
+    }
+    /**
+     * Remove elements from page.
+     */
+    removeLink () {
+        this.element.parentNode.removeChild(this.element);
+        this.labelElement.parentNode.removeChild(this.labelElement);
     }
 }

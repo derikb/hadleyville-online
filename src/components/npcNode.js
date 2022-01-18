@@ -1,6 +1,9 @@
 import Dragger from '../dragger.js';
 import RelMapNode from '../models/relMapNode.js';
+import A11yDialog from 'a11y-dialog/dist/a11y-dialog.esm';
+import NPCDisplay from './npcdisplay.js';
 import { save as saveMapNode } from '../services/relmapService.js';
+import * as relationshipService from '../services/relationshipService.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -20,9 +23,24 @@ template.innerHTML = `
     :host * {
         box-sizing: border-box;
     }
+
+    .body {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .job {
+        font-size: .9rem;
+    }
+    .actions {
+        margin-left: .5rem;
+    }
 </style>
 <header></header>
-<div class="body"></div>
+<div class="body">
+    <div class="job"></div>
+    <div class="actions"><a href="">view</a></div>
+</div>
 `;
 
 /**
@@ -45,10 +63,16 @@ class NPCNode extends HTMLElement {
 
     connectedCallback () {
         this.enableDrag();
+
+        this.shadowRoot.querySelector('.actions a').addEventListener('click', this._showNPCModal.bind(this));
+
+        relationshipService.emitter.on('relationship:delete', this._removeRelationship.bind(this));
+        relationshipService.emitter.on('relationship:edit', this._addRelationship.bind(this));
     }
 
     disconnectedCallback () {
         this.disableDrag();
+        this.shadowRoot.querySelector('.actions a').removeEventListener('click', this._showNPCModal.bind(this));
     }
 
     get characterId () {
@@ -71,7 +95,7 @@ class NPCNode extends HTMLElement {
 
     _setNPCOutput () {
         this.shadowRoot.querySelector('header').innerText = this.npc.name;
-        this.shadowRoot.querySelector('.body').innerHTML = `<small>${this.npc.job}</small>`;
+        this.shadowRoot.querySelector('.body .job').innerHTML = `${this.npc.job}`;
     }
 
     enableDrag () {
@@ -212,6 +236,39 @@ class NPCNode extends HTMLElement {
             y
         });
         saveMapNode(n);
+    }
+    /**
+     * Show modal for NPC.
+     * @param {Event} ev
+     */
+    _showNPCModal (ev) {
+        ev.preventDefault();
+        const dialogEl = document.getElementById('dialog-npc');
+        const dialog = new A11yDialog(dialogEl);
+
+        const dialogTitle = dialogEl.querySelector('#dialog-npc-title');
+        dialogTitle.innerHTML = this.npc.name;
+
+        const npcDisplay = new NPCDisplay();
+        npcDisplay.setItem(this.npc);
+
+        const content = dialogEl.querySelector('.dialog-body');
+        content.appendChild(npcDisplay);
+
+        dialog.on('hide', (element, event) => {
+            content.innerHTML = '';
+            dialogTitle.innerHTML = '';
+            dialog.destroy();
+        });
+        dialog.show();
+    }
+
+    _addRelationship ({ item }) {
+        this.npc.addRelationship(item);
+    }
+
+    _removeRelationship ({ id }) {
+        this.npc.removeRelationship(id);
     }
 };
 
