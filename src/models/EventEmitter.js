@@ -24,7 +24,7 @@ export default class EventEmitter {
      * @param {String} event Name of the event to listen for.
      * @param {Function|Array} listener Callback to trigger for event OR an array of [classname, methodName]
      * @param {Object} boundObj Object to bind the callback to.
-     * @return {undefined}
+     * @return {Function} Function to remove the event listener.
      */
     on (event, listener, boundObj = null) {
         if (typeof listener !== 'function') {
@@ -39,6 +39,7 @@ export default class EventEmitter {
             }
         }
         this.events[event].push({ listener: listener, boundObj: boundObj });
+        return this.off.bind(this, event, listener, boundObj);
     }
     /**
      * Stop listening to an event.
