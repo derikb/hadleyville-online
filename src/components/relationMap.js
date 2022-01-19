@@ -11,8 +11,9 @@ template.innerHTML = `
 <style>
     :host {
         display: block;
-        margin-bottom: 1rem;
         position: relative;
+        width: 100%;
+        height: 100%;
     }
 
     :host * {
@@ -77,34 +78,59 @@ class RelationMap extends HTMLElement {
     }
 
     connectedCallback () {
-        // Set SVG to same size as the map.
-        this.svg.setAttribute('viewBox', `0 0 ${this.clientWidth} ${this.clientHeight}`);
+        this._getAllNodes();
+        this._getAllLinks();
+        // Add nodes to map, so we can calculate if the map goes over the viewport.
+        this.npcs.forEach((node) => {
+            this.addNPC(node);
+        });
 
-        // @todo svg needs to update on viewport change
-        // else we need to set some breakpoints and have it update
+        // Get highest coordinates of nodes
+        // and make the map that large if its smaller than the viewport.
+        const [maxX, maxY] = this._getHighestCoords();
+        let width = this.clientWidth;
+        let height = this.clientHeight;
+        if (width < maxX) {
+            width = maxX;
+        }
+        if (height < maxY) {
+            height = maxY;
+        }
+        this.npcArea.style.width = `${width}px`;
+        this.npcArea.style.height = `${height}px`;
+        this.svg.style.width = `${width}px`;
+        this.svg.style.height = `${height}px`;
+        this.svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
 
-        // Pull in all the NPCs and Relationships.
+        // Add links last...
+        this.links.forEach((link) => {
+            this.addLink(link);
+        });
+    }
+
+    disconnectedCallback () {
+    }
+
+    _getAllNodes () {
         const npcs = getAllNPCs();
-        const relationships = relatinshipService.getAll();
         const nodes = getAllNodes();
-
         npcs.forEach((npc) => {
             const npcNode = new NPCNode({ npc });
             const node = nodes.find((el) => {
                 return el.uuid === npcNode.characterId;
             });
             if (node) {
-                // @todo if coords are OUT OF BOUNDS, move to the nearest edge.
-                // Probably need to do this AFTER placement, else we can't calc height/width.
-                // Or I need to get the large x/y and increase the size of the map to fit
-                // and add scrolling.
                 npcNode.coords = [node.x, node.y];
             } else {
                 // randomize some coords if it wasn't placed already.
                 npcNode.coords = this.getRandomCoords();
             }
-            this.addNPC(npcNode);
+            this.npcs.push(npcNode);
         });
+    }
+
+    _getAllLinks () {
+        const relationships = relatinshipService.getAll();
 
         relationships.forEach((rel) => {
             const linkId = rel.mapLinkId;
@@ -121,13 +147,6 @@ class RelationMap extends HTMLElement {
                 console.log(e.message);
             }
         });
-
-        this.links.forEach((link) => {
-            this.addLink(link);
-        });
-    }
-
-    disconnectedCallback () {
     }
 
     getRandomCoords () {
@@ -137,8 +156,24 @@ class RelationMap extends HTMLElement {
         ];
     }
 
+    _getHighestCoords () {
+        let x = 0;
+        let y = 0;
+
+        this.npcs.forEach((node) => {
+            // eslint-disable-next-line no-unused-vars
+            const [topleft, [x2, y2]] = node.boundingCoords;
+            if (x2 > x) {
+                x = x2;
+            }
+            if (y2 > y) {
+                y = y2;
+            }
+        });
+        return [x, y];
+    }
+
     addNPC (npc) {
-        this.npcs.push(npc);
         this.npcArea.appendChild(npc);
     }
     /**

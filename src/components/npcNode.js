@@ -113,6 +113,12 @@ class NPCNode extends HTMLElement {
      * @param {NPCLink} link
      */
     addSourceLink (link) {
+        const index = this._sourceLinks.findIndex((el) => {
+            return el.linkId === link.linkId;
+        });
+        if (index >= 0) {
+            return;
+        }
         this._sourceLinks.push(link);
         link.startCoords = this.centerCoords;
     }
@@ -120,6 +126,12 @@ class NPCNode extends HTMLElement {
      * @param {NPCLink} link
      */
     addTargetLink (link) {
+        const index = this._targetLinks.findIndex((el) => {
+            return el.linkId === link.linkId;
+        });
+        if (index >= 0) {
+            return;
+        }
         this._targetLinks.push(link);
         link.endCoords = this.boundingCoords;
     }
