@@ -80,6 +80,9 @@ class RelationMap extends HTMLElement {
         // Set SVG to same size as the map.
         this.svg.setAttribute('viewBox', `0 0 ${this.clientWidth} ${this.clientHeight}`);
 
+        // @todo svg needs to update on viewport change
+        // else we need to set some breakpoints and have it update
+
         // Pull in all the NPCs and Relationships.
         const npcs = getAllNPCs();
         const relationships = relatinshipService.getAll();

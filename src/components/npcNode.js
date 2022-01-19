@@ -13,7 +13,7 @@ template.innerHTML = `
         display: block;
         margin-bottom: 1rem;
         border: 1px solid black;
-        padding: 1rem;
+        padding: .75rem;
         position: absolute;
         background-color: var(--surface1, white);
         border-radius: .5rem;
