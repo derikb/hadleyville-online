@@ -1,6 +1,6 @@
 import { randomInteger } from 'rpg-table-randomizer/src/randomizer.js';
 import { getAll as getAllNPCs } from '../services/npcService.js';
-import * as relatinshipService from '../services/relationshipService.js';
+import * as relationshipService from '../services/relationshipService.js';
 import { getAllNodes } from '../services/relmapService.js';
 import NPCNode from './npcNode.js';
 import NPCLink from './npcLink.js';
@@ -73,8 +73,13 @@ class RelationMap extends HTMLElement {
         this.npcs = [];
         this.links = [];
 
-        relatinshipService.emitter.on('relationship:edit', this._addRelationship.bind(this));
-        relatinshipService.emitter.on('relationship:delete', this._removeRelationship.bind(this));
+        this.removeEvents = [];
+        this.removeEvents.push(
+            relationshipService.emitter.on('relationship:edit', this._addRelationship.bind(this))
+        );
+        this.removeEvents.push(
+            relationshipService.emitter.on('relationship:delete', this._removeRelationship.bind(this))
+        );
     }
 
     connectedCallback () {
@@ -109,6 +114,9 @@ class RelationMap extends HTMLElement {
     }
 
     disconnectedCallback () {
+        this.removeEvents.forEach((func) => {
+            func();
+        });
     }
 
     _getAllNodes () {
@@ -130,7 +138,7 @@ class RelationMap extends HTMLElement {
     }
 
     _getAllLinks () {
-        const relationships = relatinshipService.getAll();
+        const relationships = relationshipService.getAll();
 
         relationships.forEach((rel) => {
             const linkId = rel.mapLinkId;
