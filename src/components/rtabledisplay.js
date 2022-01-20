@@ -1,7 +1,5 @@
 import { getResultFromTable } from '../services/randomTableService.js';
-import A11yDialog from 'a11y-dialog/dist/a11y-dialog.esm';
-import * as notesService from '../services/notesService.js';
-import Note from '../models/note.js';
+import RTableResultModal from './rtableResultModal.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -28,23 +26,6 @@ template.innerHTML = `
     </table>
 </details>
 `;
-
-const addnoteForm = document.createElement('template');
-addnoteForm.innerHTML = `
-<form id="addNoteForm" (ngSubmit)="onSubmit($event)">
-    <div class="formField">
-      <label for="note_uuid">Add To Note</label>
-      <select id="note_uuid" name="note_uuid">
-          <option value="">Create New Note</option>
-      </select>
-    </div>
-    <button type="submit">Save as Note</button>
-    <button type="button" class="btn-cancel">
-        Cancel
-    </button>
-</form>
-`;
-
 class RTableDisplay extends HTMLElement {
     constructor () {
         super();
@@ -140,63 +121,20 @@ class RTableDisplay extends HTMLElement {
         });
         return rows;
     }
-
+    /**
+     * Select from the table and show results in a modal.
+     * @param {Event} ev
+     */
     _rollTable (ev) {
         const btn = ev.target;
         const subtable = btn.dataset.table || '';
         const resultSet = getResultFromTable(this.table, subtable);
 
-        const dialogEl = document.getElementById('dialog-rtable');
-        const dialog = new A11yDialog(dialogEl);
-
-        const dialogTitle = dialogEl.querySelector('#dialog-rtable-title');
-        dialogTitle.innerHTML = resultSet.title;
-
-        const content = dialogEl.querySelector('.dialog-body');
-        resultSet.results.forEach((result) => {
-            const p = document.createElement('p');
-            p.classList.add('rtable-result');
-            p.innerHTML = `${result.isDefault ? '' : `<span>${result.table}:</span> `}${result.result}${result.desc !== '' ? `<span>${result.desc}</span>` : ''}`;
-            content.appendChild(p);
+        const modal = new RTableResultModal({
+            id: 'dialog-rtable',
+            resultSet: resultSet
         });
-
-        let form = addnoteForm.content.cloneNode(true);
-        const select = form.querySelector('select');
-        notesService.getAll().forEach((note) => {
-            const option = document.createElement('option');
-            option.value = note.id;
-            option.innerHTML = note.title;
-            select.appendChild(option);
-        });
-        content.appendChild(form);
-        form = content.querySelector('form');
-        form.addEventListener('submit', (ev) => {
-            ev.preventDefault();
-            const formData = new FormData(ev.target);
-            const noteId = formData.get('note_uuid').toString();
-            if (noteId === '') {
-                const note = new Note({
-                    title: this.table.title,
-                    content: resultSet.toString()
-                });
-                notesService.create('view', note);
-            } else {
-                const note = notesService.getById(noteId);
-                note.content = `${note.content}\n\n${resultSet.niceString()}`;
-                notesService.save(note);
-            }
-            dialog.hide();
-        });
-        form.querySelector('.btn-cancel').addEventListener('click', (ev) => {
-            dialog.hide();
-        });
-
-        dialog.on('hide', (element, event) => {
-            content.innerHTML = '';
-            dialogTitle.innerHTML = '';
-            dialog.destroy();
-        });
-        dialog.show();
+        modal.show();
     }
 };
 
