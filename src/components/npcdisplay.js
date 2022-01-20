@@ -49,8 +49,8 @@ formTemplate.innerHTML = `
     <div class="formFields">
     </div>
     <div class="formField">
-        <label for="notes">Notes</label>
-        <textarea rows=5 id="notes" name="notes"></textarea>
+        <label for="notes_field">Notes</label>
+        <textarea rows=5 id="notes_field" name="notes"></textarea>
     </div>
     <div>
         <button type="submit">Save</button>
