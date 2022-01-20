@@ -1,5 +1,5 @@
 /**
- * @prop {Object} events Store the events here.
+ * @prop {Object} events Store the events here. String => Array
  * @prop {Boolean} debug So you can more easily in dev see when events are triggered.
  */
 export default class EventEmitter {
@@ -14,7 +14,7 @@ export default class EventEmitter {
      * @param {Function} listener Listener to check.
      * @return {Number}
      */
-    listenerIndex (event, listener) {
+    _listenerIndex (event, listener) {
         return this.events[event].findIndex((item) => {
             return item.listener === listener;
         });
@@ -22,7 +22,7 @@ export default class EventEmitter {
     /**
      * Listen to an event
      * @param {String} event Name of the event to listen for.
-     * @param {Function|Array} listener Callback to trigger for event OR an array of [classname, methodName]
+     * @param {Function} listener Callback to trigger for event
      * @param {Object} boundObj Object to bind the callback to.
      * @return {Function} Function to remove the event listener.
      */
@@ -32,7 +32,7 @@ export default class EventEmitter {
         }
         this.events[event] = this.events[event] || [];
         if (this.events[event].length > 0) {
-            const index = this.listenerIndex(event, listener);
+            const index = this._listenerIndex(event, listener);
             // Replace the listener if it already exists.
             if (index > -1) {
                 this.events[event].splice(index, 1);
@@ -50,7 +50,7 @@ export default class EventEmitter {
      */
     off (event, listener) {
         if (Array.isArray(this.events[event])) {
-            const index = this.listenerIndex(event, listener);
+            const index = this._listenerIndex(event, listener);
             if (index === -1) {
                 return;
             }
