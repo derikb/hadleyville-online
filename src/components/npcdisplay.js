@@ -92,7 +92,11 @@ class NPCDisplay extends HTMLElement {
     disconnectedCallback () {
         this.shadowRoot.querySelector('details').removeEventListener('toggle', this._setCollapse.bind(this));
         this.editButton.removeEventListener('click', this._toggleEdit.bind(this));
-        // @todo this should account for if in edit mode when disconnected.
+        if (this._isEdit) {
+            this._removeFormEvents();
+        } else {
+            this.shadowRoot.querySelector('.btn-add-rel').addEventListener('click', this._createRelationship.bind(this));
+        }
     }
 
     /**
@@ -236,13 +240,7 @@ class NPCDisplay extends HTMLElement {
         });
     }
 
-    _disableEdit () {
-        if (!this._isEdit) {
-            return;
-        }
-        this._isEdit = false;
-
-        // remove form events
+    _removeFormEvents () {
         const form = this.shadowRoot.querySelector('form');
         form.removeEventListener('submit', this._saveEdit.bind(this));
         form.querySelector('.btn-cancel').removeEventListener('click', this._toggleEdit.bind(this));
@@ -250,7 +248,14 @@ class NPCDisplay extends HTMLElement {
         form.querySelectorAll('.btn-reroll').forEach((btn) => {
             btn.removeEventListener('click', this._reroll.bind(this));
         });
+    }
 
+    _disableEdit () {
+        if (!this._isEdit) {
+            return;
+        }
+        this._isEdit = false;
+        this._removeFormEvents();
         this._setNPCOutput();
         this._refocus();
     }
