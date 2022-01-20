@@ -420,6 +420,7 @@ table tbody tr:nth-child(even) {
     max-height: 90vh;
     border-radius: 0.5rem;
     padding: 1rem;
+    overflow: auto;
 }
 
 .dialog-content header {
