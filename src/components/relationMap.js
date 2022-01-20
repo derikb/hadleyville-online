@@ -227,8 +227,6 @@ class RelationMap extends HTMLElement {
     }
 
     _removeRelationship ({ id }) {
-        // @todo maybe this should update the node and then the node should update the links?
-        // Or this should update both...
         const link = this.links.find((el) => {
             return el.isRelationshipIncluded(id);
         });

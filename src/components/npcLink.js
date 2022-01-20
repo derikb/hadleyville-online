@@ -2,7 +2,6 @@
  * Links between Characters on the relaionship map.
  * This can accomodate 1 or 2 Relationship models.
  * It has two elements (one is SVG), so it can't be a web component, at least the SVG can't.
- * @todo make the label a component?
  * @prop {Relationship[]} relations 1 or 2 Relatinships.
  * @prop {String} _start uuid for start of line node (based on first relationship added)
  * @prop {String} _end uuid for end of line node (based on first relationship added)
