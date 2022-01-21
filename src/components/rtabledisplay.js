@@ -20,7 +20,7 @@ template.innerHTML = `
 <details>
     <summary>
         <div id="summary-title">{{ table.title }}</div>
-        <div class="actions"><button type="button" (click)="rollTable($event)"><span aria-hidden="true">&#9861;</span> Roll</button></div>
+        <div class="actions"><button type="button"><span aria-hidden="true">&#9861;</span> Roll</button></div>
     </summary>
     <table aria-labelledby="summary-title">
     </table>
@@ -132,7 +132,8 @@ class RTableDisplay extends HTMLElement {
 
         const modal = new RTableResultModal({
             id: 'dialog-rtable',
-            resultSet: resultSet
+            resultSet: resultSet,
+            tableKey: this.table.key
         });
         modal.show();
     }
