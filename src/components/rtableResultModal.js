@@ -2,57 +2,70 @@ import A11yDialog from 'a11y-dialog/dist/a11y-dialog.esm';
 import * as notesService from '../services/notesService.js';
 import Note from '../models/note.js';
 import { getResultByTableKey } from '../services/randomTableService.js';
+import { capitalize } from 'rpg-table-randomizer/src/r_helpers.js';
 
-const addnoteForm = document.createElement('template');
-addnoteForm.innerHTML = `
-<form id="addNoteForm">
-    <div class="formField">
-      <label for="note_uuid">Add To Note</label>
-      <select id="note_uuid" name="note_uuid">
-          <option value="">Create New Note</option>
-      </select>
+const modalElement = document.createElement('template');
+modalElement.innerHTML = `
+<div id="dialog-rtable" aria-labelledby="dialog-rtable-title" aria-hidden="true" class="dialog-container">
+    <div class="dialog-overlay" data-a11y-dialog-hide></div>
+    <div class="dialog-content" role="document">
+        <header>
+            <h1 id="dialog-rtable-title"></h1>
+            <button type="button" data-a11y-dialog-hide aria-label="Close dialog">
+                &times;
+            </button>
+        </header>
+        <div class="dialog-body">
+            <div class="jsResultContent">
+
+            </div>
+            <form id="addNoteForm">
+                <div class="formField">
+                <label for="note_uuid">Add To Note</label>
+                <select id="note_uuid" name="note_uuid">
+                    <option value="">Create New Note</option>
+                </select>
+                </div>
+                <button type="submit">Save as Note</button>
+                <button type="button" class="btn-rolltable">
+                    <span aria-hidden="true">&#9861;</span> Reroll
+                </button>
+                <button type="button" class="btn-cancel">
+                    Cancel
+                </button>
+            </form>
+        </div>
     </div>
-    <button type="submit">Save as Note</button>
-    <button type="button" class="btn-rolltable">
-        <span aria-hidden="true">&#9861;</span> Reroll
-    </button>
-    <button type="button" class="btn-cancel">
-        Cancel
-    </button>
-</form>
+</div>
 `;
 
 /**
- * @prop {String} id Dialog html id.
  * @prop {RandomtableResultSet} resultSet From RandomTable.
  * @prop {String} tableKey Id for the RandomTable.
+ * @prop {HTMLElement} el Dialog container.
  */
 export default class RTableResultModal {
     constructor ({
-        id = '',
         resultSet = null,
         tableKey = ''
     }) {
-        this.id = id;
         this.resultSet = resultSet;
         this.tableKey = tableKey;
-        // @todo dynamically generate html if ID is null.
-        this.el = document.getElementById(this.id);
-        if (!this.el) {
-            throw new Error('Modal element not found.');
-        }
-        this.dialog = new A11yDialog(this.el);
 
+        const fragment = modalElement.content.cloneNode(true);
+        this.el = fragment.querySelector('.dialog-container');
         const dialogTitle = this.el.querySelector('#dialog-rtable-title');
         dialogTitle.innerHTML = this.resultSet.title;
         this.content = this.el.querySelector('.dialog-body');
+        this.resultDiv = this.el.querySelector('.jsResultContent');
         this._displayResultSet();
-        this._addForm();
+        this._setupForm();
+        document.body.appendChild(this.el);
 
+        this.dialog = new A11yDialog(this.el);
         this.dialog.on('hide', (element, event) => {
-            this.content.innerHTML = '';
-            dialogTitle.innerHTML = '';
             this.dialog.destroy();
+            this.el.parentNode.removeChild(this.el);
         });
     }
 
@@ -61,31 +74,32 @@ export default class RTableResultModal {
     }
 
     _displayResultSet () {
-        if (!this.resultDiv) {
-            this.resultDiv = document.createElement('div');
-            this.content.appendChild(this.resultDiv);
-        } else {
-            this.resultDiv.innerHTML = '';
-        }
+        this.resultDiv.innerHTML = '';
         this.resultSet.results.forEach((result) => {
             const p = document.createElement('p');
             p.classList.add('rtable-result');
-            p.innerHTML = `${result.isDefault ? '' : `<span>${result.table}:</span> `}${result.result}${result.desc !== '' ? `<span>${result.desc}</span>` : ''}`;
+            p.innerHTML = `${result.isDefault ? '' : `<span>${capitalize(result.table)}:</span> `}${capitalize(result.result)}${result.desc !== '' ? `<span>${capitalize(result.desc)}</span>` : ''}`;
             this.resultDiv.appendChild(p);
         });
     }
 
-    _addForm () {
-        const form = addnoteForm.content.cloneNode(true);
-        const select = form.querySelector('select');
+    _formatResultForNote () {
+        let noteBody = '';
+        this.resultSet.results.forEach((result) => {
+            noteBody += `${result.isDefault ? '' : `${capitalize(result.table)}: `}${capitalize(result.result)}${result.desc !== '' ? `${capitalize(result.desc)}` : ''}\n\n`;
+        });
+        return noteBody;
+    }
+
+    _setupForm () {
+        this.form = this.el.querySelector('form');
+        const select = this.form.querySelector('select');
         notesService.getAll().forEach((note) => {
             const option = document.createElement('option');
             option.value = note.id;
-            option.innerHTML = note.title;
+            option.innerHTML = capitalize(note.title);
             select.appendChild(option);
         });
-        this.content.appendChild(form);
-        this.form = this.content.querySelector('form');
 
         this.form.addEventListener('submit', (ev) => {
             ev.preventDefault();
@@ -94,7 +108,7 @@ export default class RTableResultModal {
             if (noteId === '') {
                 const note = new Note({
                     title: this.resultSet.title,
-                    content: this.resultSet.toString() // @todo custom output or at least double the linebreaks so they work in the markdown
+                    content: this._formatResultForNote()
                 });
                 notesService.create('view', note);
             } else {
