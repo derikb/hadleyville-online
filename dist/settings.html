@@ -11,42 +11,45 @@
     <had-header></had-header>
 
     <main>
-        <div class="text-page">
-            <h2 class="header">Settings</h2>
+        <had-tabledrawer role="region" id="tables" aria-expanded=false aria-label="Random Tables"></had-tabledrawer>
+        <div id="pageContent">
+            <div class="text-page">
+                <h2 class="header">Settings</h2>
 
-            <p>For more code, bugs, plans, and other details see <a href="https://github.com/derikb/hadleyville-online">the github page</a>.</p>
+                <p>For more code, bugs, plans, and other details see <a href="https://github.com/derikb/hadleyville-online">the github page</a>.</p>
 
-            <section id="import">
-                <p>Data is currently stored in your browser's local storage. To use on other browsers or devices you must export then import.</p>
-                <section>
-                    <h3>Export Data</h3>
+                <section id="import">
+                    <p>Data is currently stored in your browser's local storage. To use on other browsers or devices you must export then import.</p>
+                    <section>
+                        <h3>Export Data</h3>
 
-                    <p>Export your data to a file for importing into another browser.</p>
+                        <p>Export your data to a file for importing into another browser.</p>
 
-                    <p id="export-button">
-                        <button type="button" id="btn-export">Create Export</button>
-                    </p>
-                    <p id="export-output"></p>
+                        <p id="export-button">
+                            <button type="button" id="btn-export">Create Export</button>
+                        </p>
+                        <p id="export-output"></p>
+                    </section>
+
+                    <section>
+                        <h3>Import Data</h3>
+                        <p>Import your data from an exported file. If Town data is included it will update current Town. Included NPCs and Notes will either be added or overwrite existing (based on unique id).</p>
+                        <form id="importForm">
+                            <div class="formField">
+                                <label for="importFile">Data File</label>
+                                <input id="importFile" type="file" name="importFile" value="" required>
+                            </div>
+                            <button type="submit">Import</button>
+                        </form>
+                    </section>
+
+                    <section>
+                        <h3>Clear Data</h3>
+                        <p>Clear all saved data from local storage. <strong>THIS IS NOT REVERSIBLE.</strong><p>
+                        <p><button type="button" id="btn-delete">Delete ALL Data</button>
+                    </section>
                 </section>
-
-                <section>
-                    <h3>Import Data</h3>
-                    <p>Import your data from an exported file. If Town data is included it will update current Town. Included NPCs and Notes will either be added or overwrite existing (based on unique id).</p>
-                    <form id="importForm">
-                        <div class="formField">
-                            <label for="importFile">Data File</label>
-                            <input id="importFile" type="file" name="importFile" value="" required>
-                        </div>
-                        <button type="submit">Import</button>
-                    </form>
-                </section>
-
-                <section>
-                    <h3>Clear Data</h3>
-                    <p>Clear all saved data from local storage. <strong>THIS IS NOT REVERSIBLE.</strong><p>
-                    <p><button type="button" id="btn-delete">Delete ALL Data</button>
-                </section>
-            </section>
+            </div>
         </div>
     </main>
     <had-footer></had-footer>

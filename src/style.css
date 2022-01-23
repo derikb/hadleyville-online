@@ -262,7 +262,7 @@ main {
     padding: 0 1rem;
 }
 
-main > .text-page {
+#pageContent > .text-page {
     max-width: 50rem;
     display: block;
     margin: 0 auto;
@@ -386,7 +386,7 @@ table tbody tr:nth-child(even) {
   *    dialog.
   */
  .dialog-container {
-   z-index: 20; /* 1 */
+   z-index: 200; /* 1 */
    display: flex; /* 2 */
  }
 

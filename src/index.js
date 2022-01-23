@@ -15,7 +15,44 @@ import NPCNode from './components/npcNode.js';
 import NPCLink from './components/npcLink.js';
 
 import { setupPage } from './services/importExportService.js';
+import { Route, Router } from './services/router.js';
 
-if (document.body.id === 'page-settings') {
-    setupPage();
-}
+// Setup Routes and Router.
+const routes = [
+    new Route({
+        path: '/index.html',
+        fetch: true
+    }),
+    new Route({
+        path: '/rules.html',
+        fetch: true
+    }),
+    new Route({
+        path: '/intro.html',
+        fetch: true
+    }),
+    new Route({
+        path: '/graph.html',
+        fetch: true,
+        unloadCallback: () => {
+            // Reset some changes to the route target
+            const parent = document.querySelector('#pageContent');
+            parent.style.height = null;
+            parent.style.width = null;
+            parent.style.overflow = null;
+        }
+    }),
+    new Route({
+        path: '/settings.html',
+        fetch: true,
+        loadCallback: () => {
+            setupPage();
+        }
+    })
+];
+
+const router = new Router({
+    targetSelector: '#pageContent',
+    routes
+});
+router.start();

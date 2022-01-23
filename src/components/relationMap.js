@@ -41,7 +41,7 @@ template.innerHTML = `
         border-radius: .5rem;
         background-color: var(--surface1, rgba(255,255,255,0.5));
         position: absolute;
-        z-index = 50;
+        z-index: 50;
     }
     .link-label .direction {
         display: inline-block;
@@ -92,6 +92,10 @@ class RelationMap extends HTMLElement {
 
         // Get highest coordinates of nodes
         // and make the map that large if its smaller than the viewport.
+        // make sure the parent node is set to let the map fill it.
+        this.parentNode.style.height = '100%';
+        this.parentNode.style.width = '100%';
+        this.parentNode.style.overflow = 'auto';
         const [maxX, maxY] = this._getHighestCoords();
         let width = this.clientWidth;
         let height = this.clientHeight;

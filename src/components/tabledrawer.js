@@ -9,7 +9,7 @@ template.innerHTML = `
         position: absolute;
         top: 0;
         right: 0;
-        z-index: 10;
+        z-index: 100;
         padding: 1rem;
         width: 60vw;
         border-radius: 0 0 0 5px;

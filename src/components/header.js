@@ -90,10 +90,6 @@ class Header extends HTMLElement {
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         this.setAttribute('role', 'header');
-        this.showTables = this.dataset.showtables === 'true';
-        if (!this.showTables) {
-            this.shadowRoot.querySelector('.table-toggle').hidden = true;
-        }
 
         this.toggleButton = this.shadowRoot.querySelector('button');
     }
@@ -101,11 +97,31 @@ class Header extends HTMLElement {
     connectedCallback () {
         tableEmitter.on('table:drawer', this._toggleOpenButton.bind(this));
         this.toggleButton.addEventListener('click', this._toggleDrawer.bind(this));
+        this.shadowRoot.querySelectorAll('a').forEach((el) => {
+            el.addEventListener('click', this._triggerRoute.bind(this));
+        });
     }
 
     disconnectedCallback () {
         tableEmitter.off('table:drawer', this._toggleOpenButton.bind(this));
         this.toggleButton.removeEventListener('click', this._toggleDrawer.bind(this));
+        this.shadowRoot.querySelectorAll('a').forEach((el) => {
+            el.removeEventListener('click', this._triggerRoute.bind(this));
+        });
+    }
+    /**
+     * Trigger a route change.
+     * @param {Event} ev
+     */
+    _triggerRoute (ev) {
+        ev.preventDefault();
+        const detail = {
+            route: ev.target.href
+        };
+        // The body can't listen for clicks inside the shadowDom
+        // so we have to send out a bubbling end from the component.
+        // I guess theoretically we could re-send the click event, but this seems more clear.
+        this.dispatchEvent(new CustomEvent('loadRoute', { bubbles: true, detail }));
     }
     /**
      * Click event on the toggle button.
