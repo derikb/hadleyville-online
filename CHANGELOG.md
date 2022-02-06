@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.1](https://github.com/derikb/hadleyville-online/compare/v2.1.0...v2.1.1) (2022-02-06)
+
+
+### Bug Fixes
+
+* **map modal:** Move into route output ([3132800](https://github.com/derikb/hadleyville-online/commit/3132800e21cc020d5ed7ec87479137f24c94acf8)), closes [#20](https://github.com/derikb/hadleyville-online/issues/20)
+* **route:** Fix for empty output ([bafb7e7](https://github.com/derikb/hadleyville-online/commit/bafb7e78cab1d2a21dbc159ce9fb5bce01bb1cfa)), closes [#19](https://github.com/derikb/hadleyville-online/issues/19)
+
 ## [2.1.0](https://github.com/derikb/hadleyville-online/compare/v2.0.0...v2.1.0) (2022-02-06)
 
 
