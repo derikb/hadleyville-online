@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/derikb/hadleyville-online/compare/v2.0.0...v2.1.0) (2022-02-06)
+
+
+### Features
+
+* **characters:** Add character page ([f32ee49](https://github.com/derikb/hadleyville-online/commit/f32ee495e542cda2055d84333b63a449bf79b318)), closes [#1](https://github.com/derikb/hadleyville-online/issues/1)
+* **map:** Account for viewport being smaller than coords ([cff7fe5](https://github.com/derikb/hadleyville-online/commit/cff7fe59993f911ca75579fe4cc408599751cc92))
+* **map:** Add arrow on link label ([1a52ef6](https://github.com/derikb/hadleyville-online/commit/1a52ef6b86997fcf62e5f641e7851fc86bebd9fa))
+* **map:** Show two way relationships ([5e42926](https://github.com/derikb/hadleyville-online/commit/5e4292670e0fe359d8415b10fc9e56fa7dbb5df7))
+* **npcs:** Add relationships for NPCs ([d41143e](https://github.com/derikb/hadleyville-online/commit/d41143e7fcf761e6d0dc0ba82d28311acb63ae0c))
+* **relationships:** Basic map for NPCs ([a86afc8](https://github.com/derikb/hadleyville-online/commit/a86afc8edd2c5cfbb4a516c5a1fd113c93ede28f)), closes [#3](https://github.com/derikb/hadleyville-online/issues/3)
+* **routing:** Add routing for pages ([9657971](https://github.com/derikb/hadleyville-online/commit/96579713ee47f826387f8f14347729c097a1ebc0)), closes [#15](https://github.com/derikb/hadleyville-online/issues/15)
+* **tables:** Add reroll to results modal ([b7d021e](https://github.com/derikb/hadleyville-online/commit/b7d021ef357778c4fcaa1f5cabfbc44c348c2d2f)), closes [#14](https://github.com/derikb/hadleyville-online/issues/14)
+
+
+### Bug Fixes
+
+* **css:** Fix dupe id causing weird styling in form ([858d91e](https://github.com/derikb/hadleyville-online/commit/858d91eaaadfd7c826c598e30d55d2cd8f90de9d))
+* **modals:** Scroll content when overflowing ([1d08b57](https://github.com/derikb/hadleyville-online/commit/1d08b5745018d0ec87d0f39a08ac70197b6ed054))
+
 ## [2.0.0](https://github.com/derikb/hadleyville-online/compare/v1.0.0...v2.0.0) (2022-01-13)
 
 
