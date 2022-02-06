@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import characterReducer from './character-reducer.js';
 import notesReducer from './notes-reducer.js';
 import npcsReducer from './npcs-reducer.js';
 import townReducer from './town-reducer.js';
@@ -12,7 +13,8 @@ const store = configureStore({
         npcs: npcsReducer,
         town: townReducer,
         relationships: relationshipReducer,
-        relmap: relMapReducer
+        relmap: relMapReducer,
+        characters: characterReducer
     },
     preloadedState: load(),
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(save())

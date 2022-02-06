@@ -1,4 +1,5 @@
 import store from '../store/store';
+import { importAll as importCharacters, deleteAll as deleteCharacters } from './characterService.js';
 import { importAll as importNotes, deleteAll as deleteAllNotes } from './notesService.js';
 import { save as saveTown, clear as clearTown } from './townService.js';
 import { importAll as importNPCs, deleteAll as deleteAllNPCs } from './npcService.js';
@@ -86,6 +87,10 @@ const doImport = function (ev) {
                 if (nodes && Array.isArray(nodes) && nodes.length > 0) {
                     importMapNodes(nodes);
                 }
+                const characters = data.characters;
+                if (Array.isArray(characters)) {
+                    importCharacters(characters);
+                }
             };
         })(f);
         reader.readAsText(f);
@@ -108,6 +113,7 @@ const deleteAll = function (ev) {
     deleteMapNodes();
     deleteAllNPCs();
     clearTown();
+    deleteCharacters();
 };
 
 /**

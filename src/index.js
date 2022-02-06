@@ -9,13 +9,19 @@ import NoteDisplay from './components/notedisplay.js';
 import DiceRoller from './components/diceroller.js';
 import NPCsList from './components/npcslist.js';
 import NPCDisplay from './components/npcdisplay.js';
+import NoteList from './components/NoteList.js';
+import NoteListItem from './components/NoteListItem.js';
+import PCDisplay from './components/pcdisplay.js';
+import PCSelector from './components/pcSelector.js';
 import RelationshipDisplay from './components/relationshipDisplay.js';
 import RelationMap from './components/relationMap.js';
 import NPCNode from './components/npcNode.js';
 import NPCLink from './components/npcLink.js';
+import SimpleList from './components/SimpleList.js';
 
 import { setupPage } from './services/importExportService.js';
 import { Route, Router } from './services/router.js';
+import characterPage from './pages/character.js';
 
 // Setup Routes and Router.
 const routes = [
@@ -47,6 +53,16 @@ const routes = [
         fetch: true,
         loadCallback: () => {
             setupPage();
+        }
+    }),
+    new Route({
+        path: '/character.html',
+        fetch: true,
+        loadCallback: () => {
+            characterPage.loadCallback();
+        },
+        unloadCallback: () => {
+            characterPage.unloadCallback();
         }
     })
 ];
