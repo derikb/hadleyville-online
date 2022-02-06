@@ -94,7 +94,9 @@ class Router {
                     this.target.innerHTML = '';
                     // Insert new route.
                     const output = this._getOutputFromHtmlPage(text);
-                    this.target.append(...Array.from(output.children));
+                    if (output) {
+                        this.target.append(...Array.from(output.children));
+                    }
                     this.currentRoute = route;
                     route.setup();
                 })
