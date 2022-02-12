@@ -97,6 +97,9 @@ class NPCDisplay extends HTMLElement {
         } else {
             this.shadowRoot.querySelector('.btn-add-rel').addEventListener('click', this._createRelationship.bind(this));
         }
+
+        relationshipService.emitter.off('relationship:add', this._addRelationship.bind(this));
+        relationshipService.emitter.off('relationship:delete', this._removeRelationship.bind(this));
     }
 
     /**
@@ -136,7 +139,7 @@ class NPCDisplay extends HTMLElement {
         const relSection = relTemplate.content.cloneNode(true);
         const relul = relSection.querySelector('ul');
         this.npc.relationships.forEach((rel) => {
-            const relDisplay = new RelationshipDisplay({ npcId: this.npc.id });
+            const relDisplay = new RelationshipDisplay({ charId: this.npc.id });
             relDisplay.setItem(rel);
             relul.appendChild(relDisplay);
         });
@@ -314,7 +317,7 @@ class NPCDisplay extends HTMLElement {
         if (item.source !== this.npc.id) {
             return;
         }
-        const display = new RelationshipDisplay({ npcId: this.npc.id });
+        const display = new RelationshipDisplay({ charId: this.npc.id });
         display.setItem(item);
         const list = this.shadowRoot.querySelector('#rellist ul');
         if (list) {

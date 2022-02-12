@@ -6,16 +6,28 @@ import { tableRoller } from '../services/randomTableService.js';
 import { applySchemaToNPC } from '../../node_modules/rpg-table-randomizer/src/npc_generator';
 import EventEmitter from '../models/EventEmitter.js';
 import PC from '../models/pc.js';
+import * as relationshipService from './relationshipService.js';
+import * as relmapService from './relmapService.js';
 
 const emitter = new EventEmitter();
 
-const getAll = function () {
+const getAll = function (includeRelations = true) {
     const data = store.getState().characters;
     if (!data) {
         return [];
     }
     const pcs = data.map((obj) => {
         return new PC(obj);
+    });
+    if (!includeRelations) {
+        return pcs;
+    }
+    const relations = relationshipService.getAllGroupedBySource();
+    pcs.forEach((pc) => {
+        const rels = relations.get(pc.id);
+        if (rels) {
+            pc.relationships = rels;
+        }
     });
     return pcs;
 };
@@ -34,10 +46,21 @@ const getCharacter = function (id = '', includeRelations = true) {
     const obj = data.find((pc) => {
         return pc.id === id;
     });
-    if (obj) {
-        return new PC(obj);
+    if (!obj) {
+        return null;
     }
-    return null;
+    pc = new PC(obj);
+    if (!includeRelations) {
+        return pc;
+    }
+    // Only add relations the PC is the source of.
+    const relations = relationshipService.getByCharacter(pc.id);
+    relations.forEach((rel) => {
+        if (rel.source === pc.id) {
+            pc.relationships.push(rel);
+        }
+    });
+    return pc;
 };
 
 const save = function (pc) {
@@ -52,6 +75,8 @@ const remove = function (id) {
     emitter.trigger('character:delete', {
         id
     });
+    relationshipService.deleteByCharacter(id);
+    relmapService.remove(id);
 };
 
 const deleteAll = function () {

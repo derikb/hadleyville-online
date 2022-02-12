@@ -1,6 +1,9 @@
 import * as characterService from '../services/characterService.js';
 import PCSchema from '../models/pcSchema.js';
 import { convertToken } from '../services/randomTableService.js';
+import RelationshipDisplay from './relationshipDisplay.js';
+import Relationship from '../models/relationship.js';
+import * as relationshipService from '../services/relationshipService.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -58,6 +61,11 @@ template.innerHTML = `
 
     h1 input {
         font-size: 2rem;
+    }
+
+    #rellist > div {
+        display: flex;
+        align-items: center;
     }
 </style>
 <header>
@@ -138,6 +146,14 @@ template.innerHTML = `
         <note-list data-name="notes" aria-labelledby="notes_label">
             <h2 id="notes_label" slot="header">Character Notes</h2>
         </note-list>
+        <section id="rellist" aria-labelledby="relheader">
+            <div>
+                <h2 id="relheader">Relationships</h2>
+                <button class="btn-add-rel" type="button">Add</button>
+            </div>
+            <ul>
+            </ul>
+        </section>
     </div>
     <div class="actions">
         <button type="submit" form="pcEditForm">Save</button>
@@ -155,6 +171,9 @@ class PCDisplay extends HTMLElement {
         this.form = this.shadowRoot.querySelector('form#pcEditForm');
         this.possessions = this.shadowRoot.querySelector('[data-name="possessions"]');
         this.notes = this.shadowRoot.querySelector('[data-name="notes"]');
+
+        relationshipService.emitter.on('relationship:add', this._addRelationship.bind(this));
+        relationshipService.emitter.on('relationship:delete', this._removeRelationship.bind(this));
     }
 
     connectedCallback () {
@@ -178,6 +197,9 @@ class PCDisplay extends HTMLElement {
 
         this.shadowRoot.querySelector('.btn-cancel').removeEventListener('click', this._fillForm.bind(this));
         this.shadowRoot.querySelector('.btn-delete').removeEventListener('click', this._deleteCharacter.bind(this));
+
+        relationshipService.emitter.off('relationship:add', this._addRelationship.bind(this));
+        relationshipService.emitter.off('relationship:delete', this._removeRelationship.bind(this));
     }
 
     get characterId () {
@@ -233,6 +255,15 @@ class PCDisplay extends HTMLElement {
 
         this.possessions.items = this.pc.possessions;
         this.notes.notes = this.pc.notes;
+
+        // Display relationships
+        const relul = this.shadowRoot.querySelector('#rellist ul');
+        this.pc.relationships.forEach((rel) => {
+            const relDisplay = new RelationshipDisplay({ charId: this.pc.id });
+            relDisplay.setItem(rel);
+            relul.appendChild(relDisplay);
+        });
+        this.shadowRoot.querySelector('.btn-add-rel').addEventListener('click', this._createRelationship.bind(this));
     }
     /**
      * Handle clicking on the delete button.
@@ -309,6 +340,45 @@ class PCDisplay extends HTMLElement {
      */
     _refocus () {
         this.shadowRoot.querySelector('input').focus();
+    }
+    /**
+     * Trigger the creation of new relationship
+     * Between this npc and someone else.
+     */
+    _createRelationship () {
+        const rel = new Relationship({
+            source: this.pc.id
+        });
+        relationshipService.create('edit', rel);
+    }
+    /**
+     * Add a relationship to the list.
+     * @param {Relationship} item
+     * @param {String} mode Edit or view.
+     */
+    _addRelationship ({ item, mode }) {
+        if (item.source !== this.pc.id) {
+            return;
+        }
+        const display = new RelationshipDisplay({ charId: this.pc.id });
+        display.setItem(item);
+        const list = this.shadowRoot.querySelector('#rellist ul');
+        if (list) {
+            list.appendChild(display);
+            if (mode === 'edit' && item.source === this.pc.id) {
+                display._enableEdit();
+            }
+        }
+    }
+    /**
+     * Remove a relationship from the list.
+     * @param {String} id
+     */
+    _removeRelationship ({ id }) {
+        const display = this.shadowRoot.querySelector(`had-relationship[data-id="${id}"]`);
+        if (display) {
+            display.parentNode.removeChild(display);
+        }
     }
 };
 

@@ -128,6 +128,9 @@ button:focus {
 button + button {
     margin-left: 1rem;
 }
+h2 + button {
+    margin-left: 1rem;
+}
 button[type=submit] {
     background-color: var(--surface5);
     border-color: transparent;

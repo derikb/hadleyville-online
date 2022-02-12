@@ -1,5 +1,6 @@
 import * as relationshipService from '../services/relationshipService.js';
 import * as npcService from '../services/npcService.js';
+import * as characterService from '../services/characterService.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -60,17 +61,17 @@ formTemplate.innerHTML = `
 
 class RelationshipDisplay extends HTMLElement {
     /**
-     * @param {String} npcId NPC we are showing this relation inside.
+     * @param {String} charId Character we are showing this relation inside.
      */
     constructor ({
-        npcId = ''
+        charId = ''
     }) {
         super();
         this.attachShadow({ mode: 'open' });
         this.setAttribute('role', 'list-item');
         this.shadowRoot.appendChild(template.content.cloneNode(true));
         this._isEdit = false;
-        this.npcId = npcId;
+        this.charId = charId;
         this.body = this.shadowRoot.querySelector('div.body');
     }
 
@@ -112,11 +113,14 @@ class RelationshipDisplay extends HTMLElement {
         this.body.innerHTML = '';
         this.body.classList.remove('is-edit');
 
-        const otherId = this.relation.getOther(this.npcId);
+        const otherId = this.relation.getOther(this.charId);
         let otherName = otherId;
         if (otherId) {
-            const other = npcService.getById(otherId);
-            otherName = other.name;
+            let other = npcService.getById(otherId);
+            if (!other) {
+                other = characterService.getCharacter(otherId);
+            }
+            otherName = other ? other.name : '';
         }
         const div = document.createElement('div');
         div.innerHTML = `<strong>${otherName}:</strong> ${this.relation.type} <button type="button" class="btn-edit btn-sm">Edit</button>`;
@@ -143,20 +147,20 @@ class RelationshipDisplay extends HTMLElement {
 
         let form = formTemplate.content.cloneNode(true);
 
-        // List all other NPCs
+        // List all other characters
         const select = form.querySelector('select');
         const option = document.createElement('option');
         option.value = '';
         option.innerText = 'Select a Character';
         select.appendChild(option);
-        npcService.getAll().forEach((npc) => {
-            if (npc.id === this.npcId) {
+        [npcService.getAll(), characterService.getAll()].forEach((char) => {
+            if (char.id === this.charId) {
                 return;
             }
             const option = document.createElement('option');
-            option.value = npc.id;
-            option.innerText = npc.name;
-            if (npc.id === this.relation.target) {
+            option.value = char.id;
+            option.innerText = char.name;
+            if (char.id === this.relation.target) {
                 option.selected = true;
             }
             select.appendChild(option);
