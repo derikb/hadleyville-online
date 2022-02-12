@@ -12,7 +12,7 @@ const getAll = function () {
     });
 };
 
-const getAllGroupedByNPCSource = function () {
+const getAllGroupedBySource = function () {
     const relations = getAll();
     const relMap = new Map();
     relations.forEach((rel) => {
@@ -39,14 +39,14 @@ const getById = function (id) {
     return null;
 };
 /**
- * Get all relationships for a specific NPC.
- * @param {String} npcId
+ * Get all relationships for a specific character.
+ * @param {String} charId
  * @returns Relationship[]
  */
-const getByNPC = function (npcId) {
+const getByCharacter = function (charId) {
     const relationships = getAll();
     return relationships.filter((relationship) => {
-        return relationship.isNPCInvolved(npcId);
+        return relationship.isCharacterInvolved(charId);
     });
 };
 
@@ -97,8 +97,8 @@ const importAll = function (relationships) {
     });
 };
 
-const deleteByNPC = function (uuid) {
-    const relationships = getByNPC(uuid);
+const deleteByCharacter = function (uuid) {
+    const relationships = getByCharacter(uuid);
     relationships.forEach((rel) => {
         remove(rel.uuid);
     });
@@ -107,14 +107,14 @@ const deleteByNPC = function (uuid) {
 export {
     emitter,
     getAll,
-    getAllGroupedByNPCSource,
+    getAllGroupedBySource,
     getById,
-    getByNPC,
+    getByCharacter,
     create,
     save,
     sort,
     remove,
     deleteAll,
     importAll,
-    deleteByNPC
+    deleteByCharacter
 };

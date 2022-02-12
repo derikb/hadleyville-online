@@ -15,8 +15,10 @@ import PCDisplay from './components/pcdisplay.js';
 import PCSelector from './components/pcSelector.js';
 import RelationshipDisplay from './components/relationshipDisplay.js';
 import RelationMap from './components/relationMap.js';
-import NPCNode from './components/npcNode.js';
-import NPCLink from './components/npcLink.js';
+import CharacterNode from './components/CharacterNode.js';
+import NPCNode from './components/NPCNode.js';
+import PCNode from './components/PCNode.js';
+import CharacterLink from './components/CharacterLink.js';
 import SimpleList from './components/SimpleList.js';
 
 import { setupPage } from './services/importExportService.js';

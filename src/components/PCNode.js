@@ -1,18 +1,18 @@
-import NPCDisplay from './npcdisplay.js';
+import PCDisplay from './pcdisplay.js';
 import CharacterNode from './CharacterNode.js';
 
 /**
- * @prop {NPC} char Associated Character.
+ * @prop {PC} char Associated Character.
  * @prop {CharacterLink[]} _sourceLinks Links that start with this Character.
  * @prop {CharacterLink[]} _targetLinks Links that end with this Character.
  */
-class NPCNode extends CharacterNode {
+class PCNode extends CharacterNode {
     constructor ({
         char = null
     }) {
         super({ char });
-        this.id_prefix = 'npc';
-        this.classList.add('npc');
+        this.id_prefix = 'pc';
+        this.classList.add('pc');
     }
 
     connectedCallback () {
@@ -25,7 +25,7 @@ class NPCNode extends CharacterNode {
 
     /**
      *
-     * @param {NPC} char
+     * @param {PC} char
      */
     setItem (char) {
         super.setItem(char);
@@ -33,18 +33,18 @@ class NPCNode extends CharacterNode {
 
     _setCharacterOutput () {
         super._setCharacterOutput();
-        this.shadowRoot.querySelector('.body .job').innerHTML = `${this.char.job}`;
+        this.shadowRoot.querySelector('.body .job').innerHTML = `${this.char.getFieldDisplay('job')}`;
     }
 
     _getDisplayElement () {
-        const display = new NPCDisplay();
-        display.setItem(this.char);
+        const display = new PCDisplay();
+        display.character = this.char;
         return display;
     }
 };
 
-if (!window.customElements.get('had-nodenpc')) {
-    window.customElements.define('had-nodenpc', NPCNode);
+if (!window.customElements.get('had-nodepc')) {
+    window.customElements.define('had-nodepc', PCNode);
 }
 
-export default NPCNode;
+export default PCNode;

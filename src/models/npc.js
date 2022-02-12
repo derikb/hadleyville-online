@@ -69,7 +69,7 @@ export default class AppNPC extends NPC {
      */
     addRelationship (relationship) {
         if (!(relationship instanceof Relationship) ||
-            !relationship.isNPCInvolved(this.id)) {
+            !relationship.isCharacterInvolved(this.id)) {
             return;
         }
         const index = this.relationships.findIndex((rel) => {

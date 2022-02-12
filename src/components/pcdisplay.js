@@ -185,15 +185,25 @@ class PCDisplay extends HTMLElement {
     }
 
     set characterId (id) {
-        this._setCharacter(id);
-    }
-
-    _setCharacter (id = '') {
         this.pc = characterService.getCharacter(id);
-        // handle pc === null;
         if (this.pc === null) {
             return;
         }
+        this._setupCharacter();
+    }
+
+    get character () {
+        return this.pc;
+    }
+
+    set character (pc) {
+        this.pc = pc;
+        if (this.pc === null) {
+            return;
+        }
+        this._setupCharacter();
+    }
+    _setupCharacter () {
         this.id = `pc_${this.pc.id}`;
         this.dataset.id = this.pc.id;
         this.shadowRoot.querySelector('h1 input').value = this.pc.name;

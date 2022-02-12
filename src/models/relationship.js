@@ -28,10 +28,10 @@ export default class Relationship {
     }
     /**
      * Is an id included in this relationship.
-     * @param {String} id NPC uuid
+     * @param {String} id Character uuid
      * @returns
      */
-    isNPCInvolved (id) {
+    isCharacterInvolved (id) {
         return this.target === id || this.source === id;
     }
     /**
@@ -49,7 +49,7 @@ export default class Relationship {
         return '';
     }
     /**
-     * See NPCLink.linkId
+     * See CharacterLink.linkId
      * @returns {String}
      */
     get mapLinkId () {

@@ -1,9 +1,12 @@
 import { randomInteger } from 'rpg-table-randomizer/src/randomizer.js';
+import { getAll as getAllPCs } from '../services/characterService.js';
 import { getAll as getAllNPCs } from '../services/npcService.js';
 import * as relationshipService from '../services/relationshipService.js';
 import { getAllNodes } from '../services/relmapService.js';
-import NPCNode from './npcNode.js';
-import NPCLink from './npcLink.js';
+import NPCNode from './NPCNode.js';
+import PCNode from './PCNode.js';
+import PC from '../models/pc.js';
+import CharacterLink from './CharacterLink.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -59,8 +62,8 @@ template.innerHTML = `
 `;
 
 /**
- * @prop {NPCLink[]} links
- * @prop {NPCNode[]} npcs
+ * @prop {CharacterLink[]} links
+ * @prop {CharacterNode[]} chars
  */
 class RelationMap extends HTMLElement {
     constructor () {
@@ -70,7 +73,7 @@ class RelationMap extends HTMLElement {
         this.npcArea = this.shadowRoot.querySelector('#npc-map');
         this.svg = this.shadowRoot.querySelector('svg');
 
-        this.npcs = [];
+        this.chars = [];
         this.links = [];
 
         this.removeEvents = [];
@@ -86,8 +89,8 @@ class RelationMap extends HTMLElement {
         this._getAllNodes();
         this._getAllLinks();
         // Add nodes to map, so we can calculate if the map goes over the viewport.
-        this.npcs.forEach((node) => {
-            this.addNPC(node);
+        this.chars.forEach((node) => {
+            this._addCharacter(node);
         });
 
         // Get highest coordinates of nodes
@@ -125,19 +128,25 @@ class RelationMap extends HTMLElement {
 
     _getAllNodes () {
         const npcs = getAllNPCs();
+        const pcs = getAllPCs();
         const nodes = getAllNodes();
-        npcs.forEach((npc) => {
-            const npcNode = new NPCNode({ npc });
+        Array.prototype.concat(npcs, pcs).forEach((char) => {
+            let charNode = null;
+            if (char instanceof PC) {
+                charNode = new PCNode({ char });
+            } else {
+                charNode = new NPCNode({ char });
+            }
             const node = nodes.find((el) => {
-                return el.uuid === npcNode.characterId;
+                return el.uuid === charNode.characterId;
             });
             if (node) {
-                npcNode.coords = [node.x, node.y];
+                charNode.coords = [node.x, node.y];
             } else {
                 // randomize some coords if it wasn't placed already.
-                npcNode.coords = this.getRandomCoords();
+                charNode.coords = this.getRandomCoords();
             }
-            this.npcs.push(npcNode);
+            this.chars.push(charNode);
         });
     }
 
@@ -150,7 +159,7 @@ class RelationMap extends HTMLElement {
                 return el.linkId === linkId;
             });
             if (!link) {
-                link = new NPCLink();
+                link = new CharacterLink();
                 this.links.push(link);
             }
             try {
@@ -172,7 +181,7 @@ class RelationMap extends HTMLElement {
         let x = 0;
         let y = 0;
 
-        this.npcs.forEach((node) => {
+        this.chars.forEach((node) => {
             // eslint-disable-next-line no-unused-vars
             const [topleft, [x2, y2]] = node.boundingCoords;
             if (x2 > x) {
@@ -185,12 +194,12 @@ class RelationMap extends HTMLElement {
         return [x, y];
     }
 
-    addNPC (npc) {
-        this.npcArea.appendChild(npc);
+    _addCharacter (char) {
+        this.npcArea.appendChild(char);
     }
     /**
      *
-     * @param {NPCLink} link
+     * @param {CharacterLink} link
      */
     addLink (link) {
         // Add these first, so the placement is right
@@ -198,10 +207,10 @@ class RelationMap extends HTMLElement {
         this.svg.appendChild(link.element);
         this.npcArea.appendChild(link.labelElement);
 
-        const sourceNode = this.npcs.find((el) => {
+        const sourceNode = this.chars.find((el) => {
             return el.characterId === link.start;
         });
-        const targetNode = this.npcs.find((el) => {
+        const targetNode = this.chars.find((el) => {
             return el.characterId === link.end;
         });
 
@@ -224,7 +233,7 @@ class RelationMap extends HTMLElement {
             link.updateLabelText();
             return;
         }
-        link = new NPCLink();
+        link = new CharacterLink();
         link.addRelationship(rel);
         this.links.push(link);
         this.addLink(link);

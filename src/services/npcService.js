@@ -20,7 +20,7 @@ const getAll = function (includeRelations = true) {
     if (!includeRelations) {
         return npcs;
     }
-    const relations = relationshipService.getAllGroupedByNPCSource();
+    const relations = relationshipService.getAllGroupedBySource();
     npcs.forEach((npc) => {
         const rels = relations.get(npc.id);
         if (rels) {
@@ -67,7 +67,7 @@ const remove = function (id) {
         id
     });
     // Clean up associated data.
-    relationshipService.deleteByNPC(id);
+    relationshipService.deleteByCharacter(id);
     relmapService.remove(id);
 };
 

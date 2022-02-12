@@ -6,7 +6,7 @@
  * @prop {String} _start uuid for start of line node (based on first relationship added)
  * @prop {String} _end uuid for end of line node (based on first relationship added)
  */
-export default class NPCLink {
+export default class CharacterLink {
     constructor () {
         this._start = '';
         this._end = '';
@@ -163,13 +163,13 @@ export default class NPCLink {
         return this._labelElement;
     }
     /**
-     * @returns {String} Starting npc uuid.
+     * @returns {String} Starting character uuid.
      */
     get start () {
         return this._start;
     }
     /**
-     * @returns {String} End npc uuid.
+     * @returns {String} End character uuid.
      */
     get end () {
         return this._end;
