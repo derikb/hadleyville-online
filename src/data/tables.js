@@ -202,6 +202,11 @@ export default [
         id: 6,
         key: 'relationships',
         title: 'NPC Relationships',
+        display_opt: [
+            { table: 'default', hide_table: true },
+            { table: 'specific', hide_table: true },
+            { table: 'faction', hide_table: false }
+        ],
         tables: {
             default: [
                 { label: 'Hate', weight: 1 },
@@ -213,7 +218,8 @@ export default [
                 { label: 'Love', weight: 1 }
             ],
             specific: [
-                'Lovers ({{oneof:current|former}})',
+                'Friends {{oneof:best|former|}}',
+                'Lovers ({{oneof:current|former|unrequited}})',
                 'Enemies ({{oneof:long term|recent|former}})',
                 'Rivalry ({{oneof:business|love}})',
                 'Loaner/Debtor',

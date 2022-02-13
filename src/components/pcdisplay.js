@@ -1,7 +1,7 @@
 import * as characterService from '../services/characterService.js';
 import PCSchema from '../models/pcSchema.js';
 import { convertToken } from '../services/randomTableService.js';
-import RelationshipDisplay from './relationshipDisplay.js';
+import RelationshipDisplay from './RelationshipDisplay.js';
 import Relationship from '../models/relationship.js';
 import * as relationshipService from '../services/relationshipService.js';
 

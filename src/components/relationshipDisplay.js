@@ -1,6 +1,7 @@
 import * as relationshipService from '../services/relationshipService.js';
 import * as npcService from '../services/npcService.js';
 import * as characterService from '../services/characterService.js';
+import { convertToken } from '../services/randomTableService.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -45,11 +46,16 @@ formTemplate.innerHTML = `
 <form id="relEditForm">
     <div class="formField">
         <label for="target_id">Person</label>
-        <select id="target_id" name="target_id" required></select>
+        <select id="target_id" name="target_id" required>
+            <option value="">Select a Character</option>
+        </select>
     </div>
     <div class="formField">
         <label for="type_rel">Type</label>
-        <input type="text" id="type_rel" name="type_rel" value="" required />
+        <div class="fieldReroll">
+            <input type="text" id="type_rel" name="type_rel" value="" required />
+            <button type="button" class="btn-reroll" aria-label="Reroll" aria-controls="type_rel" data-field="type_rel">&#9861</button>
+        </div>
     </div>
     <div>
         <button type="submit">Save</button>
@@ -95,6 +101,7 @@ class RelationshipDisplay extends HTMLElement {
         form.removeEventListener('submit', this._saveEdit.bind(this));
         form.querySelector('.btn-cancel').removeEventListener('click', this._toggleEdit.bind(this));
         form.querySelector('.btn-delete').removeEventListener('click', this._deleteRelation.bind(this));
+        form.querySelector('.btn-reroll').removeEventListener('click', this._reroll.bind(this));
     }
     /**
      *
@@ -149,11 +156,7 @@ class RelationshipDisplay extends HTMLElement {
 
         // List all other characters
         const select = form.querySelector('select');
-        const option = document.createElement('option');
-        option.value = '';
-        option.innerText = 'Select a Character';
-        select.appendChild(option);
-        [npcService.getAll(), characterService.getAll()].forEach((char) => {
+        [...npcService.getAll(), ...characterService.getAll()].forEach((char) => {
             if (char.id === this.charId) {
                 return;
             }
@@ -172,6 +175,11 @@ class RelationshipDisplay extends HTMLElement {
         form.addEventListener('submit', this._saveEdit.bind(this));
         form.querySelector('.btn-cancel').addEventListener('click', this._cancelEdit.bind(this));
         form.querySelector('.btn-delete').addEventListener('click', this._deleteRelation.bind(this));
+        form.querySelector('.btn-reroll').addEventListener('click', this._reroll.bind(this));
+
+        if (this.relation.type === '') {
+            form.querySelector('.btn-reroll').click();
+        }
     }
 
     _disableEdit () {
@@ -179,13 +187,6 @@ class RelationshipDisplay extends HTMLElement {
             return;
         }
         this._isEdit = false;
-
-        // remove form events
-        const form = this.shadowRoot.querySelector('form');
-        form.removeEventListener('submit', this._saveEdit.bind(this));
-        form.querySelector('.btn-cancel').removeEventListener('click', this._cancelEdit.bind(this));
-        form.querySelector('.btn-delete').removeEventListener('click', this._deleteRelation.bind(this));
-
         this._setRelationOutput();
         this._refocus();
     }
@@ -209,9 +210,24 @@ class RelationshipDisplay extends HTMLElement {
         relationshipService.save(this.relation);
         this._disableEdit();
     }
-
+    /**
+     * Trigger deletion of relationship.
+     */
     _deleteRelation () {
         relationshipService.remove(this.relation.id);
+    }
+    /**
+     * Reroll relationship type.
+     * @param {Event} ev
+     */
+    _reroll (ev) {
+        const fieldKey = ev.target.dataset.field || '';
+        if (fieldKey === '') {
+            return;
+        }
+        const result = convertToken('table:relationships:specific');
+        const input = this.shadowRoot.querySelector(`#${fieldKey}`);
+        input.value = result.toString();
     }
     /**
      * When we need to reset focus in this element.
