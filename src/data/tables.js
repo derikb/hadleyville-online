@@ -39,10 +39,10 @@ export default [
             ],
             quirk: [
                 'Touchy',
-                'Fingers Talisman [crucifix/ring/gun]',
+                'Fingers Talisman ({{oneof:Crucifix|Ring|Gun|Cards}})',
                 'Ticket/Fidgety',
-                'Bad Sense [sight/hearing]',
-                'Drinks/Smokes Profusely',
+                'Bad Sense of {{oneof:Sight|Hearing}}',
+                '{{oneof:Drinks|Smokes|Chews}} Profusely',
                 'Gestures a lot'
             ],
             speech: [
@@ -168,7 +168,7 @@ export default [
         tables: {
             long_term: [
                 'Wealth',
-                'Safety [family/self]',
+                'Safety of {{oneof:Family|Self}}',
                 'Civic Good',
                 'Knowledge/Skill/Craft',
                 'Piety/Charity',
@@ -187,14 +187,14 @@ export default [
                 'Revenge/Hate'
             ],
             secrets: [
-                'Love’s another’s spouse [mutual/unrequited/unexpressed]',
-                'Fled a murder rap [innocent/guilty]',
+                'Love’s another’s spouse ({{oneof:mutual|unrequited|unexpressed}})',
+                'Fled a murder rap ({{oneof:innocent|guilty}})',
                 'Fraud at profession',
-                'Hidden vice [dope/alcohol/sex]',
+                'Hidden vice ({{oneof:dope|alcohol|sex}})',
                 'Secret child in town',
                 'Ran with a bad bunch of hombres',
                 'Owes a lot of money / Broke',
-                'Hallucinatory visions [religious/psychotic]'
+                'Hallucinatory visions ({{oneof:religious|psychotic}})'
             ]
         }
     },
@@ -213,18 +213,18 @@ export default [
                 { label: 'Love', weight: 1 }
             ],
             specific: [
-                'Lovers [current/former]',
-                'Enemies [long term/recent/former]',
-                'Rivalry [business/love]',
+                'Lovers ({{oneof:current|former}})',
+                'Enemies ({{oneof:long term|recent|former}})',
+                'Rivalry ({{oneof:business|love}})',
                 'Loaner/Debtor',
-                'Comrades [current/former] [business/army/mines/banditry/cowboys]',
-                'Employer/Employee [current/former]',
-                'Family [happy/secret/estranged]'
+                'Comrades ({{oneof:current|former}}) ({{oneof:business|army|mines|banditry|cowboys}})',
+                'Employer/Employee ({{oneof:current|former}})',
+                'Family ({{oneof:happy|secret|estranged}})'
             ],
             faction: [
                 'Community leaders (business owners)',
                 'Pious church goers',
-                'Miners/Loggers [union]',
+                'Miners/Loggers {{oneof:union|}}',
                 'Ranchers',
                 'The Law (sheriff, deputies, judges, posse members, etc.)',
                 'Homesteaders',
@@ -238,13 +238,13 @@ export default [
         title: 'Events',
         tables: {
             regular: [
-                'Wedding [jealousy/drunken revelry]',
-                'Funeral [murder/inheritance]',
-                'Market day [theft/rivalry/strangers]',
+                'Wedding ({{oneof:jealousy|drunken revelry}})',
+                'Funeral ({{oneof:murder|inheritance}})',
+                'Market day {{oneof:theft|rivalry|strangers}}',
                 'Holiday',
-                'Arrival [stage/train]',
+                'Arrival of ({{oneof:Stage|Train}})',
                 'Sunday services',
-                'Payday at the [mine/ranch/camp]'
+                'Payday at the {{oneof:Mine|Ranch|Camp}}'
             ],
             crimes: [
                 'Drunken brawl',
@@ -253,7 +253,7 @@ export default [
                 'Kidnapping',
                 'Bandit raid',
                 'Shootout',
-                '[Stage/train] ambushed',
+                '({{oneof:Stage|Train}}) ambushed',
                 'Arson'
             ],
             natural: [
@@ -265,8 +265,8 @@ export default [
                 'Wild animals'
             ],
             other: [
-                'Territorial dispute [ranchers/farmers/both]',
-                'Heartless capitalist tries to run thing',
+                'Territorial dispute ({{oneof:ranchers|farmers|both}})',
+                'Heartless capitalist tries to run things',
                 'A dark past catches up with someone',
                 'Mine collapse/Logging accident',
                 'Election',
@@ -286,22 +286,22 @@ export default [
                 'Gunslinger',
                 'Pinkerton Detective',
                 'Itinerant Preacher',
-                '[Son/father/daughter/lover] thought to be dead',
-                'Family member with a [problem/past/secret]',
-                'Ex-con [stranger/relative/old friend]',
+                '{{oneof:Son|Father|Daughter|Lover}} thought to be dead',
+                'Family member with a {{oneof:problem|past|secret}}',
+                'Ex-con {{oneof:stranger|relative|old friend}}',
                 'Snake Oil Salesman',
                 'Rabblerouser',
-                'Swindler [man/woman/couple/family]',
-                'Rich [worldly/naive] [man/couple/woman] from back East',
-                'Bandit [with/out] his gang',
+                'Swindler {{oneof:man|woman|couple|family}}',
+                'Rich ({{oneof:worldly|naive}}) {{oneof:man|couple|woman}} from back East',
+                'Bandit {{oneof:with|without}} his gang',
                 'Family looking to settle',
                 'Destitute men looking for work',
-                'Former soldiers [hungry/crazed/in pursuit/pursued]',
-                'Bounty hunter with a [recent/old] warrant for [townsperson/bandit/gunslinger]',
+                'Former soldiers ({{oneof:hungry|crazed|in pursuit|pursued}})',
+                'Bounty hunter with a {{oneof:recent|old}} warrant for {{oneof:townsperson|bandit|gunslinger}}',
                 'Traveling salesman',
-                '[Troublesome/pitiful] [man/woman] comes to get [family/friend] out of jail',
-                'Politician [campaigning/canvassing]',
-                'Woman fleeing [fiance/husband]',
+                '{{oneof:Troublesome|Pitiful}} {{oneof:Man|Woman}} comes to get {{oneof:Family|Friend}} out of jail',
+                'Politician ({{oneof:campaigning|canvassing}})',
+                'Woman fleeing {{oneof:fiance|husband}}',
                 'Travelling Troupe of Actors'
             ]
         }
@@ -322,14 +322,14 @@ export default [
             weapons: [
                 'Famous gunslinger’s pistol',
                 'Knife',
-                'Gun [shotgun/pistol/rifle]',
+                'Gun ({{oneof:shotgun|pistol|rifle}})',
                 'Bandolier of bullets',
                 'Cavalry Sword',
                 'Ax',
                 'Whip'
             ],
             valuables: [
-                'Wedding band of [live/dead] spouse',
+                'Wedding band of {{oneof:live|dead}} spouse',
                 'Thoroughbred horse',
                 'Unopened bottle of imported liquor',
                 'Wallet of bills',
@@ -338,12 +338,12 @@ export default [
                 'Crucifix'
             ],
             clothes: [
-                'Hat [lady’s/man’s] [fine/plain]',
-                'Boots [new/muddy/decorative]',
-                'Dress [fancy/torn/bloodied]',
-                'Shirt [fancy/bloodstained/torn]',
+                'Hat {{oneof:lady’s|man’s}} {{oneof:fine|plain}}',
+                'Boots {{oneof:new|muddy|decorative}}',
+                'Dress {{oneof:fancy|torn|bloodied}}',
+                'Shirt {{oneof:fancy|bloodstained|torn}}',
                 'Gun belt',
-                'Earrings [plain/bejeweled]'
+                'Earrings {{oneof:plain|bejeweled}}'
             ],
             consumables: [
                 'Bottle of whisky',
@@ -354,18 +354,18 @@ export default [
                 'Wine bottle'
             ],
             papers: [
-                'Newspaper [local/nearby /far]',
+                'Newspaper {{oneof:local|nearby|far}}',
                 'Deed to mines',
                 'Arrest warrant',
-                'Letter [incriminating/sentimental]',
+                'Letter {{oneof:incriminating|sentimental}}',
                 'Dime novel',
                 'Daguerrotype'
             ],
             other: [
                 'Dice [loaded]',
-                'Playing cards [fresh/used]',
-                'Keys to [house/business/lockbox/jail]',
-                'Hammer [nails]',
+                'Playing cards {{oneof:fresh|used}}',
+                'Keys to {{oneof:house|business|lockbox|jail}}',
+                'Hammer {{oneof:and nails|}}',
                 'Pipe and matches',
                 'Lantern'
             ]
@@ -419,7 +419,7 @@ export default [
                 'Music box',
                 'Spittoons',
                 'Bed pans',
-                'Paintings [landscape/pretty woman/historical figure]',
+                'Paintings {{oneof:landscape|pretty woman|historical figure}}',
                 'Mismatched chairs',
                 'Makeshift tables',
                 'Ladders',
@@ -438,17 +438,17 @@ export default [
         title: 'Locations Outside of Town',
         tables: {
             default: [
-                'Train [in motion/broken down/stopped by blocked tracks]',
-                'Family Farm [abandoned/prospering/failing]',
+                'Train {{oneof:in motion|broken down|stopped by blocked tracks}}',
+                'Family Farm {{oneof:abandoned|prospering|failing}}',
                 'Cattle Ranch',
-                'Mine [abandoned/active]',
-                'Grazing land [disputed]',
-                'River [rapids]',
+                'Mine {{oneof:abandoned|active}}',
+                'Grazing land {{oneof:disputed|}}',
+                'River {{oneof:rapids|}}',
                 'Rocky hills',
                 'Deep woods',
                 'Religious camp',
                 'Bandit camp',
-                'Log cabin [abandoned/hideout/hermit]'
+                'Log cabin {{oneof:abandoned|hideout|hermit}}'
             ]
         }
     },
