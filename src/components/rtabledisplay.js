@@ -132,8 +132,9 @@ class RTableDisplay extends HTMLElement {
 
         const modal = new RTableResultModal({
             id: 'dialog-rtable',
-            resultSet: resultSet,
-            tableKey: this.table.key
+            resultSet,
+            tableKey: this.table.key,
+            subtable
         });
         modal.show();
     }

@@ -42,15 +42,18 @@ modalElement.innerHTML = `
 /**
  * @prop {RandomtableResultSet} resultSet From RandomTable.
  * @prop {String} tableKey Id for the RandomTable.
+ * @prop {String} subtable Subtable roll was on (if any).
  * @prop {HTMLElement} el Dialog container.
  */
 export default class RTableResultModal {
     constructor ({
         resultSet = null,
-        tableKey = ''
+        tableKey = '',
+        subtable = ''
     }) {
         this.resultSet = resultSet;
         this.tableKey = tableKey;
+        this.subtable = subtable;
 
         const fragment = modalElement.content.cloneNode(true);
         this.el = fragment.querySelector('.dialog-container');
@@ -127,7 +130,7 @@ export default class RTableResultModal {
      * Reroll on the current table.
      */
     _reroll () {
-        this.resultSet = getResultByTableKey(this.tableKey);
+        this.resultSet = getResultByTableKey(this.tableKey, this.subtable);
         this._displayResultSet();
     }
 };
