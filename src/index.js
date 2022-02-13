@@ -13,7 +13,7 @@ import NoteList from './components/NoteList.js';
 import NoteListItem from './components/NoteListItem.js';
 import PCDisplay from './components/pcdisplay.js';
 import PCSelector from './components/pcSelector.js';
-import RelationshipDisplay from './components/relationshipDisplay.js';
+import RelationshipDisplay from './components/RelationshipDisplay.js';
 import RelationMap from './components/relationMap.js';
 import CharacterNode from './components/CharacterNode.js';
 import NPCNode from './components/NPCNode.js';
