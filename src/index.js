@@ -4,6 +4,8 @@ import Footer from './components/footer.js';
 import TableDrawer from './components/tabledrawer.js';
 import RTableDisplay from './components/rtabledisplay.js';
 import TownDisplay from './components/towndisplay.js';
+import FactionsList from './components/FactionsList.js';
+import FactionDisplay from './components/FactionDisplay.js';
 import NotesList from './components/noteslist.js';
 import NoteDisplay from './components/notedisplay.js';
 import DiceRoller from './components/diceroller.js';

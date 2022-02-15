@@ -57,7 +57,9 @@ export default class Relationship {
     }
 
     toJSON () {
-        const obj = {};
+        const obj = {
+            className: 'Relationship'
+        };
         Object.keys(this).forEach((prop) => {
             const value = this[prop];
             if (!value || value.length === 0) {

@@ -1,6 +1,6 @@
 import store from '../store/store.js';
-import { createRelationship, updateRelationship, deleteRelationship, clearRelationships, importRelationships } from '../store/relationship-reducer.js';
-import Relationship from '../models/relationship.js';
+import { updateRelationship, deleteRelationship, clearRelationships, importRelationships } from '../store/relationship-reducer.js';
+import Relationship from '../models/Relationship.js';
 import EventEmitter from '../models/EventEmitter.js';
 
 const emitter = new EventEmitter();
@@ -54,7 +54,6 @@ const create = function (mode = 'view', relationship = null) {
     if (!(relationship instanceof Relationship)) {
         relationship = new Relationship({});
     }
-    store.dispatch(createRelationship({ relationship: relationship.toJSON() }));
     emitter.trigger('relationship:add', {
         item: relationship,
         mode

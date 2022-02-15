@@ -146,6 +146,7 @@ class ItemList extends HTMLElement {
     }
 };
 
-window.customElements.define('had-itemlist', ItemList);
-
+if (!window.customElements.get('had-itemlist')) {
+    window.customElements.define('had-itemlist', ItemList);
+}
 export default ItemList;
