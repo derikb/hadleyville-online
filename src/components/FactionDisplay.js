@@ -282,12 +282,45 @@ class FactionDisplay extends HTMLElement {
         this.shadowRoot.querySelector('details').open = false;
     }
 
-    _toggleEdit (ev) {
+    _toggleEdit () {
         if (this._isEdit) {
             this._disableEdit();
             return;
         }
         this._enableEdit();
+    }
+    /**
+     * Handle clicks in the form.
+     * @param {ClickEvent} ev
+     */
+    _formButtonClickHandler (ev) {
+        const button = ev.target.closest('button');
+        if (!button) {
+            return;
+        }
+        if (button.type === 'submit') {
+            return;
+        }
+        if (button.classList.contains('btn-cancel')) {
+            this._toggleEdit();
+            return;
+        }
+        if (button.classList.contains('btn-delete')) {
+            this._deleteFaction();
+            return;
+        }
+        if (button.classList.contains('btn-add-rel')) {
+            this._addRelationship();
+            return;
+        }
+        if (button.classList.contains('btn-del-rel')) {
+            this._removeRelationship(button);
+            return;
+        }
+        if (button.classList.contains('btn-reroll')) {
+            this._reroll(button);
+            return;
+        }
     }
 
     _enableEdit () {
@@ -299,13 +332,7 @@ class FactionDisplay extends HTMLElement {
         this.shadowRoot.querySelector('.body').innerHTML = formTemplate.call(this);
         const form = this.shadowRoot.querySelector('.body form');
         form.addEventListener('submit', this._saveEdit.bind(this));
-        form.querySelector('.btn-cancel').addEventListener('click', this._toggleEdit.bind(this));
-        form.querySelector('.btn-delete').addEventListener('click', this._deleteFaction.bind(this));
-        form.querySelector('.btn-add-rel').addEventListener('click', this._addRelationship.bind(this));
-        form.querySelectorAll('.btn-del-rel').forEach((btn) => {
-            btn.addEventListener('click', this._removeRelationship.bind(this));
-        });
-
+        form.addEventListener('click', this._formButtonClickHandler.bind(this));
         form.querySelectorAll('simple-list').forEach((list) => {
             const field = list.dataset.name || '';
             if (!field) {
@@ -314,24 +341,12 @@ class FactionDisplay extends HTMLElement {
             const value = this.faction[field];
             list.contentArray = value.length === 0 ? [''] : value;
         });
-
-        form.querySelectorAll('.btn-reroll').forEach((btn) => {
-            btn.addEventListener('click', this._reroll.bind(this));
-        });
     }
 
     _removeFormEvents () {
         const form = this.shadowRoot.querySelector('form');
         form.removeEventListener('submit', this._saveEdit.bind(this));
-        form.querySelector('.btn-cancel').removeEventListener('click', this._toggleEdit.bind(this));
-        form.querySelector('.btn-delete').removeEventListener('click', this._deleteFaction.bind(this));
-        form.querySelector('.btn-add-rel').removeEventListener('click', this._addRelationship.bind(this));
-        form.querySelectorAll('.btn-del-rel').forEach((btn) => {
-            btn.removeEventListener('click', this._removeRelationship.bind(this));
-        });
-        form.querySelectorAll('.btn-reroll').forEach((btn) => {
-            btn.removeEventListener('click', this._reroll.bind(this));
-        });
+        form.removeEventListener('click', this._formButtonClickHandler.bind(this));
     }
 
     _disableEdit () {
@@ -347,7 +362,6 @@ class FactionDisplay extends HTMLElement {
     _saveEdit (ev) {
         ev.preventDefault();
         const formData = new FormData(ev.target);
-        console.log(Array.from(formData.entries()));
         this.faction.name = formData.get('factionName').toString();
         this.faction.assets = Array.from(formData.getAll('assets[]')).map((item) => item.toString());
         this.faction.goals = Array.from(formData.getAll('goals[]')).map((item) => item.toString());
@@ -382,19 +396,16 @@ class FactionDisplay extends HTMLElement {
         factionService.remove(this.faction.id);
     }
 
-    _addRelationship (ev) {
+    _addRelationship () {
         const list = this.shadowRoot.querySelector('#rellist ul');
         if (!list) {
             return;
         }
         const html = this._relationshipForm(new Relationship({ source: this.faction.id }), this._getAllNames());
         list.insertAdjacentHTML('beforeend', html);
-        // @todo get events working (reroll, remove) on the newly added buttons
-        // maybe switch to a delegation event on the form itself.
     }
 
-    _removeRelationship (ev) {
-        const button = ev.target;
+    _removeRelationship (button) {
         const set = button.closest('fieldset');
         const id = set ? (set.dataset.relid || '') : '';
         if (!id) {
@@ -404,15 +415,15 @@ class FactionDisplay extends HTMLElement {
         set.parentNode.removeChild(set);
     }
 
-    _reroll (ev) {
-        const fieldKey = ev.target.dataset.field || '';
+    _reroll (button) {
+        const fieldKey = button.dataset.field || '';
         if (fieldKey === '') {
             return;
         }
         switch (fieldKey) {
             case 'relationship_general': {
                 const roll = getDiceResult('2d6');
-                const input = ev.target.parentNode.querySelector('select');
+                const input = button.parentNode.querySelector('select');
                 input.value = roll;
                 break;
             }
