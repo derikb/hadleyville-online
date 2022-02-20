@@ -44,18 +44,37 @@ template.innerHTML = `
     .actions {
         margin-left: .5rem;
     }
+
+    .factions {
+        display: flex;
+    }
+    .factions span {
+        height: 1.25rem;
+        width: 1.25rem;
+        border-radius: 1.25rem;
+        margin-right: 0.5rem;
+        font-size: .8rem;
+        color: white;
+        background-color: black;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 </style>
 <header></header>
 <div class="body">
     <div class="job"></div>
     <div class="actions"><a href="">view</a></div>
 </div>
+<div class="factions"></div>
 `;
 
 /**
  * @prop {NPC|PC} char Associated Character.
  * @prop {CharacterLink[]} _sourceLinks Links that start with this Character.
  * @prop {CharacterLink[]} _targetLinks Links that end with this Character.
+ * @prop {Relationship[]} _factions Factions relationship with this Character.
  */
 class CharacterNode extends HTMLElement {
     constructor ({
@@ -67,6 +86,7 @@ class CharacterNode extends HTMLElement {
         this.id_prefix = '';
         this._sourceLinks = [];
         this._targetLinks = [];
+        this._factions = [];
         this.setItem(char);
     }
 
@@ -295,6 +315,38 @@ class CharacterNode extends HTMLElement {
 
     _removeRelationship ({ id }) {
         this.char.removeRelationship(id);
+    }
+    /**
+     * Get contrasty color.
+     * @param {String} hexcolor
+     * @returns {String}
+     */
+    getContrast (hexcolor) {
+        // If a leading # is provided, remove it
+        if (hexcolor.slice(0, 1) === '#') {
+            hexcolor = hexcolor.slice(1);
+        }
+
+        // Convert to RGB value
+        const r = parseInt(hexcolor.substr(0,2),16);
+        const g = parseInt(hexcolor.substr(2,2),16);
+        const b = parseInt(hexcolor.substr(4,2),16);
+
+        // Get YIQ ratio
+        const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+
+        // Check contrast
+        return (yiq >= 128) ? 'black' : 'white';
+    }
+
+    addFaction (faction, rel) {
+        this._factions.push(rel);
+        const span = document.createElement('span');
+        span.style.backgroundColor = faction.color;
+        span.style.color = this.getContrast(faction.color);
+        span.innerText = rel.type;
+        this.shadowRoot.querySelector('.factions')
+            .appendChild(span);
     }
 };
 

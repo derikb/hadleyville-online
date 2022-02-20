@@ -2,6 +2,7 @@ import { randomInteger } from 'rpg-table-randomizer/src/randomizer.js';
 import { getAll as getAllPCs } from '../services/characterService.js';
 import { getAll as getAllNPCs } from '../services/npcService.js';
 import * as relationshipService from '../services/relationshipService.js';
+import { getAll as getAllFactions } from '../services/factionService.js';
 import { getAllNodes } from '../services/relmapService.js';
 import NPCNode from './NPCNode.js';
 import PCNode from './PCNode.js';
@@ -54,7 +55,31 @@ template.innerHTML = `
         stroke: var(--primary, tan);
         stroke-width: 2px;
     }
+
+    #factions-key {
+        width: 100%;
+        display: flex;
+        z-index: 125;
+        position: relative;
+        background-color: var(--surface2);
+        padding: .5rem;
+        border-radius: .25rem;
+    }
+    #factions-key > div {
+        margin-right: 2rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+    }
+    .factionColor {
+        display: inline-block;
+        height: 1rem;
+        width: 1rem;
+        border-radius: 1rem;
+        margin-left: 0.5rem;
+    }
 </style>
+<div id="factions-key"><div>Factions:</div></div>
 <div id="npc-map"></div>
 <svg>
     <defs></defs>
@@ -71,6 +96,7 @@ class RelationMap extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
         this.npcArea = this.shadowRoot.querySelector('#npc-map');
+        this.factionArea = this.shadowRoot.querySelector('#factions-key');
         this.svg = this.shadowRoot.querySelector('svg');
 
         this.chars = [];
@@ -88,6 +114,15 @@ class RelationMap extends HTMLElement {
     connectedCallback () {
         this._getAllNodes();
         this._getAllLinks();
+        this.factions = getAllFactions();
+        this.factions.forEach((faction) => {
+            this.factionArea.insertAdjacentHTML(
+                'beforeend',
+                `<div>${faction.name} <span class="factionColor" style="background-color: ${faction.color};"></span></div>`
+            );
+
+            this._addFactionToNodes(faction);
+        });
         // Add nodes to map, so we can calculate if the map goes over the viewport.
         this.chars.forEach((node) => {
             this._addCharacter(node);
@@ -149,6 +184,20 @@ class RelationMap extends HTMLElement {
             this.chars.push(charNode);
         });
     }
+    /**
+     *
+     * @param {Faction} faction
+     */
+    _addFactionToNodes (faction) {
+        faction.relationships.forEach((rel) => {
+            const charId = rel.getOther(faction.id);
+            const char = this.chars.find((node) => node.characterId === charId);
+            if (!char) {
+                return;
+            }
+            char.addFaction(faction, rel);
+        });
+    }
 
     _getAllLinks () {
         const relationships = relationshipService.getAll();
@@ -202,18 +251,20 @@ class RelationMap extends HTMLElement {
      * @param {CharacterLink} link
      */
     addLink (link) {
-        // Add these first, so the placement is right
-        // They don't have offset values until inserted.
-        this.svg.appendChild(link.element);
-        this.npcArea.appendChild(link.labelElement);
-
         const sourceNode = this.chars.find((el) => {
             return el.characterId === link.start;
         });
         const targetNode = this.chars.find((el) => {
             return el.characterId === link.end;
         });
+        if (!sourceNode || !targetNode) {
+            return;
+        }
 
+        // Add these first, so the placement is right
+        // They don't have offset values until inserted.
+        this.svg.appendChild(link.element);
+        this.npcArea.appendChild(link.labelElement);
         sourceNode.addSourceLink(link);
         targetNode.addTargetLink(link);
     }

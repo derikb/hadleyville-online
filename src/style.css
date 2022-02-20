@@ -221,6 +221,9 @@ input, textarea, select {
     border-radius: 5px;
     border: 1px solid var(--secondary);
 }
+input[type="color"] {
+    padding: .125rem;
+}
 fieldset {
     border: none;
     border-bottom: 1px solid var(--secondary);

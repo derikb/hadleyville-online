@@ -26,6 +26,18 @@ template.innerHTML = `
         display: inline-block;
     }
 
+    .color-indicator {
+        display: inline-block;
+        height: 1rem;
+        width: 1rem;
+        border-radius: 1rem;
+        margin-left: 1rem;
+    }
+
+    simple-list input {
+        margin-bottom: 0.5rem;
+    }
+
     #rellist ul {
         margin: .5rem 0;
         padding: 0;
@@ -57,6 +69,11 @@ const formTemplate = function () {
                     <input id="factionName" type="text" name="factionName" autocomplete="off" value="${this.faction.name}" />
                     <button class="btn-reroll" data-field="factionName" type="button" aria-label="Reroll" aria-controls="factionName">⚅</button>
                 </div>
+            </div>
+
+            <div class="formField">
+                <label for="factionColor">Color</label>
+                <input id="factionColor" type="color" name="factionColor" value="${this.faction.color}" />
             </div>
 
             <simple-list data-form="factionEditForm" data-name="assets">
@@ -228,11 +245,19 @@ class FactionDisplay extends HTMLElement {
                 </ul>
             </section>`;
     }
+
+    _colorBlock () {
+        const span = document.createElement('span');
+        span.classList.add('color-indicator');
+        span.style.backgroundColor = this.faction.color;
+        return span;
+    }
     /**
      * Output in view mode.
      */
     _setFactionOutput () {
         this.shadowRoot.querySelector('#summary-title').innerText = this.faction.name;
+        this.shadowRoot.querySelector('#summary-title').appendChild(this._colorBlock());
         this.shadowRoot.querySelector('.body').innerHTML = this._displayTemplate();
     }
     /**
@@ -326,6 +351,7 @@ class FactionDisplay extends HTMLElement {
         this.faction.name = formData.get('factionName').toString();
         this.faction.assets = Array.from(formData.getAll('assets[]')).map((item) => item.toString());
         this.faction.goals = Array.from(formData.getAll('goals[]')).map((item) => item.toString());
+        this.faction.color = formData.get('factionColor').toString();
 
         // Handle added/edited relationships
         const relationSets = ev.target.querySelectorAll('fieldset[data-relid]');
@@ -363,6 +389,8 @@ class FactionDisplay extends HTMLElement {
         }
         const html = this._relationshipForm(new Relationship({ source: this.faction.id }), this._getAllNames());
         list.insertAdjacentHTML('beforeend', html);
+        // @todo get events working (reroll, remove) on the newly added buttons
+        // maybe switch to a delegation event on the form itself.
     }
 
     _removeRelationship (ev) {

@@ -9,6 +9,7 @@ export default class Faction {
         assets = [],
         goals = [],
         relationships = [],
+        color = '',
         collapse = false
     }) {
         if (id) {
@@ -19,6 +20,7 @@ export default class Faction {
         this.name = name;
         this.assets = assets;
         this.goals = goals;
+        this.color = color;
         this.relationships = relationships.map((obj) => {
             if (obj instanceof Relationship) {
                 return obj;
