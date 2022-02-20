@@ -1,7 +1,10 @@
+import Faction from '../models/Faction.js';
 import * as factionService from '../services/factionService.js';
-import { convertToken } from '../services/randomTableService.js';
-import RelationshipDisplay from './RelationshipDisplay.js';
+import * as npcService from '../services/npcService.js';
+import * as characterService from '../services/characterService.js';
 import Relationship from '../models/Relationship.js';
+import { relationshipTypes } from '../models/FactionConstants.js';
+import { getDiceResult } from 'rpg-table-randomizer/src/dice_roller';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -26,6 +29,9 @@ template.innerHTML = `
     #rellist ul {
         margin: .5rem 0;
         padding: 0;
+    }
+    #rellist li  {
+        margin-left: 1rem;
     }
 </style>
 <details>
@@ -62,6 +68,7 @@ const formTemplate = function () {
                 <div slot="inputs"></div>
             </simple-list>
         </div>
+        ${this._relationshipList(true)}
         <div>
             <button type="submit">Save</button>
             <button type="button" class="btn-cancel">Cancel</button>
@@ -70,31 +77,18 @@ const formTemplate = function () {
     </form>`;
 };
 
-const relTemplate = document.createElement('template');
-relTemplate.innerHTML = `
-<section id="rellist" aria-labelledby="relheader">
-    <div>
-        <strong id="relheader">Relationships</strong>
-        <button class="btn-sm btn-add-rel" type="button">Add</button>
-    </div>
-    <ul>
-    </ul>
-</section>
-`;
-
 class FactionDisplay extends HTMLElement {
     constructor () {
         super();
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
         this._isEdit = false;
-        this.editButton = this.shadowRoot.querySelector('.btn-edit');
     }
 
     connectedCallback () {
+        this.editButton = this.shadowRoot.querySelector('.btn-edit');
         this.shadowRoot.querySelector('details').addEventListener('toggle', this._setCollapse.bind(this));
         this.editButton.addEventListener('click', this._toggleEdit.bind(this));
-        this.shadowRoot.addEventListener('fieldChange', this._handleFieldChange.bind(this));
     }
 
     disconnectedCallback () {
@@ -102,10 +96,7 @@ class FactionDisplay extends HTMLElement {
         this.editButton.removeEventListener('click', this._toggleEdit.bind(this));
         if (this._isEdit) {
             this._removeFormEvents();
-        } else {
-            this.shadowRoot.querySelector('.btn-add-rel').addEventListener('click', this._createRelationship.bind(this));
         }
-        this.shadowRoot.removeEventListener('fieldChange', this._handleFieldChange.bind(this));
     }
 
     /**
@@ -115,7 +106,7 @@ class FactionDisplay extends HTMLElement {
     setItem (faction) {
         this.faction = faction;
         this.id = `faction_${this.faction.id}`;
-        this.dataset.id = this.faction.id;
+        // this.dataset.id = this.faction.id;
         if (faction.collapse) {
             this.shadowRoot.querySelector('details').open = false;
         } else {
@@ -123,30 +114,127 @@ class FactionDisplay extends HTMLElement {
         }
         this._setFactionOutput();
     }
-
+    /**
+     * Display in view mode.
+     * @returns {String}
+     */
     _displayTemplate () {
         return `<ul>
             <li>Assets: <ul><li>${this.faction.assets.join('</li><li>')}</li></ul></li>
             <li>Goals: <ul><li>${this.faction.goals.join('</li><li>')}</li></ul></li>
-        </ul>`;
+        </ul>
+        ${this._relationshipList()}`;
     }
+    /**
+     * Relationship in view mode.
+     * @param {Relationship} rel Faction relationship
+     * @param {Object[]} names Characters and factions.
+     * @returns {String}
+     */
+    _relationshipTemplate (rel, names) {
+        const otherId = rel.getOther(this.faction.id);
+        let otherName = otherId;
+        if (otherId) {
+            const other = names.find((el) => el.id === otherId);
+            otherName = other ? other.name : '';
+        }
+        return `<li><strong>${otherName}:</strong> ${relationshipTypes[rel.type]}</li>`;
+    }
+    /**
+     * Relationship in edit mode.
+     * @param {Relationship} rel Faction relationship (this could be a new/empty one)
+     * @param {Object[]} names Characters and factions.
+     * @returns {String}
+     */
+    _relationshipForm (rel, names) {
+        const options = names.map((name) => {
+            const otherId = rel.getOther(this.faction.id);
+            return `<option value="${name.id}" ${otherId === name.id ? 'selected=selected' : ''}>${name.name}</option>`;
+        }).join('');
+        const typeOptions = Object.keys(relationshipTypes).map((key) => {
+            return `<option value="${key}" ${rel.type === key ? 'selected="selected"' : ''}>${relationshipTypes[key]}</option>`;
+        }).join('');
+        return `
+        <fieldset data-relid="${rel.id}">
+            <div class="formField">
+                <label for="target_id_${rel.id}">Person</label>
+                <select id="target_id_${rel.id}" name="target_id" required>
+                    <option value="">Select a Character</option>
+                    ${options}
+                </select>
+            </div>
+            <div class="formField">
+                <label for="type_rel_${rel.id}">Relation</label>
+                <div class="fieldReroll">
+                    <select id="type_rel_${rel.id}" name="type_rel" required>
+                        <option value="">Select a Relation</option>
+                        ${typeOptions}
+                    </select>
+                    <button type="button" class="btn-reroll" data-field="relationship_general" aria-label="Reroll" aria-controls="type_rel_${rel.id}" data-field="type_rel">&#9861</button>
+                </div>
+            </div>
+            <button type="button" class="btn-del-rel">Remove</button>
+        </fieldset>`;
+    }
+    /**
+     * Get all names of npcs, pcs, factions.
+     * @returns {Object[]}
+     */
+    _getAllNames () {
+        const names = [];
+        [...npcService.getAll(), ...characterService.getAll(), ...factionService.getAll()].forEach((char) => {
+            if (char instanceof Faction && char.id === this.id) {
+                return;
+            }
+            names.push({
+                id: char.id,
+                name: char.name
+            });
+        });
+        return names;
+    }
+    /**
+     * Relationship list.
+     * @param {Boolean} isEdit
+     * @returns {String}
+     */
+    _relationshipList (isEdit = false) {
+        const names = this._getAllNames();
 
+        let relationhtml = '';
+        if (!isEdit) {
+            relationhtml = this.faction.relationships.map((rel) => {
+                return this._relationshipTemplate(rel, names);
+            }).join('');
+        } else {
+            // Edit fields...
+            relationhtml = this.faction.relationships.map((rel) => {
+                return this._relationshipForm(rel, names);
+            }).join('');
+            // One blank one for editing.
+            if (this.faction.relationships.length === 0) {
+                relationhtml += this._relationshipForm(new Relationship({ source: this.faction.id }), names);
+            }
+        }
+        return relationhtml === ''
+            ? ''
+            : `<section id="rellist" aria-labelledby="relheader">
+                <div>
+                    <strong id="relheader">Relationships</strong>
+                    ${isEdit ? '<button class="btn-sm btn-add-rel" type="button">Add</button>' : ''}
+                </div>
+                <ul>
+                ${relationhtml}
+                </ul>
+            </section>`;
+    }
+    /**
+     * Output in view mode.
+     */
     _setFactionOutput () {
         this.shadowRoot.querySelector('#summary-title').innerText = this.faction.name;
         this.shadowRoot.querySelector('.body').innerHTML = this._displayTemplate();
-
-        // Display relationships
-        // const relSection = relTemplate.content.cloneNode(true);
-        // const relul = relSection.querySelector('ul');
-        // this.faction.relationships.forEach((rel) => {
-        //     const relDisplay = new RelationshipDisplay({ charId: this.faction.id });
-        //     relDisplay.setItem(rel);
-        //     relul.appendChild(relDisplay);
-        // });
-        // this.shadowRoot.querySelector('.body').appendChild(relSection);
-        // this.shadowRoot.querySelector('.btn-add-rel').addEventListener('click', this._createRelationship.bind(this));
     }
-
     /**
      * Save collapse state
      * @param ev Toggle event on details.
@@ -188,6 +276,10 @@ class FactionDisplay extends HTMLElement {
         form.addEventListener('submit', this._saveEdit.bind(this));
         form.querySelector('.btn-cancel').addEventListener('click', this._toggleEdit.bind(this));
         form.querySelector('.btn-delete').addEventListener('click', this._deleteFaction.bind(this));
+        form.querySelector('.btn-add-rel').addEventListener('click', this._addRelationship.bind(this));
+        form.querySelectorAll('.btn-del-rel').forEach((btn) => {
+            btn.addEventListener('click', this._removeRelationship.bind(this));
+        });
 
         form.querySelectorAll('simple-list').forEach((list) => {
             const field = list.dataset.name || '';
@@ -208,6 +300,10 @@ class FactionDisplay extends HTMLElement {
         form.removeEventListener('submit', this._saveEdit.bind(this));
         form.querySelector('.btn-cancel').removeEventListener('click', this._toggleEdit.bind(this));
         form.querySelector('.btn-delete').removeEventListener('click', this._deleteFaction.bind(this));
+        form.querySelector('.btn-add-rel').removeEventListener('click', this._addRelationship.bind(this));
+        form.querySelectorAll('.btn-del-rel').forEach((btn) => {
+            btn.removeEventListener('click', this._removeRelationship.bind(this));
+        });
         form.querySelectorAll('.btn-reroll').forEach((btn) => {
             btn.removeEventListener('click', this._reroll.bind(this));
         });
@@ -231,6 +327,27 @@ class FactionDisplay extends HTMLElement {
         this.faction.assets = Array.from(formData.getAll('assets[]')).map((item) => item.toString());
         this.faction.goals = Array.from(formData.getAll('goals[]')).map((item) => item.toString());
 
+        // Handle added/edited relationships
+        const relationSets = ev.target.querySelectorAll('fieldset[data-relid]');
+        relationSets.forEach((set) => {
+            const rel_id = set.dataset.relid;
+            const rel_target = set.querySelector('*[name=target_id]');
+            const type_rel = set.querySelector('*[name=type_rel]');
+            let rel = this.faction.getRelationship(rel_id);
+            if (rel) {
+                rel.target = rel_target.value;
+                rel.type = type_rel.value;
+            } else {
+                rel = new Relationship({
+                    uuid: rel_id,
+                    target: rel_target.value,
+                    source: this.faction.id,
+                    type: type_rel.value
+                });
+                this.faction.addRelationship(rel);
+            }
+        });
+
         factionService.save(this.faction);
         this._disableEdit();
     }
@@ -239,31 +356,38 @@ class FactionDisplay extends HTMLElement {
         factionService.remove(this.faction.id);
     }
 
-    _reroll (ev) {
-        // const fieldKey = ev.target.dataset.field || '';
-        // if (fieldKey === '') {
-        //     return;
-        // }
-        // get source from schema
-        // const result = convertToken();
-        // const input = this.shadowRoot.querySelector(`#${fieldKey}`);
-        // input.value = result.toString();
-    }
-    /**
-     * Handle change events from components.
-     * @param {Event} ev
-     * @returns
-     */
-    _handleFieldChange (ev) {
-        const field = ev.detail.field;
-        if (!field) {
+    _addRelationship (ev) {
+        const list = this.shadowRoot.querySelector('#rellist ul');
+        if (!list) {
             return;
         }
-        ev.stopImmediatePropagation();
+        const html = this._relationshipForm(new Relationship({ source: this.faction.id }), this._getAllNames());
+        list.insertAdjacentHTML('beforeend', html);
+    }
 
-        if (field === 'notes') {
-            this.faction.notes = ev.detail.value;
-            console.log(ev.detail.value);
+    _removeRelationship (ev) {
+        const button = ev.target;
+        const set = button.closest('fieldset');
+        const id = set ? (set.dataset.relid || '') : '';
+        if (!id) {
+            return;
+        }
+        this.faction.removeRelationship(id);
+        set.parentNode.removeChild(set);
+    }
+
+    _reroll (ev) {
+        const fieldKey = ev.target.dataset.field || '';
+        if (fieldKey === '') {
+            return;
+        }
+        switch (fieldKey) {
+            case 'relationship_general': {
+                const roll = getDiceResult('2d6');
+                const input = ev.target.parentNode.querySelector('select');
+                input.value = roll;
+                break;
+            }
         }
     }
     /**
@@ -272,45 +396,6 @@ class FactionDisplay extends HTMLElement {
     _refocus () {
         this.shadowRoot.querySelector('summary').focus();
     }
-    /**
-     * Trigger the creation of new relationship
-     * Between this faction and someone else.
-     */
-    // _createRelationship () {
-    //     const rel = new Relationship({
-    //         source: this.faction.id
-    //     });
-    //     // @todo
-    // }
-    /**
-     * Add a relationship to the list.
-     * @param {Relationship} item
-     * @param {String} mode Edit or view.
-     */
-    // _addRelationship ({ item, mode }) {
-    //     if (item.source !== this.faction.id) {
-    //         return;
-    //     }
-    //     const display = new RelationshipDisplay({ charId: this.faction.id });
-    //     display.setItem(item);
-    //     const list = this.shadowRoot.querySelector('#rellist ul');
-    //     if (list) {
-    //         list.appendChild(display);
-    //         if (mode === 'edit' && item.source === this.faction.id) {
-    //             display._enableEdit();
-    //         }
-    //     }
-    // }
-    /**
-     * Remove a relationship from the list.
-     * @param {String} id
-     */
-    // _removeRelationship ({ id }) {
-    //     const display = this.shadowRoot.querySelector(`had-relationship[data-id="${id}"]`);
-    //     if (display) {
-    //         display.parentNode.removeChild(display);
-    //     }
-    // }
 };
 
 if (!window.customElements.get('had-faction')) {

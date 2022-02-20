@@ -23,7 +23,7 @@ export default class Faction {
             if (obj instanceof Relationship) {
                 return obj;
             }
-            if (!obj && typeof obj !== 'object') {
+            if (!obj || typeof obj !== 'object') {
                 return null;
             }
             return new Relationship(obj);
@@ -31,6 +31,24 @@ export default class Faction {
             return !!el;
         });
         this.collapse = collapse;
+    }
+
+    getRelationship (id) {
+        return this.relationships.find((rel) => rel.id === id);
+    }
+
+    removeRelationship (id) {
+        const index = this.relationships.findIndex((rel) => rel.id === id);
+        if (index >= 0) {
+            this.relationships.splice(index, 1);
+        }
+    }
+
+    addRelationship (rel) {
+        if (!(rel instanceof Relationship)) {
+            throw new Error('Relationship is not a relationship object');
+        }
+        this.relationships.push(rel);
     }
 
     toJSON () {
