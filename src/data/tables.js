@@ -526,5 +526,77 @@ export default [
                 'Rapids'
             ]
         }
+    },
+    {
+        id: 13,
+        key: 'character_traits',
+        title: 'Character Traits (examples)',
+        display_opt: [
+            { table: 'positive', hide_table: true },
+            { table: 'negative', hide_table: true }
+        ],
+        tables: {
+            positive: [
+                'Smart',
+                'Strong',
+                'Persuasive',
+                'Faithful',
+                'Quick',
+                'Educated',
+                'Empathetic',
+                'Cunning',
+                'Popular',
+                'Experienced',
+                'Wise',
+                'Animal Friend',
+                'Lucky',
+                'Attractive',
+                'Amusing',
+                'Robust Health'
+            ],
+            negative: [
+                'Weak',
+                'Stupid',
+                'Ignorant',
+                'Ugly',
+                'Despised',
+                'Unlucky',
+                'Slow',
+                'Filthy',
+                'Hot Tempered',
+                'Impulsive',
+                'Annoying',
+                'Unhealthy'
+            ]
+        }
+    },
+    {
+        id: 14,
+        key: 'character_skills',
+        title: 'Character Skills (examples)',
+        display_opt: [
+            { table: 'default', hide_table: true }
+        ],
+        tables: {
+            default: [
+                'Riding',
+                'Driving',
+                'Rustling',
+                'Pistols',
+                'Rifles',
+                'Cards',
+                'Writing',
+                'Mining',
+                'Medicine',
+                'Charm',
+                'Sales',
+                'Farming',
+                'Lumberjack',
+                'Blacksmith',
+                'Hunting',
+                'Acting',
+                'Music'
+            ]
+        }
     }
 ];

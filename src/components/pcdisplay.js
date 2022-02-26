@@ -84,32 +84,37 @@ template.innerHTML = `
         </div>
         <div class="formField">
             <label for="positive_traits_0">Positive Traits 1</label>
-            <div>
+            <div class="fieldReroll">
                 <input id="positive_traits_0" type="text" name="positive_traits" autocomplete="off" form="pcEditForm">
+                <button class="btn-reroll" data-field="positive_traits" type="button" aria-label="Reroll" aria-controls="positive_traits_0">⚅</button>
             </div>
         </div>
         <div class="formField">
             <label for="positive_traits_1">Positive Traits 2</label>
-            <div>
+            <div class="fieldReroll">
                 <input id="positive_traits_1" type="text" name="positive_traits" autocomplete="off" form="pcEditForm">
+                <button class="btn-reroll" data-field="positive_traits" type="button" aria-label="Reroll" aria-controls="positive_traits_1">⚅</button>
             </div>
         </div>
         <div class="formField">
             <label for="negative_trait">Negative Trait</label>
-            <div>
+            <div class="fieldReroll">
                 <input id="negative_trait" type="text" name="negative_trait" autocomplete="off" form="pcEditForm">
+                <button class="btn-reroll" data-field="negative_trait" type="button" aria-label="Reroll" aria-controls="negative_trait">⚅</button>
             </div>
         </div>
         <div class="formField">
             <label for="skills_0">Skills 1</label>
-            <div>
+            <div class="fieldReroll">
                 <input id="skills_0" type="text" name="skills" autocomplete="off" form="pcEditForm" placeholder="Enter a skill">
+                <button class="btn-reroll" data-field="skills" type="button" aria-label="Reroll" aria-controls="skills_0">⚅</button>
             </div>
         </div>
         <div class="formField">
             <label for="skills_1">Skills 2</label>
-            <div>
-                <input id="skills_1" type="text" name="skills" autocomplete="off" form="pcEditForm">
+            <div class="fieldReroll">
+                <input id="skills_1" type="text" name="skills" autocomplete="off" form="pcEditForm" placeholder="Enter a skill">
+                <button class="btn-reroll" data-field="skills" type="button" aria-label="Reroll" aria-controls="skills_1">⚅</button>
             </div>
         </div>
         <div class="formField">
@@ -332,7 +337,8 @@ class PCDisplay extends HTMLElement {
         // get source from schema
         const field = PCSchema.getFieldByKey(fieldKey);
         const result = convertToken(field.source);
-        const input = this.shadowRoot.querySelector(`#${fieldKey}`);
+        const fieldId = ev.target.getAttribute('aria-controls') || fieldKey;
+        const input = this.shadowRoot.querySelector(`#${fieldId}`);
         input.value = result.toString();
     }
     /**

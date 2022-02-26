@@ -21,7 +21,7 @@ const positiveTraits = new NPCSchemaField({
     key: 'positive_traits',
     label: 'Positive Traits',
     type: 'array',
-    source: '',
+    source: 'table:character_traits:positive',
     count: 2
 });
 
@@ -29,14 +29,14 @@ const negativeTrait = new NPCSchemaField({
     key: 'negative_trait',
     label: 'Negative Trait',
     type: 'string',
-    source: ''
+    source: 'table:character_traits:negative'
 });
 
 const skills = new NPCSchemaField({
     key: 'skills',
     label: 'Skills',
     type: 'array',
-    source: '',
+    source: 'table:character_skills',
     count: 2
 });
 
