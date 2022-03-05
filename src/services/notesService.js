@@ -3,6 +3,7 @@ import { createNote, updateNote, deleteNote, sortNotes, clearNotes, importNotes 
 import Note from '../models/note.js';
 import EventEmitter from '../models/EventEmitter.js';
 import NoteDisplay from '../components/notedisplay.js';
+import * as linkService from './linkService.js';
 
 /**
  * @prop {EventEmitter}
@@ -14,8 +15,13 @@ const emitter = new EventEmitter();
  * @returns {Note[]}
  */
 const getAll = function () {
-    const notes = store.getState().notes;
-    return notes.map((obj) => new Note(obj));
+    const objects = store.getState().notes;
+    const notes = objects.map((obj) => new Note(obj));
+    notes.forEach((note) => {
+        const links = linkService.getByNoteId(note.uuid);
+        links.forEach((link) => note.addLink(link));
+    });
+    return notes;
 };
 /**
  * Get single note.
@@ -26,7 +32,10 @@ const getById = function (id) {
     const notes = store.getState().notes;
     const data = notes.find((el) => el.uuid === id);
     if (data) {
-        return new Note(data);
+        const note = new Note(data);
+        const links = linkService.getByNoteId(note.uuid);
+        links.forEach((link) => note.addLink(link));
+        return note;
     }
     return null;
 };
@@ -64,6 +73,7 @@ const remove = function (uuid) {
     emitter.trigger('note:delete', {
         id: uuid
     });
+    linkService.deleteByNoteId(uuid);
 };
 
 const sort = function (sortUuids) {

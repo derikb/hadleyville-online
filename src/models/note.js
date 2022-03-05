@@ -3,13 +3,15 @@
  */
 import { v4 as uuidv4 } from 'uuid';
 import MarkdownIt from 'markdown-it';
+import NoteLink from './NoteLink.js';
 
 export default class Note {
     constructor ({
         uuid = null,
         title = '',
         content = '',
-        collapse = false
+        collapse = false,
+        links = []
     }) {
         this.title = title;
         this.content = content;
@@ -19,7 +21,20 @@ export default class Note {
         } else {
             this.uuid = uuidv4();
         }
+        this.links = [];
+        if (Array.isArray(links)) {
+            links.forEach((link) => this.addLink(link));
+        }
     }
+
+    addLink (data) {
+        if (data instanceof NoteLink) {
+            this.links.push(data);
+            return;
+        }
+        this.links.push(new NoteLink(data));
+    }
+
     get id () {
         return this.uuid;
     }
@@ -32,6 +47,10 @@ export default class Note {
     toJSON () {
         const obj = {};
         Object.keys(this).forEach((prop) => {
+            // links get saved separately.
+            if (prop === 'links') {
+                return;
+            }
             const value = this[prop];
             if (value.length === 0) {
                 return;

@@ -6,6 +6,7 @@ import npcsReducer from './npcs-reducer.js';
 import townReducer from './town-reducer.js';
 import relationshipReducer from './relationship-reducer.js';
 import relMapReducer from './relmap-reducer.js';
+import linkReducer from './link-reducer.js';
 import { save, load } from 'redux-localstorage-simple';
 
 const store = configureStore({
@@ -16,7 +17,8 @@ const store = configureStore({
         relationships: relationshipReducer,
         relmap: relMapReducer,
         characters: characterReducer,
-        factions: factionReducer
+        factions: factionReducer,
+        links: linkReducer
     },
     preloadedState: load(),
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(save())

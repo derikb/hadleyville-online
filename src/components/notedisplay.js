@@ -1,4 +1,8 @@
 import * as notesService from '../services/notesService.js';
+import * as linkService from '../services/linkService.js';
+import * as nameService from '../services/nameService.js';
+import NoteLinkDisplay from './noteLinkDisplay.js';
+import NoteLink from '../models/NoteLink.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -19,6 +23,15 @@ template.innerHTML = `
     details[open] .btn-edit {
         display: inline-block;
     }
+
+    .notelinkFormDiv {
+        display: inline-block;
+    }
+    .noteLinkForm {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+    }
 </style>
 <details>
     <summary>
@@ -27,7 +40,7 @@ template.innerHTML = `
             <button type="button" class="btn-edit">Edit Note</button>
         </div>
     </summary>
-
+    <div class="links"></div>
     <div class="body">
         <div class="content"></div>
     </div>
@@ -65,15 +78,20 @@ class NoteDisplay extends HTMLElement {
     connectedCallback () {
         this.shadowRoot.querySelector('details').addEventListener('toggle', this._setCollapse.bind(this));
         this.editButton.addEventListener('click', this._toggleEdit.bind(this));
+        linkService.emitter.on('link:add', this._insertLink.bind(this));
+        linkService.emitter.on('link:delete', this._removeLink.bind(this));
     }
 
     disconnectedCallback () {
         this.shadowRoot.querySelector('details').removeEventListener('toggle', this._setCollapse.bind(this));
         this.editButton.removeEventListener('click', this._toggleEdit.bind(this));
+        linkService.emitter.off('link:add', this._insertLink.bind(this));
+        linkService.emitter.off('link:delete', this._removeLink.bind(this));
     }
 
     /**
-     *
+     * Set the note for the element.
+     * @todo this is called on update too, it would be more efficient to have separate update method.
      * @param {Note} note
      */
     setItem (note) {
@@ -87,7 +105,16 @@ class NoteDisplay extends HTMLElement {
             this.shadowRoot.querySelector('details').open = true;
         }
         this.shadowRoot.querySelector('.content').innerHTML = this.note.contentHtml;
-        // Now some events? Or else delegate from the Host?
+
+        this.shadowRoot.querySelector('.links').innerHTML = '';
+        const links = [];
+        this.note.links.forEach((link) => {
+            links.push(new NoteLinkDisplay(link));
+        });
+        links.push(this._getLinkForm());
+        this.shadowRoot.querySelector('.links').append(...links);
+
+        this.shadowRoot.querySelector('form.noteLinkForm').addEventListener('submit', this._addLink.bind(this));
     }
 
     /**
@@ -133,7 +160,7 @@ class NoteDisplay extends HTMLElement {
         form.querySelector('textarea[name=content').value = this.note.content;
 
         this.shadowRoot.querySelector('.body').appendChild(form);
-        form = this.shadowRoot.querySelector('form');
+        form = this.shadowRoot.querySelector('form#noteEditForm');
 
         form.addEventListener('submit', this._saveEdit.bind(this));
         form.querySelector('.btn-cancel').addEventListener('click', this._cancelEdit.bind(this));
@@ -158,7 +185,7 @@ class NoteDisplay extends HTMLElement {
         this._isEdit = false;
 
         // remove form events
-        const form = this.shadowRoot.querySelector('form');
+        const form = this.shadowRoot.querySelector('form#noteEditForm');
         form.removeEventListener('submit', this._saveEdit.bind(this));
         form.querySelector('.btn-cancel').removeEventListener('click', this._cancelEdit.bind(this));
         form.querySelector('.btn-delete').removeEventListener('click', this._deleteNote.bind(this));
@@ -179,6 +206,77 @@ class NoteDisplay extends HTMLElement {
 
     _deleteNote () {
         notesService.remove(this.note.id);
+    }
+    /**
+     * Link add form.
+     * @returns {String}
+     */
+    _getLinkForm () {
+        const container = document.createElement('div');
+        container.classList.add('notelinkFormDiv');
+        const nameOptions = Array.from(nameService.getAllNames().values())
+            .map((name) => {
+                return `<option value="${name.uuid}" data-type="${name.type}">${name.name}</option>`;
+            })
+            .join('\n');
+        container.innerHTML = `
+            <form class="noteLinkForm">
+                <input type="hidden" name="note_uuid" value="${this.note.id}" />
+                <label for="link_uuid_field">Link to</label>
+                <select id="link_uuid_field" name="uuid">
+                    <option value="">---</option>
+                    ${nameOptions}
+                </select>
+                <button type="submit" class="btn">Add</button>
+            </form>
+        `;
+        return container;
+    }
+    /**
+     * Handler submit on add link form.
+     * @param {SubmitEvent} ev
+     */
+    _addLink (ev) {
+        ev.preventDefault();
+        const form = ev.target;
+        const select = form.querySelector('select[name=uuid]');
+        const option = select.selectedOptions[0] || null;
+        if (!option) {
+            return;
+        }
+        const link = new NoteLink({
+            note_uuid: this.note.id,
+            uuid: option.value,
+            type: option.dataset.type || '',
+            title: option.innerText
+        });
+        linkService.create(link);
+        form.reset();
+    }
+    /**
+     * Insert new link into note.
+     * @todo move these events to the note container? That should be more efficient.
+     * @param {NoteLink} item
+     * @returns
+     */
+    _insertLink ({ item }) {
+        if (item.note_uuid !== this.note.id) {
+            return;
+        }
+        this.note.addLink(item);
+        const display = new NoteLinkDisplay(item);
+        this.shadowRoot.querySelector('.links').appendChild(display);
+    }
+
+    _removeLink ({ uuid, note_uuid }) {
+        if (this.note.id !== note_uuid) {
+            return;
+        }
+        // remove
+        const link = this.shadowRoot.querySelector(`.links had-note-link.link_${uuid}`);
+        if (link) {
+            link.remove();
+        }
     }
     /**
      * When we need to reset focus in this element.

@@ -8,6 +8,7 @@ import FactionsList from './components/FactionsList.js';
 import FactionDisplay from './components/FactionDisplay.js';
 import NotesList from './components/noteslist.js';
 import NoteDisplay from './components/notedisplay.js';
+import NoteLinkDisplay from './components/noteLinkDisplay.js';
 import DiceRoller from './components/diceroller.js';
 import NPCsList from './components/npcslist.js';
 import NPCDisplay from './components/npcdisplay.js';
