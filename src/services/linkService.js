@@ -49,6 +49,19 @@ const getByNoteId = function (note_uuid) {
     getNameForLinks(links);
     return links;
 };
+
+/**
+ * Get links by target (npc, pc, faction, etc.).
+ * @param {String} uuid
+ * @returns {NoteLink[]}
+ */
+const getByTargetId = function (uuid) {
+    const objects = store.getState().links.filter((el) => el.uuid === uuid);
+    const links = objects.map((obj) => new NoteLink(obj));
+    getNameForLinks(links);
+    return links;
+};
+
 /**
  * Save a new link.
  * @param {NoteLink} link
@@ -75,6 +88,13 @@ const remove = function (link) {
 
 const deleteByNoteId = function (note_uuid) {
     const links = getByNoteId(note_uuid);
+    links.forEach((link) => {
+        remove(link);
+    });
+};
+
+const deleteByTargetId = function (uuid) {
+    const links = getByTargetId(uuid);
     links.forEach((link) => {
         remove(link);
     });
@@ -109,10 +129,12 @@ export {
     emitter,
     getAll,
     getByNoteId,
+    getByTargetId,
     create,
     // save,
     remove,
     deleteByNoteId,
+    deleteByTargetId,
     deleteAll,
     importAll
 };

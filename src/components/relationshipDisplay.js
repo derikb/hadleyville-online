@@ -1,7 +1,7 @@
 import * as relationshipService from '../services/relationshipService.js';
-import * as npcService from '../services/npcService.js';
-import * as characterService from '../services/characterService.js';
 import { convertToken } from '../services/randomTableService.js';
+import { getAllNames, getNameById } from '../services/nameService.js';
+import ModelTypeConstants from '../models/ModelTypeConstants.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -121,14 +121,7 @@ class RelationshipDisplay extends HTMLElement {
         this.body.classList.remove('is-edit');
 
         const otherId = this.relation.getOther(this.charId);
-        let otherName = otherId;
-        if (otherId) {
-            let other = npcService.getById(otherId);
-            if (!other) {
-                other = characterService.getCharacter(otherId);
-            }
-            otherName = other ? other.name : '';
-        }
+        const otherName = getNameById(otherId) ?? otherId;
         const div = document.createElement('div');
         div.innerHTML = `<strong>${otherName}:</strong> ${this.relation.type} <button type="button" class="btn-edit btn-sm">Edit</button>`;
         this.body.appendChild(div);
@@ -156,14 +149,14 @@ class RelationshipDisplay extends HTMLElement {
 
         // List all other characters
         const select = form.querySelector('select');
-        [...npcService.getAll(), ...characterService.getAll()].forEach((char) => {
-            if (char.id === this.charId) {
+        Array.from(getAllNames().values()).forEach((name) => {
+            if ([ModelTypeConstants.npc, ModelTypeConstants.pc].indexOf(name.type) === -1) {
                 return;
             }
             const option = document.createElement('option');
-            option.value = char.id;
-            option.innerText = char.name;
-            if (char.id === this.relation.target) {
+            option.value = name.uuid;
+            option.innerText = name.name;
+            if (name.uuid === this.relation.target) {
                 option.selected = true;
             }
             select.appendChild(option);

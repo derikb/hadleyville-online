@@ -1,10 +1,9 @@
 import Faction from '../models/Faction.js';
 import * as factionService from '../services/factionService.js';
-import * as npcService from '../services/npcService.js';
-import * as characterService from '../services/characterService.js';
 import Relationship from '../models/Relationship.js';
 import { relationshipTypes } from '../models/FactionConstants.js';
 import { getDiceResult } from 'rpg-table-randomizer/src/dice_roller';
+import { getAllNames } from '../services/nameService.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -145,28 +144,24 @@ class FactionDisplay extends HTMLElement {
     /**
      * Relationship in view mode.
      * @param {Relationship} rel Faction relationship
-     * @param {Object[]} names Characters and factions.
+     * @param {Map<String, Name>} names Characters and factions.
      * @returns {String}
      */
     _relationshipTemplate (rel, names) {
         const otherId = rel.getOther(this.faction.id);
-        let otherName = otherId;
-        if (otherId) {
-            const other = names.find((el) => el.id === otherId);
-            otherName = other ? other.name : '';
-        }
+        const otherName = names.get(otherId) || otherId;
         return `<li><strong>${otherName}:</strong> ${relationshipTypes[rel.type]}</li>`;
     }
     /**
      * Relationship in edit mode.
      * @param {Relationship} rel Faction relationship (this could be a new/empty one)
-     * @param {Object[]} names Characters and factions.
+     * @param {Map<String, Name>} names Characters and factions.
      * @returns {String}
      */
     _relationshipForm (rel, names) {
-        const options = names.map((name) => {
+        const options = Array.from(names.values()).map((name) => {
             const otherId = rel.getOther(this.faction.id);
-            return `<option value="${name.id}" ${otherId === name.id ? 'selected=selected' : ''}>${name.name}</option>`;
+            return `<option value="${name.uuid}" ${otherId === name.uuid ? 'selected=selected' : ''}>${name.name}</option>`;
         }).join('');
         const typeOptions = Object.keys(relationshipTypes).map((key) => {
             return `<option value="${key}" ${rel.type === key ? 'selected="selected"' : ''}>${relationshipTypes[key]}</option>`;
@@ -194,29 +189,12 @@ class FactionDisplay extends HTMLElement {
         </fieldset>`;
     }
     /**
-     * Get all names of npcs, pcs, factions.
-     * @returns {Object[]}
-     */
-    _getAllNames () {
-        const names = [];
-        [...npcService.getAll(), ...characterService.getAll(), ...factionService.getAll()].forEach((char) => {
-            if (char instanceof Faction && char.id === this.id) {
-                return;
-            }
-            names.push({
-                id: char.id,
-                name: char.name
-            });
-        });
-        return names;
-    }
-    /**
      * Relationship list.
      * @param {Boolean} isEdit
      * @returns {String}
      */
     _relationshipList (isEdit = false) {
-        const names = this._getAllNames();
+        const names = getAllNames();
 
         let relationhtml = '';
         if (!isEdit) {
@@ -401,7 +379,7 @@ class FactionDisplay extends HTMLElement {
         if (!list) {
             return;
         }
-        const html = this._relationshipForm(new Relationship({ source: this.faction.id }), this._getAllNames());
+        const html = this._relationshipForm(new Relationship({ source: this.faction.id }), getAllNames());
         list.insertAdjacentHTML('beforeend', html);
     }
 
