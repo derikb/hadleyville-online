@@ -9,6 +9,7 @@ import EventEmitter from '../models/EventEmitter.js';
 import NPCDisplay from '../components/npcdisplay.js';
 import * as relationshipService from './relationshipService.js';
 import * as relmapService from './relmapService.js';
+import * as linkService from './linkService.js';
 
 const emitter = new EventEmitter();
 
@@ -26,6 +27,8 @@ const getAll = function (includeRelations = true) {
         if (rels) {
             npc.relationships = rels;
         }
+        const links = linkService.getByTargetId(npc.id);
+        links.forEach((link) => npc.addLink(link));
     });
     return npcs;
 };
@@ -35,10 +38,13 @@ const getById = function (id) {
     const data = npcs.find((npc) => {
         return npc.id === id;
     });
-    if (data) {
-        return new NPC(data);
+    if (!data) {
+        return null;
     }
-    return null;
+    const npc = new NPC(data);
+    const links = linkService.getByTargetId(npc.id);
+    links.forEach((link) => npc.addLink(link));
+    return npc;
 };
 
 const create = function (mode = 'view', npc = null) {
@@ -69,6 +75,7 @@ const remove = function (id) {
     // Clean up associated data.
     relationshipService.deleteByCharacter(id);
     relmapService.remove(id);
+    linkService.deleteByTargetId(id);
 };
 
 const sort = function (sortUuids) {

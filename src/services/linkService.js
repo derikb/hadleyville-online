@@ -23,6 +23,10 @@ const getNameForLinks = function (links) {
         if (name) {
             link.title = name.name;
         }
+        const noteTitle = names.get(link.note_uuid);
+        if (noteTitle) {
+            link.note_title = noteTitle.name;
+        }
     });
 };
 

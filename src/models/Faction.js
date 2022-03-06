@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import Relationship from './Relationship.js';
 import { defaultToJSON } from 'rpg-table-randomizer/src/r_helpers.js';
+import NoteLink from './NoteLink.js';
 
 export default class Faction {
     constructor ({
@@ -9,6 +10,7 @@ export default class Faction {
         assets = [],
         goals = [],
         relationships = [],
+        links = [],
         color = '',
         collapse = false
     }) {
@@ -33,6 +35,10 @@ export default class Faction {
             return !!el;
         });
         this.collapse = collapse;
+        this.links = [];
+        if (Array.isArray(links)) {
+            links.forEach((link) => this.addLink(link));
+        }
     }
 
     getRelationship (id) {
@@ -53,9 +59,18 @@ export default class Faction {
         this.relationships.push(rel);
     }
 
+    addLink (data) {
+        if (data instanceof NoteLink) {
+            this.links.push(data);
+            return;
+        }
+        this.links.push(new NoteLink(data));
+    }
+
     toJSON () {
         const obj = defaultToJSON.call(this);
         obj.className = 'Faction';
+        delete obj.links;
         return obj;
     }
 }

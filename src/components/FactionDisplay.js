@@ -1,9 +1,9 @@
-import Faction from '../models/Faction.js';
 import * as factionService from '../services/factionService.js';
 import Relationship from '../models/Relationship.js';
 import { relationshipTypes } from '../models/FactionConstants.js';
 import { getDiceResult } from 'rpg-table-randomizer/src/dice_roller';
 import { getAllNames } from '../services/nameService.js';
+import NoteLinkDisplay from './noteLinkDisplay.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -96,7 +96,7 @@ const formTemplate = function () {
 class FactionDisplay extends HTMLElement {
     constructor () {
         super();
-        this.attachShadow({ mode: 'open' });
+        this.attachShadow({ mode: 'open', delegatesFocus: true });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
         this._isEdit = false;
     }
@@ -105,6 +105,8 @@ class FactionDisplay extends HTMLElement {
         this.editButton = this.shadowRoot.querySelector('.btn-edit');
         this.shadowRoot.querySelector('details').addEventListener('toggle', this._setCollapse.bind(this));
         this.editButton.addEventListener('click', this._toggleEdit.bind(this));
+        linkService.emitter.on('link:add', this._insertLink.bind(this));
+        linkService.emitter.on('link:delete', this._removeLink.bind(this));
     }
 
     disconnectedCallback () {
@@ -113,6 +115,8 @@ class FactionDisplay extends HTMLElement {
         if (this._isEdit) {
             this._removeFormEvents();
         }
+        linkService.emitter.off('link:add', this._insertLink.bind(this));
+        linkService.emitter.off('link:delete', this._removeLink.bind(this));
     }
 
     /**
@@ -224,6 +228,27 @@ class FactionDisplay extends HTMLElement {
             </section>`;
     }
 
+    _linkList () {
+        const linkTemplate = document.createElement('template');
+        linkTemplate.innerHTML = `
+        <section id="linklist" aria-labelledby="linkheader">
+            <div>
+                <strong id="linkheader">Note Links</strong>
+            </div>
+            <ul>
+            </ul>
+        </section>
+        `;
+        const linkSection = linkTemplate.content.cloneNode(true);
+        const linkul = linkSection.querySelector('ul');
+        const links = [];
+        this.faction.links.forEach((link) => {
+            links.push(new NoteLinkDisplay(link, false));
+        });
+        linkul.append(...links);
+        return linkSection;
+    }
+
     _colorBlock () {
         const span = document.createElement('span');
         span.classList.add('color-indicator');
@@ -237,6 +262,7 @@ class FactionDisplay extends HTMLElement {
         this.shadowRoot.querySelector('#summary-title').innerText = this.faction.name;
         this.shadowRoot.querySelector('#summary-title').appendChild(this._colorBlock());
         this.shadowRoot.querySelector('.body').innerHTML = this._displayTemplate();
+        this.shadowRoot.querySelector('.body').appendChild(this._linkList());
     }
     /**
      * Save collapse state
@@ -297,7 +323,6 @@ class FactionDisplay extends HTMLElement {
         }
         if (button.classList.contains('btn-reroll')) {
             this._reroll(button);
-            return;
         }
     }
 
@@ -391,6 +416,33 @@ class FactionDisplay extends HTMLElement {
         }
         this.faction.removeRelationship(id);
         set.parentNode.removeChild(set);
+    }
+
+    /**
+     * Insert new link into note.
+     * @todo move these events to the container? That should be more efficient.
+     * @param {NoteLink} item
+     * @returns
+     */
+    _insertLink ({ item }) {
+        if (item.uuid !== this.npc.id) {
+            return;
+        }
+        this.npc.addLink(item);
+        const display = new NoteLinkDisplay(item, false);
+        this.shadowRoot.querySelector('.links').appendChild(display);
+    }
+
+    _removeLink ({ uuid, note_uuid }) {
+        console.log('npc remove link');
+        if (uuid !== this.npc.id) {
+            return;
+        }
+        // remove
+        const link = this.shadowRoot.querySelector(`.links had-note-link.link_${note_uuid}`);
+        if (link) {
+            link.remove();
+        }
     }
 
     _reroll (button) {

@@ -4,6 +4,8 @@ import { convertToken } from '../services/randomTableService.js';
 import RelationshipDisplay from './RelationshipDisplay.js';
 import Relationship from '../models/Relationship.js';
 import * as relationshipService from '../services/relationshipService.js';
+import NoteLinkDisplay from './noteLinkDisplay.js';
+import * as linkService from '../services/linkService.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -72,11 +74,23 @@ relTemplate.innerHTML = `
 </section>
 `;
 
+const linkTemplate = document.createElement('template');
+linkTemplate.innerHTML = `
+<section id="linklist" aria-labelledby="linkheader">
+    <div>
+        <strong id="linkheader">Note Links</strong>
+    </div>
+    <ul class="links">
+    </ul>
+</section>
+`;
+
 class NPCDisplay extends HTMLElement {
     constructor () {
         super();
-        this.attachShadow({ mode: 'open' });
+        this.attachShadow({ mode: 'open', delegatesFocus: true });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
+        this.tabindex = 0;
         this._isEdit = false;
         this.editButton = this.shadowRoot.querySelector('.btn-edit');
 
@@ -87,6 +101,8 @@ class NPCDisplay extends HTMLElement {
     connectedCallback () {
         this.shadowRoot.querySelector('details').addEventListener('toggle', this._setCollapse.bind(this));
         this.editButton.addEventListener('click', this._toggleEdit.bind(this));
+        linkService.emitter.on('link:add', this._insertLink.bind(this));
+        linkService.emitter.on('link:delete', this._removeLink.bind(this));
     }
 
     disconnectedCallback () {
@@ -100,6 +116,8 @@ class NPCDisplay extends HTMLElement {
 
         relationshipService.emitter.off('relationship:add', this._addRelationship.bind(this));
         relationshipService.emitter.off('relationship:delete', this._removeRelationship.bind(this));
+        linkService.emitter.off('link:add', this._insertLink.bind(this));
+        linkService.emitter.off('link:delete', this._removeLink.bind(this));
     }
 
     /**
@@ -145,6 +163,15 @@ class NPCDisplay extends HTMLElement {
         });
         this.shadowRoot.querySelector('.body').appendChild(relSection);
         this.shadowRoot.querySelector('.btn-add-rel').addEventListener('click', this._createRelationship.bind(this));
+
+        const linkSection = linkTemplate.content.cloneNode(true);
+        const linkul = linkSection.querySelector('ul');
+        const links = [];
+        this.npc.links.forEach((link) => {
+            links.push(new NoteLinkDisplay(link, false));
+        });
+        linkul.append(...links);
+        this.shadowRoot.querySelector('.body').appendChild(linkSection);
     }
 
     /**
@@ -335,6 +362,32 @@ class NPCDisplay extends HTMLElement {
         const display = this.shadowRoot.querySelector(`had-relationship[data-id="${id}"]`);
         if (display) {
             display.parentNode.removeChild(display);
+        }
+    }
+    /**
+     * Insert new link into note.
+     * @todo move these events to the container? That should be more efficient.
+     * @param {NoteLink} item
+     * @returns
+     */
+    _insertLink ({ item }) {
+        if (item.uuid !== this.npc.id) {
+            return;
+        }
+        this.npc.addLink(item);
+        const display = new NoteLinkDisplay(item, false);
+        this.shadowRoot.querySelector('.links').appendChild(display);
+    }
+
+    _removeLink ({ uuid, note_uuid }) {
+        console.log('npc remove link');
+        if (uuid !== this.npc.id) {
+            return;
+        }
+        // remove
+        const link = this.shadowRoot.querySelector(`.links had-note-link.link_${note_uuid}`);
+        if (link) {
+            link.remove();
         }
     }
 };

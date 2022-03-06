@@ -1,17 +1,19 @@
-import * as npcService from './npcService.js';
-import * as characterService from './characterService.js';
-import * as factionService from './factionService.js';
+import store from '../store/store.js';
 import Name from '../models/Name.js';
 import ModelTypes from '../models/ModelTypeConstants.js';
+import Faction from '../models/Faction.js';
+import NPC from '../models/npc.js';
+import PC from '../models/pc.js';
 
 /**
- *
+ * Don't use service to avoid loops with looking up links for npcs.
  * @returns Map<String, Name>
  */
 const getNPCNames = function () {
-    const npcs = npcService.getAll();
+    const data = store.getState().npcs;
     const names = new Map();
-    npcs.forEach((npc) => {
+    data.forEach((object) => {
+        const npc = new NPC(object);
         const name = new Name({
             uuid: npc.id,
             name: npc.name,
@@ -22,13 +24,14 @@ const getNPCNames = function () {
     return names;
 };
 /**
- *
+ * Don't use service to avoid loops with looking up links for pcs.
  * @returns Map<String, Name>
  */
 const getPCNames = function () {
-    const pcs = characterService.getAll();
+    const data = store.getState().characters;
     const names = new Map();
-    pcs.forEach((pc) => {
+    data.forEach((object) => {
+        const pc = new PC(object);
         const name = new Name({
             uuid: pc.id,
             name: pc.name,
@@ -39,13 +42,14 @@ const getPCNames = function () {
     return names;
 };
 /**
- *
+ * Don't use service to avoid loops with looking up links for factions.
  * @returns Map<String, Name>
  */
 const getFactionNames = function () {
-    const factions = factionService.getAll();
+    const data = store.getState().factions;
     const names = new Map();
-    factions.forEach((faction) => {
+    data.forEach((object) => {
+        const faction = new Faction(object);
         const name = new Name({
             uuid: faction.id,
             name: faction.name,
@@ -65,9 +69,28 @@ const getAllNames = function () {
         [
             ...getNPCNames(),
             ...getPCNames(),
-            ...getFactionNames()
+            ...getFactionNames(),
+            ...getNoteTitles()
         ]
     );
+    return names;
+};
+
+/**
+ *
+ * @returns Map<String, Name>
+ */
+const getNoteTitles = function () {
+    const data = store.getState().notes;
+    const names = new Map();
+    data.forEach((object) => {
+        const name = new Name({
+            uuid: object.uuid,
+            name: object.title,
+            type: ModelTypes.note
+        });
+        names.set(object.uuid, name);
+    });
     return names;
 };
 
@@ -85,6 +108,8 @@ const getNameById = function (id, type = '') {
             return getPCNames().get(id);
         case 'faction':
             return getFactionNames().get(id);
+        case 'note':
+            return getNoteTitles().get(id);
         default:
             return getAllNames().get(id);
     }

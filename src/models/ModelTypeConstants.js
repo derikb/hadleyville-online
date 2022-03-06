@@ -1,5 +1,6 @@
 export default Object.freeze({
     npc: 'npc',
     pc: 'pc',
-    faction: 'faction'
+    faction: 'faction',
+    note: 'note'
 });

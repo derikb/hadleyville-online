@@ -2,6 +2,7 @@
 import NPC from 'rpg-table-randomizer/src/NPC.js';
 import MarkdownIt from 'markdown-it/lib';
 import Relationship from './Relationship.js';
+import NoteLink from './NoteLink.js';
 
 export default class AppNPC extends NPC {
     constructor ({
@@ -10,6 +11,7 @@ export default class AppNPC extends NPC {
         fields = new Map(),
         notes = '',
         relationships = [],
+        links = [],
         collapse = false
     }) {
         super({
@@ -30,6 +32,10 @@ export default class AppNPC extends NPC {
         }).filter((el) => {
             return !!el;
         });
+        this.links = [];
+        if (Array.isArray(links)) {
+            links.forEach((link) => this.addLink(link));
+        }
     }
 
     get name () {
@@ -94,10 +100,19 @@ export default class AppNPC extends NPC {
         }
     }
 
+    addLink (data) {
+        if (data instanceof NoteLink) {
+            this.links.push(data);
+            return;
+        }
+        this.links.push(new NoteLink(data));
+    }
+
     toJSON () {
         const obj = super.toJSON();
         // Don't save these with the npc.
         delete obj.relationships;
+        delete obj.links;
         return obj;
     }
 }

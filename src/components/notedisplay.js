@@ -69,7 +69,7 @@ formTemplate.innerHTML = `
 class NoteDisplay extends HTMLElement {
     constructor () {
         super();
-        this.attachShadow({ mode: 'open' });
+        this.attachShadow({ mode: 'open', delegatesFocus: true });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
         this._isEdit = false;
         this.editButton = this.shadowRoot.querySelector('.btn-edit');
@@ -248,7 +248,8 @@ class NoteDisplay extends HTMLElement {
             note_uuid: this.note.id,
             uuid: option.value,
             type: option.dataset.type || '',
-            title: option.innerText
+            title: option.innerText,
+            note_title: this.note.title
         });
         linkService.create(link);
         form.reset();

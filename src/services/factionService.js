@@ -3,6 +3,7 @@ import { updateFaction, deleteFaction, sortFactions, clearFactions, importFactio
 import Faction from '../models/Faction.js';
 import EventEmitter from '../models/EventEmitter.js';
 import FactionDisplay from '../components/FactionDisplay.js';
+import * as linkService from './linkService.js';
 
 /**
  * @prop {EventEmitter}
@@ -14,8 +15,13 @@ const emitter = new EventEmitter();
  * @returns {Faction[]}
  */
 const getAll = function () {
-    const factions = store.getState().factions;
-    return factions.map((obj) => new Faction(obj));
+    const data = store.getState().factions;
+    const factions = data.map((obj) => new Faction(obj));
+    factions.forEach((faction) => {
+        const links = linkService.getByTargetId(faction.id);
+        links.forEach((link) => faction.addLink(link));
+    });
+    return factions;
 };
 /**
  * Get single faction.
@@ -25,10 +31,13 @@ const getAll = function () {
 const getById = function (id) {
     const factions = store.getState().factions;
     const data = factions.find((el) => el.id === id);
-    if (data) {
-        return new Faction(data);
+    if (!data) {
+        return null;
     }
-    return null;
+    const faction = new Faction(data);
+    const links = linkService.getByTargetId(faction.id);
+    links.forEach((link) => faction.addLink(link));
+    return faction;
 };
 /**
  * Save a new faction.
@@ -64,6 +73,7 @@ const remove = function (id) {
     emitter.trigger('faction:delete', {
         id
     });
+    linkService.deleteByTargetId(id);
 };
 
 const sort = function (sortUuids) {
