@@ -13,7 +13,7 @@ template.innerHTML = `
         margin: 0;
     }
 </style>
-<p>Written in Mar-Apr 2021 by Derik A. Badman <a href="https://derikbadman.com">https://derikbadman.com</a> Game info and updates at <a href="https://madinkbeard.itch.io/hadleyville">https://madinkbeard.itch.io/hadleyville</a></p>
+<p>Last updated: 2022-03-12. Originally written in Mar-Apr 2021 by Derik A. Badman <a href="https://derikbadman.com">https://derikbadman.com</a> Game info and updates at <a href="https://madinkbeard.itch.io/hadleyville">https://madinkbeard.itch.io/hadleyville</a></p>
 `;
 
 class Footer extends HTMLElement {

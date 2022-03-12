@@ -1,5 +1,5 @@
 import * as linkService from '../services/linkService.js';
-import { getElementById, closest } from 'kagekiri';
+import { getElementById } from 'kagekiri';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -10,9 +10,10 @@ template.innerHTML = `
         margin-right: 1rem;
         font-size: 0.9rem;
         border-radius: .25rem;
-        background-color: green;
-        color: white;
+        background-color: var(--surface4, lightgray);
+        color: black;
         padding: 0.125rem 0.25rem;
+        cursor: pointer;
     }
 
     :host * {
@@ -23,41 +24,42 @@ template.innerHTML = `
         background-color: white;
     }
 </style>
-<span class="title"></span>
-<button type="button" class="btn btn-linkdelete" aria-label="Remove link">&times;</button>
+<a href="#" class="title"></a>
+<button type="button" class="btn btn-linkdelete" aria-label="Remove link" hidden>&times;</button>
 `;
 
-// @todo styling needs improvement
+/**
+ * @prop {NoteLink} link
+ * @prop {Boolean} fromNote Is that being displayed in a note.
+ */
 class NoteLinkDisplay extends HTMLElement {
     constructor (link = null, fromNote = true) {
         super();
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
-        this.tabIndex = 0;
         this._link = null;
         this.fromNote = fromNote;
         if (link) {
             this.link = link;
         }
+        this.edit = false;
     }
 
     connectedCallback () {
+        this.shadowRoot.querySelector('a').addEventListener('click', this._followLink.bind(this));
         this.shadowRoot.querySelector('.btn-linkdelete').addEventListener('click', this._deleteLink.bind(this));
-        this.addEventListener('click', this._followLink.bind(this));
-        this.addEventListener('keydown', this._keyDown.bind(this));
     }
 
     disconnectedCallback () {
+        this.shadowRoot.querySelector('a').removeEventListener('click', this._followLink.bind(this));
         this.shadowRoot.querySelector('.btn-linkdelete').removeEventListener('click', this._deleteLink.bind(this));
-        this.removeEventListener('click', this._followLink.bind(this));
-        this.removeEventListener('keydown', this._keyDown.bind(this));
     }
-
+    /**
+     * Id reference for other end of the link.
+     * @returns {String|null}
+     */
     linkRef () {
-        if (!this.isConnected || !this.link) {
-            return null;
-        }
-        if (closest('had-note', this) !== null) {
+        if (this.fromNote) {
             // inside a note, so link to the other end of the link..
             return `${this.link.type}_${this.link.uuid}`;
         }
@@ -80,23 +82,53 @@ class NoteLinkDisplay extends HTMLElement {
         this.shadowRoot.querySelector('.title').innerHTML = this.fromNote
             ? link.title
             : link.note_title;
+        this.shadowRoot.querySelector('a').href = `#${this.linkRef()}`;
+    }
+    /**
+     * Is it in edit mode.
+     * @returns {Boolean}
+     */
+    get isEdit () {
+        return this.edit;
+    }
+    /**
+     * Set edit moe
+     * @param {Boolean} edit
+     */
+    set isEdit (edit) {
+        this.edit = edit;
+        if (edit) {
+            this._enableEdit();
+        } else {
+            this._disabledEdit();
+        }
     }
 
+    _enableEdit () {
+        this.shadowRoot.querySelector('.btn-linkdelete').hidden = false;
+    }
+
+    _disabledEdit () {
+        this.shadowRoot.querySelector('.btn-linkdelete').hidden = true;
+    }
+    /**
+     * Focus on the target of the link.
+     * @param {Event} ev
+     */
     _followLink (ev) {
-        const ref = this.linkRef();
+        ev.preventDefault();
+        const ref = ev.target.getAttribute('href');
         if (!ref) {
             return;
         }
-        const el = getElementById(ref);
+        const id = ref.substring(1);
+        if (!id) {
+            return;
+        }
+        const el = getElementById(id);
         if (el) {
             ev.preventDefault();
             el.focus();
-        }
-    }
-
-    _keyDown (ev) {
-        if (ev.key === 'Enter') {
-            this._followLink(ev);
         }
     }
     /**

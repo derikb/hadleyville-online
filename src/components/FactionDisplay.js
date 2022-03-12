@@ -1,4 +1,5 @@
 import * as factionService from '../services/factionService.js';
+import * as linkService from '../services/linkService.js';
 import Relationship from '../models/Relationship.js';
 import { relationshipTypes } from '../models/FactionConstants.js';
 import { getDiceResult } from 'rpg-table-randomizer/src/dice_roller';
@@ -425,7 +426,7 @@ class FactionDisplay extends HTMLElement {
      * @returns
      */
     _insertLink ({ item }) {
-        if (item.uuid !== this.npc.id) {
+        if (item.uuid !== this.faction.id) {
             return;
         }
         this.npc.addLink(item);
@@ -434,8 +435,7 @@ class FactionDisplay extends HTMLElement {
     }
 
     _removeLink ({ uuid, note_uuid }) {
-        console.log('npc remove link');
-        if (uuid !== this.npc.id) {
+        if (uuid !== this.faction.id) {
             return;
         }
         // remove

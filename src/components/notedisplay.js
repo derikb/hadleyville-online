@@ -24,13 +24,15 @@ template.innerHTML = `
         display: inline-block;
     }
 
-    .notelinkFormDiv {
-        display: inline-block;
+    .links {
+        display: flex;
+        align-items: center;
     }
     .noteLinkForm {
         display: flex;
         align-items: center;
         white-space: nowrap;
+        margin-bottom: 0;
     }
 </style>
 <details>
@@ -165,6 +167,9 @@ class NoteDisplay extends HTMLElement {
         form.addEventListener('submit', this._saveEdit.bind(this));
         form.querySelector('.btn-cancel').addEventListener('click', this._cancelEdit.bind(this));
         form.querySelector('.btn-delete').addEventListener('click', this._deleteNote.bind(this));
+
+        this.shadowRoot.querySelectorAll('had-note-link').forEach((el) => { el.isEdit = true; });
+        this.shadowRoot.querySelector('.notelinkFormDiv').hidden = false;
     }
 
     _cancelEdit () {
@@ -193,6 +198,9 @@ class NoteDisplay extends HTMLElement {
         this.shadowRoot.querySelector('#summary-title').innerText = this.note.title;
         this.shadowRoot.querySelector('.body').innerHTML = `<div class="content">${this.note.contentHtml}</div>`;
         this._refocus();
+
+        this.shadowRoot.querySelectorAll('had-note-link').forEach((el) => { el.isEdit = false; });
+        this.shadowRoot.querySelector('.notelinkFormDiv').hidden = true;
     }
 
     _saveEdit (ev) {
@@ -214,6 +222,7 @@ class NoteDisplay extends HTMLElement {
     _getLinkForm () {
         const container = document.createElement('div');
         container.classList.add('notelinkFormDiv');
+        container.hidden = true;
         const nameOptions = Array.from(nameService.getAllNames().values())
             .map((name) => {
                 return `<option value="${name.uuid}" data-type="${name.type}">${name.name}</option>`;
