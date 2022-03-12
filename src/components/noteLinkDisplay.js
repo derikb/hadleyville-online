@@ -7,13 +7,16 @@ template.innerHTML = `
 <style>
     :host {
         display: inline-block;
+        display: flex;
+        align-items: center;
+        flex-wrap: none;
         margin-right: 1rem;
         font-size: 0.9rem;
         border-radius: .25rem;
         background-color: var(--surface4, lightgray);
         color: black;
         padding: 0.125rem 0.25rem;
-        cursor: pointer;
+        white-space: nowrap;
     }
 
     :host * {
@@ -22,6 +25,7 @@ template.innerHTML = `
     :host button.btn-linkdelete {
         padding: 0.125rem 0.25rem;
         background-color: white;
+        margin-left: .25rem;
     }
 </style>
 <a href="#" class="title"></a>

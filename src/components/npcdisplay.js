@@ -31,6 +31,12 @@ template.innerHTML = `
         margin: .5rem 0;
         padding: 0;
     }
+
+    .links {
+        display: flex;
+        align-items: center;
+        margin-top: 1rem;
+    }
 </style>
 <details>
     <summary>
@@ -78,10 +84,10 @@ const linkTemplate = document.createElement('template');
 linkTemplate.innerHTML = `
 <section id="linklist" aria-labelledby="linkheader">
     <div>
-        <strong id="linkheader">Note Links</strong>
+        <strong id="linkheader" hidden>Note Links</strong>
     </div>
-    <ul class="links">
-    </ul>
+    <div class="links">
+    </div>
 </section>
 `;
 
@@ -165,11 +171,14 @@ class NPCDisplay extends HTMLElement {
         this.shadowRoot.querySelector('.btn-add-rel').addEventListener('click', this._createRelationship.bind(this));
 
         const linkSection = linkTemplate.content.cloneNode(true);
-        const linkul = linkSection.querySelector('ul');
+        const linkul = linkSection.querySelector('.links');
         const links = [];
         this.npc.links.forEach((link) => {
             links.push(new NoteLinkDisplay(link, false));
         });
+        if (links.length > 0) {
+            linkSection.querySelector('#linkheader').hidden = false;
+        }
         linkul.append(...links);
         this.shadowRoot.querySelector('.body').appendChild(linkSection);
     }
@@ -377,6 +386,7 @@ class NPCDisplay extends HTMLElement {
         this.npc.addLink(item);
         const display = new NoteLinkDisplay(item, false);
         this.shadowRoot.querySelector('.links').appendChild(display);
+        this.shadowRoot.querySelector('#linkheader').hidden = false;
     }
 
     _removeLink ({ uuid, note_uuid }) {

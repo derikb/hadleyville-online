@@ -3,6 +3,7 @@ import * as linkService from '../services/linkService.js';
 import * as nameService from '../services/nameService.js';
 import NoteLinkDisplay from './noteLinkDisplay.js';
 import NoteLink from '../models/NoteLink.js';
+import ModelTypeConstants from '../models/ModelTypeConstants.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -224,6 +225,10 @@ class NoteDisplay extends HTMLElement {
         container.classList.add('notelinkFormDiv');
         container.hidden = true;
         const nameOptions = Array.from(nameService.getAllNames().values())
+            .filter((el) => {
+                // filter out notes?
+                return el.type !== ModelTypeConstants.note;
+            })
             .map((name) => {
                 return `<option value="${name.uuid}" data-type="${name.type}">${name.name}</option>`;
             })
@@ -275,6 +280,11 @@ class NoteDisplay extends HTMLElement {
         }
         this.note.addLink(item);
         const display = new NoteLinkDisplay(item);
+        if (this._isEdit) {
+            display.isEdit = true;
+            this.shadowRoot.querySelector('.notelinkFormDiv').insertAdjacentElement('beforebegin', display);
+            return;
+        }
         this.shadowRoot.querySelector('.links').appendChild(display);
     }
 

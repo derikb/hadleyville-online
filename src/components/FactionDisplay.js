@@ -45,6 +45,12 @@ template.innerHTML = `
     #rellist li  {
         margin-left: 1rem;
     }
+
+    .links {
+        display: flex;
+        align-items: center;
+        margin-top: 1rem;
+    }
 </style>
 <details>
     <summary>
@@ -234,18 +240,20 @@ class FactionDisplay extends HTMLElement {
         linkTemplate.innerHTML = `
         <section id="linklist" aria-labelledby="linkheader">
             <div>
-                <strong id="linkheader">Note Links</strong>
+                <strong id="linkheader" hidden>Note Links</strong>
             </div>
-            <ul>
-            </ul>
+            <div class="links"></div>
         </section>
         `;
         const linkSection = linkTemplate.content.cloneNode(true);
-        const linkul = linkSection.querySelector('ul');
+        const linkul = linkSection.querySelector('.links');
         const links = [];
         this.faction.links.forEach((link) => {
             links.push(new NoteLinkDisplay(link, false));
         });
+        if (links.length > 0) {
+            linkSection.querySelector('#linkheader').hidden = false;
+        }
         linkul.append(...links);
         return linkSection;
     }
@@ -429,9 +437,10 @@ class FactionDisplay extends HTMLElement {
         if (item.uuid !== this.faction.id) {
             return;
         }
-        this.npc.addLink(item);
+        this.faction.addLink(item);
         const display = new NoteLinkDisplay(item, false);
         this.shadowRoot.querySelector('.links').appendChild(display);
+        this.shadowRoot.querySelector('#linkheader').hidden = false;
     }
 
     _removeLink ({ uuid, note_uuid }) {
