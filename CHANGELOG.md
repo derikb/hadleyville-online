@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/derikb/hadleyville-online/compare/v2.1.1...v2.2.0) (2022-03-12)
+
+
+### Features
+
+* **factions:** Add basic faction model/service/display ([c89ab89](https://github.com/derikb/hadleyville-online/commit/c89ab89919a43e2ffea0c63501b9d733d655a8cc)), closes [#17](https://github.com/derikb/hadleyville-online/issues/17)
+* **factions:** Relationships based on reaction roll ([f4ba745](https://github.com/derikb/hadleyville-online/commit/f4ba745b0a620b2637c286c2710127c80bb934d7)), closes [#17](https://github.com/derikb/hadleyville-online/issues/17)
+* **factions:** Show factions on map ([6022281](https://github.com/derikb/hadleyville-online/commit/6022281c0ae897ab9b186cb611f93d348961b736)), closes [#17](https://github.com/derikb/hadleyville-online/issues/17)
+* **links:** More links from notes to npc/faction objects ([fe0a253](https://github.com/derikb/hadleyville-online/commit/fe0a253761dabcb75e79a020780046a8a7d0c8d9)), closes [#25](https://github.com/derikb/hadleyville-online/issues/25)
+* **map:** Add pcs to map ([7d02157](https://github.com/derikb/hadleyville-online/commit/7d02157fe9bae823d9da94f85d968f87b08691db))
+* **notes:** Add links to notes ([fb869f9](https://github.com/derikb/hadleyville-online/commit/fb869f93cb781b62eeaacfc14c59ec0f3babb4e8)), closes [#25](https://github.com/derikb/hadleyville-online/issues/25)
+* **pc:** Add relationships to pcs ([d4de8ae](https://github.com/derikb/hadleyville-online/commit/d4de8ae4d2e3df82cbe678dcff867998a4c34737)), closes [#16](https://github.com/derikb/hadleyville-online/issues/16)
+* **pc:** Added tables of example traits/skills ([41ecb9f](https://github.com/derikb/hadleyville-online/commit/41ecb9f91fcaa3fc4f3482771eadcc5506dc59f0)), closes [#18](https://github.com/derikb/hadleyville-online/issues/18)
+* **relationships:** Improve table, add roll to form ([bd61f09](https://github.com/derikb/hadleyville-online/commit/bd61f0955970e77ac2272c545651f871aaff186e)), closes [#22](https://github.com/derikb/hadleyville-online/issues/22)
+* **tables:** Add oneof token to tables ([db2b53a](https://github.com/derikb/hadleyville-online/commit/db2b53a624635ae68aa2df53a233014eaa2c4391))
+
+
+### Bug Fixes
+
+* **tables:** Fix table result modal rerolls ([9b462a4](https://github.com/derikb/hadleyville-online/commit/9b462a466338c00a60636ef64c52d0b813babcf2)), closes [#23](https://github.com/derikb/hadleyville-online/issues/23)
+
 ### [2.1.1](https://github.com/derikb/hadleyville-online/compare/v2.1.0...v2.1.1) (2022-02-06)
 
 
