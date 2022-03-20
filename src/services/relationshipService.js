@@ -1,6 +1,6 @@
 import store from '../store/store.js';
 import { updateRelationship, deleteRelationship, clearRelationships, importRelationships } from '../store/relationship-reducer.js';
-import Relationship from '../models/Relationship.js';
+import Relationship from '../models/relationship.js';
 import EventEmitter from '../models/EventEmitter.js';
 
 const emitter = new EventEmitter();

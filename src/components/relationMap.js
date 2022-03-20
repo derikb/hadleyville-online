@@ -4,7 +4,7 @@ import { getAll as getAllNPCs } from '../services/npcService.js';
 import * as relationshipService from '../services/relationshipService.js';
 import { getAll as getAllFactions } from '../services/factionService.js';
 import { getAllNodes } from '../services/relmapService.js';
-import NPCNode from './NPCNode.js';
+import NPCNode from './npcNode.js';
 import PCNode from './PCNode.js';
 import PC from '../models/pc.js';
 import CharacterLink from './CharacterLink.js';

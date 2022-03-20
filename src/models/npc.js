@@ -1,7 +1,7 @@
 
 import NPC from 'rpg-table-randomizer/src/NPC.js';
 import MarkdownIt from 'markdown-it/lib';
-import Relationship from './Relationship.js';
+import Relationship from './relationship.js';
 import NoteLink from './NoteLink.js';
 
 export default class AppNPC extends NPC {

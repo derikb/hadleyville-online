@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import Relationship from './Relationship.js';
+import Relationship from './relationship.js';
 import { defaultToJSON } from 'rpg-table-randomizer/src/r_helpers.js';
 import NoteLink from './NoteLink.js';
 

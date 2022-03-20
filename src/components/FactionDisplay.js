@@ -1,6 +1,6 @@
 import * as factionService from '../services/factionService.js';
 import * as linkService from '../services/linkService.js';
-import Relationship from '../models/Relationship.js';
+import Relationship from '../models/relationship.js';
 import { relationshipTypes } from '../models/FactionConstants.js';
 import { getDiceResult } from 'rpg-table-randomizer/src/dice_roller';
 import { getAllNames } from '../services/nameService.js';
