@@ -121,7 +121,7 @@ class ItemList extends HTMLElement {
         }
         this.itemList.appendChild(display);
         if (mode === 'edit') {
-            display.shadowRoot.querySelector('input').focus();
+            display.shadowRoot.querySelector('input[type=text]').focus();
         }
     }
 
