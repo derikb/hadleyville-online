@@ -38,6 +38,7 @@ class NPCNode extends CharacterNode {
 
     _getDisplayElement () {
         const display = new NPCDisplay();
+        this.char.collapse = false;
         display.setItem(this.char);
         return display;
     }

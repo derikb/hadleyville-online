@@ -278,7 +278,10 @@ class CharacterNode extends HTMLElement {
         });
         saveMapNode(n);
     }
-
+    /**
+     * Get the display element for the character to show in the modal.
+     * @returns {HTMLElement|null}
+     */
     _getDisplayElement () {
         // Set in child
         return null;
