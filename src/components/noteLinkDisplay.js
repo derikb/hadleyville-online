@@ -1,4 +1,7 @@
+import * as factionService from '../services/factionService.js';
 import * as linkService from '../services/linkService.js';
+import * as noteService from '../services/notesService.js';
+import * as npcService from '../services/npcService.js';
 import { getElementById } from 'kagekiri';
 
 const template = document.createElement('template');
@@ -52,11 +55,17 @@ class NoteLinkDisplay extends HTMLElement {
     connectedCallback () {
         this.shadowRoot.querySelector('a').addEventListener('click', this._followLink.bind(this));
         this.shadowRoot.querySelector('.btn-linkdelete').addEventListener('click', this._deleteLink.bind(this));
+        noteService.emitter.on('note:edit', this._updateLinkNote.bind(this));
+        npcService.emitter.on('npc:edit', this._updateLinkCharacter.bind(this));
+        factionService.emitter.on('faction:edit', this._updateLinkCharacter.bind(this));
     }
 
     disconnectedCallback () {
         this.shadowRoot.querySelector('a').removeEventListener('click', this._followLink.bind(this));
         this.shadowRoot.querySelector('.btn-linkdelete').removeEventListener('click', this._deleteLink.bind(this));
+        noteService.emitter.off('note:edit', this._updateLinkNote.bind(this));
+        npcService.emitter.off('npc:edit', this._updateLinkCharacter.bind(this));
+        factionService.emitter.off('faction:edit', this._updateLinkCharacter.bind(this));
     }
     /**
      * Id reference for other end of the link.
@@ -83,10 +92,14 @@ class NoteLinkDisplay extends HTMLElement {
             ? `link_${link.uuid}`
             : `link_${link.note_uuid}`;
         this.classList.add(linkClass);
-        this.shadowRoot.querySelector('.title').innerHTML = this.fromNote
-            ? link.title
-            : link.note_title;
+        this._updateTitle();
         this.shadowRoot.querySelector('a').href = `#${this.linkRef()}`;
+    }
+
+    _updateTitle () {
+        this.shadowRoot.querySelector('.title').innerHTML = this.fromNote
+            ? this._link.title
+            : this._link.note_title;
     }
     /**
      * Is it in edit mode.
@@ -142,6 +155,34 @@ class NoteLinkDisplay extends HTMLElement {
         ev.stopImmediatePropagation();
         ev.preventDefault();
         linkService.remove(this.link);
+    }
+    /**
+     * Update link when note changes.
+     * @param {Note} item
+     */
+    _updateLinkNote ({ item }) {
+        if (item.uuid !== this.link.note_uuid) {
+            return;
+        }
+        if (this.fromNote) {
+            return;
+        }
+        this.link.note_title = item.title;
+        this._updateTitle();
+    }
+    /**
+     * Update link when character changes.
+     * @param {Character} item
+     */
+    _updateLinkCharacter ({ item }) {
+        if (item.id !== this.link.uuid) {
+            return;
+        }
+        if (!this.fromNote) {
+            return;
+        }
+        this.link.title = item.name;
+        this._updateTitle();
     }
 };
 
