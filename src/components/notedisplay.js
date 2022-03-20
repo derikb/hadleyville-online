@@ -54,12 +54,12 @@ const formTemplate = document.createElement('template');
 formTemplate.innerHTML = `
 <form id="noteEditForm">
     <div class="formField">
-        <label for="title">Title</label>
-        <input id="title" type="text" name="title" value="" required>
+        <label for="title">Title (max. 100 characters)</label>
+        <input id="title" type="text" name="title" value="" required maxlength=100>
     </div>
     <div class="formField">
-        <label for="content">Content</label>
-        <textarea id="content" type="text" name="content" rows="12"></textarea>
+        <label for="content">Content (max. 2500 characters)</label>
+        <textarea id="content" type="text" name="content" rows="12" maxlength=2500></textarea>
     </div>
     <div>
         <button type="submit">Save</button>
