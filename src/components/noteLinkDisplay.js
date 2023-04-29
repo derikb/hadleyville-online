@@ -3,6 +3,7 @@ import * as linkService from '../services/linkService.js';
 import * as noteService from '../services/notesService.js';
 import * as npcService from '../services/npcService.js';
 import { getElementById } from 'kagekiri';
+import NoteModal from './NoteModal.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -146,7 +147,19 @@ class NoteLinkDisplay extends HTMLElement {
         if (el) {
             ev.preventDefault();
             el.focus();
+            return;
         }
+        this._openLinkInModal();
+    }
+
+    _openLinkInModal () {
+        // For now just character -> note
+        if (this.fromNote) {
+            return;
+        }
+
+        const modal = new NoteModal(this.link.note_uuid);
+        modal.render();
     }
     /**
      * Trigger removal of the link.
